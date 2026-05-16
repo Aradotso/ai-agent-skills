@@ -31,6 +31,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [ai-agent-deep-dive-teaching-framework](skills/ai-agent-deep-dive-teaching-framework/) | [install](https://skills.sh/aradotso/ai-agent-skills/ai-agent-deep-dive-teaching-framework) | [tvytlx/ai-agent-deep-dive](https://github.com/tvytlx/ai-agent-deep-dive) | 2026-05-16 |
 | [agentskills-specification](skills/agentskills-specification/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentskills-specification) | [agentskills/agentskills](https://github.com/agentskills/agentskills) | 2026-05-16 |
 | [awesome-agentic-ai-zh-learning](skills/awesome-agentic-ai-zh-learning/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-agentic-ai-zh-learning) | [WenyuChiou/awesome-agentic-ai-zh](https://github.com/WenyuChiou/awesome-agentic-ai-zh) | 2026-05-16 |
+| [awesome-agent-skills](skills/awesome-agent-skills/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-agent-skills) | [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) | 2026-05-16 |
 <!-- SKILL_INDEX -->
 
 ---
