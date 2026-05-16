@@ -23,6 +23,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [agent-skills-framework](skills/agent-skills-framework/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-skills-framework) | [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) | 2026-05-16 |
 | [oh-my-openagent-orchestration](skills/oh-my-openagent-orchestration/) | [install](https://skills.sh/aradotso/ai-agent-skills/oh-my-openagent-orchestration) | [code-yeongyu/oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) | 2026-05-16 |
 | [vercel-agent-browser](skills/vercel-agent-browser/) | [install](https://skills.sh/aradotso/ai-agent-skills/vercel-agent-browser) | [vercel-labs/agent-browser](https://github.com/vercel-labs/agent-browser) | 2026-05-16 |
+| [claude-code-agent-architecture](skills/claude-code-agent-architecture/) | [install](https://skills.sh/aradotso/ai-agent-skills/claude-code-agent-architecture) | [sanbuphy/learn-coding-agent](https://github.com/sanbuphy/learn-coding-agent) | 2026-05-16 |
 <!-- SKILL_INDEX -->
 
 ---
