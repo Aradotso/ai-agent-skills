@@ -27,6 +27,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [agent-reach-internet-access](skills/agent-reach-internet-access/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-reach-internet-access) | [Panniantong/Agent-Reach](https://github.com/Panniantong/Agent-Reach) | 2026-05-16 |
 | [agency-agents-zh-skill](skills/agency-agents-zh-skill/) | [install](https://skills.sh/aradotso/ai-agent-skills/agency-agents-zh-skill) | [jnMetaCode/agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) | 2026-05-16 |
 | [open-multi-agent-orchestration](skills/open-multi-agent-orchestration/) | [install](https://skills.sh/aradotso/ai-agent-skills/open-multi-agent-orchestration) | [open-multi-agent/open-multi-agent](https://github.com/open-multi-agent/open-multi-agent) | 2026-05-16 |
+| [agentmemory-persistent-memory](skills/agentmemory-persistent-memory/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentmemory-persistent-memory) | [rohitg00/agentmemory](https://github.com/rohitg00/agentmemory) | 2026-05-16 |
 <!-- SKILL_INDEX -->
 
 ---
