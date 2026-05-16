@@ -36,6 +36,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [hermes-agent-framework](skills/hermes-agent-framework/) | [install](https://skills.sh/aradotso/ai-agent-skills/hermes-agent-framework) | [alchaincyf/hermes-agent-orange-book](https://github.com/alchaincyf/hermes-agent-orange-book) | 2026-05-16 |
 | [genericagent-self-evolving-ai-agent](skills/genericagent-self-evolving-ai-agent/) | [install](https://skills.sh/aradotso/ai-agent-skills/genericagent-self-evolving-ai-agent) | [lsdefine/GenericAgent](https://github.com/lsdefine/GenericAgent) | 2026-05-16 |
 | [agent-sprite-forge-2d-game-assets](skills/agent-sprite-forge-2d-game-assets/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-sprite-forge-2d-game-assets) | [0x0funky/agent-sprite-forge](https://github.com/0x0funky/agent-sprite-forge) | 2026-05-16 |
+| [mercury-agent-deployment](skills/mercury-agent-deployment/) | [install](https://skills.sh/aradotso/ai-agent-skills/mercury-agent-deployment) | [cosmicstack-labs/mercury-agent](https://github.com/cosmicstack-labs/mercury-agent) | 2026-05-16 |
 <!-- SKILL_INDEX -->
 
 ---
