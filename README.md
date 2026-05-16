@@ -29,6 +29,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [open-multi-agent-orchestration](skills/open-multi-agent-orchestration/) | [install](https://skills.sh/aradotso/ai-agent-skills/open-multi-agent-orchestration) | [open-multi-agent/open-multi-agent](https://github.com/open-multi-agent/open-multi-agent) | 2026-05-16 |
 | [agentmemory-persistent-memory](skills/agentmemory-persistent-memory/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentmemory-persistent-memory) | [rohitg00/agentmemory](https://github.com/rohitg00/agentmemory) | 2026-05-16 |
 | [ai-agent-deep-dive-teaching-framework](skills/ai-agent-deep-dive-teaching-framework/) | [install](https://skills.sh/aradotso/ai-agent-skills/ai-agent-deep-dive-teaching-framework) | [tvytlx/ai-agent-deep-dive](https://github.com/tvytlx/ai-agent-deep-dive) | 2026-05-16 |
+| [agentskills-specification](skills/agentskills-specification/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentskills-specification) | [agentskills/agentskills](https://github.com/agentskills/agentskills) | 2026-05-16 |
 <!-- SKILL_INDEX -->
 
 ---
