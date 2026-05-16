@@ -1,383 +1,221 @@
 ---
 name: claude-code-agent-architecture
-description: Expert skill for understanding and working with Claude Code's internal architecture, tool system, and agent patterns
+description: Build and understand CLI coding agents using Claude Code's production-grade architecture patterns
 triggers:
-  - how does claude code agent architecture work
-  - explain claude code tool system
-  - show me claude code internal structure
-  - implement a custom tool for claude code
-  - understand claude code agent loop
-  - debug claude code tool execution
-  - create custom claude code command
-  - analyze claude code's query engine
+  - how do I build a coding agent like Claude Code
+  - explain the Claude Code agent loop architecture
+  - implement a tool execution system for my AI agent
+  - add MCP protocol support to my coding agent
+  - set up streaming tool execution with permission checks
+  - understand Claude Code's query engine pattern
+  - build a REPL-based AI coding assistant
+  - implement agent task state management
 ---
 
 # Claude Code Agent Architecture
 
 > Skill by [ara.so](https://ara.so) — AI Agent Skills collection.
 
-Expert knowledge for understanding, debugging, and extending the Claude Code CLI agent architecture based on the `learn-coding-agent` research repository.
+## What This Project Provides
 
-## What This Project Is
+This repository contains research and architectural analysis of Claude Code, a production CLI coding agent. It documents:
 
-A comprehensive research and learning repository that reverse-engineers and documents the architecture of the Claude Code CLI agent (v2.1.88). It provides:
+- **The 12 Progressive Harness Mechanisms** that layer production features on top of the core agent loop
+- **40+ built-in tools** with permission system and sub-agent orchestration
+- **Query Engine** pattern for headless/SDK agent execution
+- **MCP (Model Context Protocol)** integration for extensible tool systems
+- **Streaming execution** with concurrent tool orchestration
+- **Context compaction** and memory management strategies
+- **Telemetry, feature flags, and remote control** infrastructure
 
-- Deep analysis of the core agent loop and tool system
-- Documentation of 40+ built-in tools and their permission model
-- Insight into telemetry, feature flags, and remote control mechanisms
-- Architectural patterns for building production-grade coding agents
-- Multi-language analysis reports (EN/JA/KO/ZH)
+**Use this for:** Learning production-grade agent architecture patterns, building CLI coding agents, implementing tool execution systems, understanding agent state management.
 
-**Key Statistics:**
-- ~1,884 TypeScript files
-- ~512,664 lines of code
-- 40+ built-in tools
-- 80+ slash commands
-- Built on Bun/Node.js ≥18
-
-## Core Architecture
+## Core Architecture Pattern
 
 ### The Agent Loop
 
-Claude Code implements a standard tool-using agent pattern:
+Every coding agent follows this minimal loop:
 
 ```typescript
-// Conceptual flow - src/query.ts (~785KB)
+// Simplified agent loop pattern
 async function agentLoop(messages: Message[]) {
   while (true) {
-    const response = await claudeAPI.chat({
+    const response = await claude.messages.create({
+      model: "claude-3-5-sonnet",
       messages,
       tools: availableTools,
-      // ... system prompt, model config
     });
 
-    if (response.stop_reason === "end_turn") {
-      return response.content; // Done
-    }
-
     if (response.stop_reason === "tool_use") {
-      // Execute tools in parallel
-      const toolResults = await executeTools(response.tool_uses);
+      // Execute all tool uses in parallel
+      const toolResults = await executeTools(response.content);
       
-      // Append results to conversation
-      messages.push({
-        role: "user",
-        content: toolResults
-      });
-      
-      // Loop continues
+      // Append results and continue
+      messages.push({ role: "assistant", content: response.content });
+      messages.push({ role: "user", content: toolResults });
+    } else {
+      // Done - return text response
+      return response.content;
     }
   }
 }
 ```
 
-### Directory Structure
+### The 12 Production Harness Layers
 
-```
-src/
-├── main.tsx              # REPL entry (4,683 lines)
-├── QueryEngine.ts        # SDK/headless query engine
-├── query.ts              # Main agent loop (785KB)
-├── Tool.ts               # Tool interface factory
-├── tools.ts              # Tool registry
-├── commands.ts           # Slash command definitions
-│
-├── bridge/               # Claude Desktop integration
-├── commands/             # 80+ slash commands
-├── components/           # React/Ink terminal UI
-├── services/             # Business logic
-│   ├── api/              # Claude API client
-│   ├── analytics/        # Telemetry
-│   ├── mcp/              # Model Context Protocol
-│   └── tools/            # Tool execution engine
-└── state/                # Application state management
-```
+Claude Code wraps the minimal loop with:
 
-## Tool System Architecture
+1. **Permission system** - User approval for dangerous operations
+2. **Streaming execution** - Real-time output as tools run
+3. **Concurrent orchestration** - Parallel tool execution with dependency tracking
+4. **Context compaction** - Automatic message pruning when approaching limits
+5. **Sub-agents** - Specialized agents for verification, review, planning
+6. **State persistence** - Resume interrupted sessions
+7. **MCP integration** - Dynamic tool loading from external servers
+8. **Cost tracking** - Token usage and API cost monitoring
+9. **Error recovery** - Automatic retry with exponential backoff
+10. **Telemetry** - Usage analytics and performance monitoring
+11. **Remote control** - Feature flags and managed settings
+12. **Multi-modal UI** - Terminal UI with React/Ink components
 
-### Tool Interface
+## Building Your Own Agent
 
-Tools are defined using the `buildTool` factory from `Tool.ts`:
+### 1. Query Engine Pattern
+
+The `QueryEngine` separates agent logic from UI:
 
 ```typescript
-import { buildTool } from './Tool';
+import { QueryEngine, QueryContext } from "./QueryEngine";
+import { Tool, buildTool } from "./Tool";
 
-const myTool = buildTool({
-  name: "my_custom_tool",
-  
-  description: "What this tool does - shown to Claude",
-  
-  input_schema: {
-    type: "object",
-    properties: {
-      path: { type: "string", description: "File path" },
-      content: { type: "string", description: "Content to write" }
-    },
-    required: ["path", "content"]
-  },
-  
-  // Permission category
-  category: "file_write",
-  
-  // Execution handler
-  async execute({ input, context, signal }) {
-    const { path, content } = input;
-    
-    // Check permissions
-    if (!context.hasPermission("file_write")) {
-      throw new Error("Permission denied");
-    }
-    
-    // Do the work
-    await fs.writeFile(path, content);
-    
-    return {
-      success: true,
-      message: `Wrote ${content.length} bytes to ${path}`
-    };
-  }
-});
-```
-
-### Built-in Tool Categories
-
-```typescript
-// From tools.ts
-export const TOOL_CATEGORIES = {
-  file_read: ["read_file", "list_files", "search_files"],
-  file_write: ["write_file", "edit_file", "delete_file"],
-  shell: ["execute_command", "bg_process_start", "bg_process_stop"],
-  browser: ["browser_action", "screenshot"],
-  mcp: ["mcp_call_tool", "mcp_get_prompt"],
-  agent: ["sub_agent_start", "sub_agent_stop"],
-  // ... 40+ tools total
-};
-```
-
-### Permission Flow
-
-```typescript
-// From hooks/useCanUseTool.tsx
-function checkToolPermission(
-  toolName: string,
-  category: string,
-  context: ExecutionContext
-): PermissionResult {
-  
-  // 1. Check if tool is in allowed set
-  if (!context.allowedTools.includes(toolName)) {
-    return { allowed: false, reason: "Tool not in allowed set" };
-  }
-  
-  // 2. Check category permissions
-  const categoryPermission = context.permissions[category];
-  if (categoryPermission === "never") {
-    return { allowed: false, reason: "Category blocked" };
-  }
-  
-  // 3. Check if prompt required
-  if (categoryPermission === "ask") {
-    return { 
-      allowed: false, 
-      needsPrompt: true,
-      promptMessage: `Allow ${toolName}?`
-    };
-  }
-  
-  // 4. Check remote killswitches
-  if (context.remoteConfig.killswitches[toolName]) {
-    return { allowed: false, reason: "Remote killswitch active" };
-  }
-  
-  return { allowed: true };
-}
-```
-
-## Creating Custom Tools
-
-### Step 1: Define the Tool
-
-```typescript
-// my-tools/customFileAnalyzer.ts
-import { buildTool } from '../src/Tool';
-import { readFile } from 'fs/promises';
-
-export const customFileAnalyzer = buildTool({
-  name: "analyze_code_complexity",
-  
-  description: 
-    "Analyzes code complexity metrics for a given file. " +
-    "Returns cyclomatic complexity, line count, and function count.",
-  
-  input_schema: {
-    type: "object",
-    properties: {
-      file_path: {
-        type: "string",
-        description: "Path to the code file to analyze"
+// Define your tools
+const tools: Tool[] = [
+  buildTool({
+    name: "read_file",
+    description: "Read contents of a file",
+    input_schema: {
+      type: "object",
+      properties: {
+        path: { type: "string", description: "File path" }
       },
-      language: {
-        type: "string",
-        enum: ["typescript", "javascript", "python"],
-        description: "Programming language"
-      }
+      required: ["path"]
     },
-    required: ["file_path"]
-  },
+    async execute({ path }) {
+      return await fs.readFile(path, "utf-8");
+    }
+  }),
   
-  category: "file_read",
-  
-  async execute({ input, context, signal }) {
-    const { file_path, language = "typescript" } = input;
-    
-    // Read file
-    const content = await readFile(file_path, 'utf-8');
-    
-    // Simple analysis
-    const lines = content.split('\n').length;
-    const functions = (content.match(/function\s+\w+/g) || []).length;
-    const complexity = calculateComplexity(content, language);
-    
-    return {
-      file: file_path,
-      metrics: {
-        lines,
-        functions,
-        complexity,
-        complexityPerFunction: functions > 0 ? complexity / functions : 0
-      }
-    };
-  }
-});
+  buildTool({
+    name: "write_file",
+    description: "Write content to a file",
+    input_schema: {
+      type: "object",
+      properties: {
+        path: { type: "string" },
+        content: { type: "string" }
+      },
+      required: ["path", "content"]
+    },
+    async execute({ path, content }) {
+      await fs.writeFile(path, content);
+      return `Written to ${path}`;
+    },
+    // Mark as requiring permission
+    needsPermission: true
+  })
+];
 
-function calculateComplexity(code: string, lang: string): number {
-  // Count decision points
-  const patterns = {
-    typescript: /\b(if|while|for|case|\?\?|&&|\|\|)\b/g,
-    javascript: /\b(if|while|for|case|\?\?|&&|\|\|)\b/g,
-    python: /\b(if|while|for|elif|and|or)\b/g
-  };
-  
-  const matches = code.match(patterns[lang] || patterns.typescript);
-  return (matches?.length || 0) + 1; // +1 base complexity
-}
-```
-
-### Step 2: Register the Tool
-
-```typescript
-// src/tools.ts or custom registry
-import { customFileAnalyzer } from '../my-tools/customFileAnalyzer';
-
-export function registerCustomTools(registry: ToolRegistry) {
-  registry.register(customFileAnalyzer);
-  
-  // Add to appropriate preset
-  registry.addToPreset("code_analysis", [
-    "analyze_code_complexity",
-    "read_file",
-    "search_files"
-  ]);
-}
-```
-
-### Step 3: Use in Agent Context
-
-```typescript
-// From QueryEngine.ts pattern
-import { QueryEngine } from './src/QueryEngine';
-
+// Initialize engine
 const engine = new QueryEngine({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-  model: "claude-sonnet-4-20250514",
-  
-  tools: [
-    customFileAnalyzer,
-    // ... other tools
-  ],
-  
-  systemPrompt: `You are a code analysis assistant.
-  Use analyze_code_complexity to provide insights about code quality.`,
-});
-
-const result = await engine.query(
-  "Analyze the complexity of src/query.ts and suggest refactoring"
-);
-```
-
-## Slash Commands
-
-### Creating a Custom Command
-
-```typescript
-// commands/custom/complexity.tsx
-import { Command } from '../../commands';
-import React from 'react';
-
-export const complexityCommand: Command = {
-  name: "complexity",
-  aliases: ["cx", "analyze"],
-  
-  description: "Analyze code complexity for current project",
-  
-  async execute({ args, context, render }) {
-    const targetPath = args[0] || context.workingDirectory;
-    
-    render(
-      <Text color="cyan">
-        Analyzing complexity in {targetPath}...
-      </Text>
-    );
-    
-    // Trigger agent with custom tool
-    const query = `Please analyze code complexity for all TypeScript files in ${targetPath} using the analyze_code_complexity tool. Provide a summary and highlight files that need refactoring.`;
-    
-    return context.sendQuery(query);
-  }
-};
-```
-
-## Model Context Protocol (MCP) Integration
-
-### Connecting to MCP Servers
-
-```typescript
-// From services/mcp/
-import { MCPClient } from './services/mcp/client';
-
-const mcpClient = new MCPClient({
-  serverCommand: "npx",
-  serverArgs: ["-y", "@modelcontextprotocol/server-filesystem"],
-  env: {
-    ...process.env,
-    FILESYSTEM_ROOT: "/home/user/projects"
+  apiKey: process.env.ANTHROPIC_API_KEY!,
+  model: "claude-3-5-sonnet-20241022",
+  tools,
+  onPermissionRequest: async (tool, input) => {
+    // Your permission UI logic
+    const approved = await askUser(`Allow ${tool.name}?`);
+    return approved;
   }
 });
 
-await mcpClient.connect();
+// Run a query
+const result = await engine.query({
+  message: "Read package.json and update the version to 2.0.0",
+  conversationHistory: []
+});
 
-// List available tools from MCP server
-const tools = await mcpClient.listTools();
+console.log(result.finalResponse);
+```
 
-// Call MCP tool
-const result = await mcpClient.callTool({
-  name: "read_file",
-  arguments: { path: "/home/user/projects/src/main.ts" }
+### 2. Streaming Tool Executor
+
+Handle multiple tools executing in parallel:
+
+```typescript
+import { StreamingToolExecutor } from "./services/tools/StreamingToolExecutor";
+
+class MyAgent {
+  private executor: StreamingToolExecutor;
+  
+  constructor() {
+    this.executor = new StreamingToolExecutor({
+      tools: myTools,
+      maxConcurrent: 5, // Run up to 5 tools simultaneously
+      onToolStart: (toolUse) => {
+        console.log(`▶ ${toolUse.name}`);
+      },
+      onToolComplete: (toolUse, result) => {
+        console.log(`✓ ${toolUse.name} completed`);
+      },
+      onToolError: (toolUse, error) => {
+        console.error(`✗ ${toolUse.name} failed:`, error);
+      }
+    });
+  }
+  
+  async executeToolBatch(toolUses: ToolUse[]) {
+    // Automatically handles concurrency, dependencies, streaming
+    const results = await this.executor.executeBatch(toolUses);
+    return results;
+  }
+}
+```
+
+### 3. MCP Integration
+
+Load tools from MCP servers:
+
+```typescript
+import { MCPManager } from "./services/mcp/MCPManager";
+
+const mcpManager = new MCPManager({
+  configPath: "~/.config/my-agent/mcp.json"
+});
+
+// Load all configured MCP servers
+await mcpManager.initialize();
+
+// Get tools from all connected servers
+const mcpTools = await mcpManager.getAllTools();
+
+// Combine with built-in tools
+const allTools = [...builtInTools, ...mcpTools];
+
+// Execute MCP tool
+const result = await mcpManager.executeTool({
+  server: "filesystem",
+  tool: "read_file",
+  arguments: { path: "/etc/hosts" }
 });
 ```
 
-### Adding MCP Server to Config
+MCP configuration file (`~/.config/my-agent/mcp.json`):
 
-```typescript
-// ~/.config/claude-code/mcp.json
+```json
 {
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem"],
-      "env": {
-        "FILESYSTEM_ROOT": "/home/user/projects"
-      }
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/home/user/projects"]
     },
     "github": {
       "command": "npx",
@@ -390,432 +228,640 @@ const result = await mcpClient.callTool({
 }
 ```
 
-## Configuration Management
+### 4. Permission System
 
-### User Settings Structure
+Implement tiered permission checking:
 
 ```typescript
-// From services/settingsSync/
-interface ClaudeCodeSettings {
-  // Model configuration
-  model: "claude-sonnet-4" | "claude-opus-4" | string;
-  maxTokens: number;
-  temperature: number;
+type PermissionLevel = "always" | "once" | "session" | "never";
+
+class PermissionManager {
+  private grants = new Map<string, PermissionLevel>();
   
-  // Tool permissions (per category)
-  permissions: {
-    file_read: "always" | "ask" | "never";
-    file_write: "always" | "ask" | "never";
-    shell: "always" | "ask" | "never";
-    browser: "always" | "ask" | "never";
-    // ...
-  };
+  async checkPermission(
+    tool: Tool,
+    input: Record<string, any>
+  ): Promise<boolean> {
+    const key = `${tool.name}:${JSON.stringify(input)}`;
+    const existing = this.grants.get(key);
+    
+    if (existing === "always") return true;
+    if (existing === "never") return false;
+    
+    // Show permission dialog
+    const { granted, remember } = await this.showDialog(tool, input);
+    
+    if (remember) {
+      this.grants.set(key, granted ? "always" : "never");
+    }
+    
+    return granted;
+  }
   
-  // Feature flags
-  features: {
-    undercover_mode: boolean;
-    voice_mode: boolean;
-    sub_agents: boolean;
-    mcp_enabled: boolean;
-  };
-  
-  // Analytics
-  telemetry: {
-    enabled: boolean;
-    datadog_enabled: boolean;
-  };
-  
-  // MCP servers
-  mcpServers: Record<string, MCPServerConfig>;
+  private async showDialog(tool: Tool, input: any) {
+    // Your UI implementation
+    console.log(`\n⚠️  Permission required:`);
+    console.log(`   Tool: ${tool.name}`);
+    console.log(`   Args: ${JSON.stringify(input, null, 2)}`);
+    
+    const answer = await prompt("Allow? (y/n/always/never): ");
+    
+    return {
+      granted: ["y", "yes", "always"].includes(answer.toLowerCase()),
+      remember: ["always", "never"].includes(answer.toLowerCase())
+    };
+  }
 }
 ```
 
-### Programmatic Config Access
+### 5. Context Compaction
+
+Prevent hitting context limits:
 
 ```typescript
-// Reading settings
-import { getSettings } from './services/settingsSync/store';
+import { compactMessages } from "./services/compact/compactor";
 
-const settings = await getSettings();
-console.log("Current model:", settings.model);
-console.log("File write permission:", settings.permissions.file_write);
-
-// Updating settings
-import { updateSettings } from './services/settingsSync/store';
-
-await updateSettings({
-  permissions: {
-    ...settings.permissions,
-    shell: "ask" // Require prompt for shell commands
+class AgentSession {
+  private messages: Message[] = [];
+  private readonly maxTokens = 180000; // Leave room for response
+  
+  async addMessage(message: Message) {
+    this.messages.push(message);
+    
+    // Check if we're approaching limit
+    const tokenCount = await this.estimateTokens(this.messages);
+    
+    if (tokenCount > this.maxTokens) {
+      console.log("📦 Compacting context...");
+      
+      this.messages = await compactMessages({
+        messages: this.messages,
+        targetTokens: Math.floor(this.maxTokens * 0.7),
+        preserveRecent: 5, // Keep last 5 exchanges
+        summarizeOld: true // Summarize older messages
+      });
+      
+      console.log(`✓ Reduced to ~${await this.estimateTokens(this.messages)} tokens`);
+    }
   }
+  
+  private async estimateTokens(messages: Message[]): Promise<number> {
+    // Rough estimate: 1 token ≈ 4 chars
+    const chars = messages.reduce((sum, m) => 
+      sum + JSON.stringify(m.content).length, 0
+    );
+    return Math.ceil(chars / 4);
+  }
+}
+```
+
+### 6. Sub-Agent Pattern
+
+Delegate specialized tasks to focused agents:
+
+```typescript
+class CodeReviewAgent {
+  async review(code: string, context: string): Promise<string> {
+    const response = await claude.messages.create({
+      model: "claude-3-5-sonnet-20241022",
+      max_tokens: 4000,
+      system: `You are a code review specialist. Focus on:
+- Security vulnerabilities
+- Performance issues
+- Best practices
+- Edge cases`,
+      messages: [{
+        role: "user",
+        content: `Review this code:\n\n${code}\n\nContext: ${context}`
+      }]
+    });
+    
+    return response.content[0].text;
+  }
+}
+
+class MainAgent {
+  private reviewer = new CodeReviewAgent();
+  
+  async handleCodeChange(file: string, diff: string) {
+    // Main agent decides to delegate
+    if (this.shouldReview(diff)) {
+      const review = await this.reviewer.review(diff, file);
+      return `Changes to ${file}:\n\n${review}`;
+    }
+    
+    return `Applied changes to ${file}`;
+  }
+}
+```
+
+## Tool Development
+
+### Tool Structure
+
+```typescript
+import { buildTool } from "./Tool";
+import { z } from "zod";
+
+export const myTool = buildTool({
+  name: "my_tool",
+  description: "What this tool does - be specific for Claude to choose it correctly",
+  
+  // JSON Schema for parameters
+  input_schema: {
+    type: "object",
+    properties: {
+      required_param: {
+        type: "string",
+        description: "Describe what this parameter does"
+      },
+      optional_param: {
+        type: "number",
+        description: "Optional parameter",
+        default: 42
+      }
+    },
+    required: ["required_param"]
+  },
+  
+  // Execution logic
+  async execute(input: { required_param: string; optional_param?: number }) {
+    // Return string or structured data
+    return {
+      success: true,
+      result: `Processed ${input.required_param}`
+    };
+  },
+  
+  // Optional: requires user permission
+  needsPermission: true,
+  
+  // Optional: can this tool run concurrently with others?
+  allowConcurrent: false,
+  
+  // Optional: tool category for organization
+  category: "filesystem"
 });
 ```
 
-## Streaming Tool Execution
-
-### Parallel Tool Execution
+### Tool Categories in Claude Code
 
 ```typescript
-// From services/tools/StreamingToolExecutor.ts
-class StreamingToolExecutor {
-  async executeToolsInParallel(
-    toolUses: ToolUse[],
-    context: ExecutionContext
-  ): Promise<ToolResult[]> {
-    
-    // Group tools by dependency
-    const batches = this.createDependencyBatches(toolUses);
-    const results: ToolResult[] = [];
-    
-    for (const batch of batches) {
-      // Execute batch in parallel
-      const batchResults = await Promise.all(
-        batch.map(async (toolUse) => {
-          try {
-            const tool = this.registry.get(toolUse.name);
-            
-            // Stream progress
-            this.emit('tool:start', { 
-              id: toolUse.id, 
-              name: toolUse.name 
-            });
-            
-            const result = await tool.execute({
-              input: toolUse.input,
-              context,
-              signal: context.abortSignal
-            });
-            
-            this.emit('tool:complete', { 
-              id: toolUse.id, 
-              result 
-            });
-            
-            return { id: toolUse.id, result };
-            
-          } catch (error) {
-            this.emit('tool:error', { 
-              id: toolUse.id, 
-              error 
-            });
-            
-            return { 
-              id: toolUse.id, 
-              error: error.message,
-              is_error: true 
-            };
-          }
-        })
-      );
-      
-      results.push(...batchResults);
-    }
-    
-    return results;
-  }
-}
-```
-
-## Analytics and Telemetry
-
-### Event Tracking Structure
-
-```typescript
-// From services/analytics/
-interface TelemetryEvent {
-  // Event identity
-  event_name: string;
-  event_id: string;
-  
-  // Timing
-  timestamp: string;
-  session_id: string;
-  
-  // Environment fingerprint
-  os: string;
-  arch: string;
-  node_version: string;
-  app_version: string;
-  
-  // Repository context (hashed)
-  repo_hash?: string;
-  project_type?: string;
-  
-  // Event-specific properties
-  properties: Record<string, any>;
-  
-  // User context
-  user_id?: string;
-  is_internal?: boolean;
-}
-
-// Example: Tool execution event
-const toolEvent: TelemetryEvent = {
-  event_name: "tool_executed",
-  event_id: crypto.randomUUID(),
-  timestamp: new Date().toISOString(),
-  session_id: context.sessionId,
-  
-  os: process.platform,
-  arch: process.arch,
-  node_version: process.version,
-  app_version: "2.1.88",
-  
-  properties: {
-    tool_name: "write_file",
-    duration_ms: 234,
-    success: true,
-    permission_mode: "always"
-  }
+// From tools.ts - common tool categories:
+const categories = {
+  filesystem: ["read_file", "write_file", "list_directory"],
+  execution: ["execute_command", "spawn_agent"],
+  search: ["grep_search", "search_and_replace"],
+  browser: ["open_browser", "screenshot"],
+  git: ["git_commit", "git_status", "git_diff"],
+  memory: ["store_memory", "recall_memory"],
+  analysis: ["code_review", "ask_followup"],
+  mcp: [], // Dynamically loaded
 };
 ```
 
-### Disabling Telemetry
+### Advanced Tool: File Watcher
+
+```typescript
+export const watchFilesTool = buildTool({
+  name: "watch_files",
+  description: "Watch files for changes and notify when modified",
+  input_schema: {
+    type: "object",
+    properties: {
+      paths: {
+        type: "array",
+        items: { type: "string" },
+        description: "File paths to watch"
+      },
+      action: {
+        type: "string",
+        enum: ["start", "stop", "status"],
+        description: "Watch action"
+      }
+    },
+    required: ["paths", "action"]
+  },
+  
+  // State persists across tool calls
+  state: {
+    watchers: new Map<string, fs.FSWatcher>()
+  },
+  
+  async execute({ paths, action }, { state }) {
+    if (action === "start") {
+      for (const path of paths) {
+        if (state.watchers.has(path)) continue;
+        
+        const watcher = fs.watch(path, (event) => {
+          console.log(`\n📝 File changed: ${path} (${event})`);
+        });
+        
+        state.watchers.set(path, watcher);
+      }
+      return `Watching ${paths.length} files`;
+    }
+    
+    if (action === "stop") {
+      for (const path of paths) {
+        state.watchers.get(path)?.close();
+        state.watchers.delete(path);
+      }
+      return `Stopped watching ${paths.length} files`;
+    }
+    
+    return `Currently watching: ${Array.from(state.watchers.keys()).join(", ")}`;
+  },
+  
+  needsPermission: true
+});
+```
+
+## Configuration
+
+### Agent Configuration File
+
+```typescript
+// config.ts - Agent configuration schema
+interface AgentConfig {
+  // Claude API
+  apiKey: string;              // from ANTHROPIC_API_KEY
+  model: string;               // "claude-3-5-sonnet-20241022"
+  maxTokens: number;           // 8000 default
+  temperature: number;         // 0.0-1.0
+  
+  // Tools
+  enabledTools: string[];      // Tool names to enable
+  disabledTools: string[];     // Tools to disable
+  autoApproveTools: string[];  // Tools that don't need permission
+  
+  // MCP
+  mcpServers: Record<string, {
+    command: string;
+    args: string[];
+    env?: Record<string, string>;
+  }>;
+  
+  // Behavior
+  maxConcurrentTools: number;  // 5 default
+  autoCompact: boolean;        // true
+  compactThreshold: number;    // 0.8 (80% of context)
+  
+  // Memory
+  persistHistory: boolean;     // true
+  historyPath: string;         // "~/.agent/history"
+  
+  // Telemetry
+  telemetryEnabled: boolean;   // true (opt-out not supported in Claude Code)
+}
+
+// Load from ~/.config/my-agent/config.json
+export async function loadConfig(): Promise<AgentConfig> {
+  const configPath = path.join(os.homedir(), ".config/my-agent/config.json");
+  
+  if (!fs.existsSync(configPath)) {
+    return getDefaultConfig();
+  }
+  
+  const data = JSON.parse(await fs.readFile(configPath, "utf-8"));
+  return { ...getDefaultConfig(), ...data };
+}
+```
+
+### Environment Variables
 
 ```bash
-# Note: First-party telemetry cannot be fully disabled
-# Only third-party sinks can be disabled
+# Required
+export ANTHROPIC_API_KEY=sk-ant-xxxxx
 
-# Disable Datadog sink
-export CLAUDE_CODE_DISABLE_DATADOG=1
+# Optional - override config
+export AGENT_MODEL=claude-3-5-sonnet-20241022
+export AGENT_MAX_TOKENS=8000
+export AGENT_TEMPERATURE=0.0
 
-# Disable detailed tool logging
-export OTEL_LOG_TOOL_DETAILS=0
+# MCP servers can reference env vars
+export GITHUB_TOKEN=ghp_xxxxx
+export DATABASE_URL=postgresql://localhost/mydb
+
+# Telemetry (Claude Code doesn't respect opt-out, but you can in yours)
+export AGENT_TELEMETRY=false
+
+# Debug
+export AGENT_DEBUG=true
+export AGENT_LOG_LEVEL=debug
 ```
 
 ## Common Patterns
 
-### Pattern 1: Multi-Step File Operations
+### Pattern: Agentic Task Execution
 
 ```typescript
-// Agent conversation pattern for complex file tasks
-const systemPrompt = `
-When modifying multiple files:
-1. Use read_file to understand current state
-2. Use search_files to find related files
-3. Use write_file for each change
-4. Use execute_command to run tests
-5. Summarize changes made
-
-Always verify changes before confirming completion.
-`;
-
-const query = `
-Refactor the authentication system:
-- Move auth logic from src/main.ts to src/auth/
-- Create separate files for login, logout, token refresh
-- Update imports in all affected files
-- Run tests to verify nothing broke
-`;
-```
-
-### Pattern 2: Sub-Agent Delegation
-
-```typescript
-// From commands/agents/
-async function delegateToSubAgent(
-  task: string,
-  context: ExecutionContext
-) {
-  // Start sub-agent with constrained permissions
-  const subAgent = await context.startSubAgent({
-    task,
-    allowedTools: [
-      "read_file",
-      "search_files",
-      "execute_command"
-    ],
-    permissions: {
-      file_read: "always",
-      file_write: "never", // Read-only
-      shell: "ask"
-    },
-    maxSteps: 10
-  });
-  
-  // Wait for completion
-  const result = await subAgent.waitForCompletion();
-  
-  return result;
+interface Task {
+  id: string;
+  type: "implement" | "review" | "test" | "debug";
+  description: string;
+  context: Record<string, any>;
+  status: "pending" | "running" | "completed" | "failed";
 }
 
-// Usage
-const analysisResult = await delegateToSubAgent(
-  "Analyze all TypeScript files and report common patterns",
-  context
-);
-```
-
-### Pattern 3: Context Compaction
-
-```typescript
-// From services/compact/
-import { compactContext } from './services/compact';
-
-async function manageContextSize(
-  messages: Message[],
-  maxTokens: number = 100000
-) {
-  const currentTokens = estimateTokens(messages);
-  
-  if (currentTokens > maxTokens) {
-    // Compact old messages
-    const compacted = await compactContext({
-      messages,
-      targetTokens: maxTokens * 0.8,
-      preserveRecent: 10, // Keep last 10 messages
-      strategy: "summarize" // or "truncate"
-    });
+class TaskAgent {
+  async executeTask(task: Task): Promise<void> {
+    task.status = "running";
     
-    return compacted.messages;
+    try {
+      const systemPrompt = this.getSystemPromptForTask(task.type);
+      
+      const response = await this.engine.query({
+        system: systemPrompt,
+        message: task.description,
+        context: task.context,
+        tools: this.getToolsForTask(task.type)
+      });
+      
+      task.status = "completed";
+      task.result = response.finalResponse;
+      
+    } catch (error) {
+      task.status = "failed";
+      task.error = error.message;
+    }
   }
   
-  return messages;
+  private getSystemPromptForTask(type: Task["type"]): string {
+    const prompts = {
+      implement: "You are a senior software engineer implementing features...",
+      review: "You are a code reviewer focusing on quality and security...",
+      test: "You are a testing specialist writing comprehensive tests...",
+      debug: "You are a debugging expert finding and fixing issues..."
+    };
+    return prompts[type];
+  }
+  
+  private getToolsForTask(type: Task["type"]): Tool[] {
+    const toolsets = {
+      implement: [readFile, writeFile, executeCommand],
+      review: [readFile, codeReview],
+      test: [readFile, writeFile, executeCommand],
+      debug: [readFile, grepSearch, executeCommand]
+    };
+    return toolsets[type];
+  }
+}
+```
+
+### Pattern: Progressive Permission Approval
+
+```typescript
+// Start restrictive, learn user preferences
+class AdaptivePermissionManager {
+  private autoApprove = new Set<string>();
+  private autoDeny = new Set<string>();
+  
+  async checkPermission(tool: Tool, input: any): Promise<boolean> {
+    const signature = `${tool.name}:${this.normalizeInput(input)}`;
+    
+    if (this.autoApprove.has(signature)) return true;
+    if (this.autoDeny.has(signature)) return false;
+    
+    const response = await this.askUser(tool, input);
+    
+    if (response.remember) {
+      if (response.granted) {
+        this.autoApprove.add(signature);
+      } else {
+        this.autoDeny.add(signature);
+      }
+      this.persistPreferences();
+    }
+    
+    return response.granted;
+  }
+  
+  private normalizeInput(input: any): string {
+    // Generalize paths, URLs for pattern matching
+    const str = JSON.stringify(input);
+    return str
+      .replace(/\/[^/]+\//g, "/**/")  // Generalize paths
+      .replace(/https?:\/\/[^/]+/, "https://*/");  // Generalize URLs
+  }
+}
+```
+
+### Pattern: Conversation Resume
+
+```typescript
+interface SavedSession {
+  id: string;
+  timestamp: number;
+  messages: Message[];
+  context: Record<string, any>;
+  checksum: string;
+}
+
+class SessionManager {
+  async saveSession(session: SavedSession) {
+    const path = this.getSessionPath(session.id);
+    await fs.writeFile(path, JSON.stringify(session, null, 2));
+  }
+  
+  async resumeSession(sessionId: string): Promise<SavedSession | null> {
+    const path = this.getSessionPath(sessionId);
+    
+    if (!fs.existsSync(path)) {
+      return null;
+    }
+    
+    const session = JSON.parse(await fs.readFile(path, "utf-8"));
+    
+    // Verify integrity
+    if (this.computeChecksum(session) !== session.checksum) {
+      throw new Error("Session corrupted");
+    }
+    
+    return session;
+  }
+  
+  private computeChecksum(session: SavedSession): string {
+    const data = session.messages.map(m => m.content).join("");
+    return crypto.createHash("sha256").update(data).digest("hex");
+  }
+  
+  private getSessionPath(id: string): string {
+    return path.join(os.homedir(), ".agent/sessions", `${id}.json`);
+  }
 }
 ```
 
 ## Troubleshooting
 
-### Issue: Tool Not Executing
+### Context Length Errors
 
 ```typescript
-// Debug tool availability
-import { tools } from './src/tools';
-
-const tool = tools.find(t => t.name === "my_custom_tool");
-if (!tool) {
-  console.error("Tool not registered!");
-}
-
-// Check permissions
-const canUse = context.permissions[tool.category];
-console.log(`Permission for ${tool.category}:`, canUse);
-
-// Enable verbose logging
-process.env.DEBUG = "claude-code:tools";
-```
-
-### Issue: MCP Server Not Connecting
-
-```bash
-# Test MCP server manually
-npx -y @modelcontextprotocol/server-filesystem
-
-# Check config file
-cat ~/.config/claude-code/mcp.json
-
-# Enable MCP debug logs
-export DEBUG=claude-code:mcp
-```
-
-### Issue: Rate Limiting
-
-```typescript
-// From services/api/withRetry.ts
-const apiClient = new ClaudeClient({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-  
-  retry: {
-    maxRetries: 3,
-    backoff: "exponential",
-    initialDelay: 1000,
-    maxDelay: 60000
-  },
-  
-  rateLimit: {
-    requestsPerMinute: 50,
-    tokensPerMinute: 40000
+// Error: maximum context length exceeded
+// Solution: Enable auto-compaction
+const engine = new QueryEngine({
+  maxTokens: 180000,
+  autoCompact: true,
+  compactThreshold: 0.7, // Compact at 70% usage
+  onCompact: (oldCount, newCount) => {
+    console.log(`Compacted: ${oldCount} → ${newCount} tokens`);
   }
 });
 ```
 
-### Issue: Memory/Context Too Large
+### Tool Execution Timeouts
 
 ```typescript
-// Monitor context size
-import { estimateTokens } from './services/api/tokens';
-
-function checkContextSize(messages: Message[]) {
-  const tokens = estimateTokens(messages);
-  const warningThreshold = 150000;
-  
-  if (tokens > warningThreshold) {
-    console.warn(`Context size: ${tokens} tokens (approaching limit)`);
-    
-    // Trigger compaction
-    return compactContext(messages, 100000);
+// Problem: Long-running tools block the agent
+// Solution: Set per-tool timeouts
+export const longRunningTool = buildTool({
+  name: "compile_project",
+  timeout: 300000, // 5 minutes
+  async execute(input) {
+    return await withTimeout(
+      actualCompile(input),
+      300000,
+      "Compilation timed out"
+    );
   }
-  
-  return messages;
+});
+
+async function withTimeout<T>(
+  promise: Promise<T>,
+  ms: number,
+  error: string
+): Promise<T> {
+  const timeout = new Promise<never>((_, reject) =>
+    setTimeout(() => reject(new Error(error)), ms)
+  );
+  return Promise.race([promise, timeout]);
 }
 ```
 
-## Advanced: Custom Query Engine
+### Permission Dialog UX
 
 ```typescript
-// Building a custom agent using QueryEngine
-import { QueryEngine } from './src/QueryEngine';
-import { customFileAnalyzer } from './my-tools/customFileAnalyzer';
-
-class CustomCodeAgent {
-  private engine: QueryEngine;
+// Problem: Too many permission prompts
+// Solution: Batch similar requests
+class BatchPermissionManager {
+  private pending: Array<{
+    tool: Tool;
+    input: any;
+    resolve: (value: boolean) => void;
+  }> = [];
   
-  constructor() {
-    this.engine = new QueryEngine({
-      apiKey: process.env.ANTHROPIC_API_KEY,
-      model: "claude-sonnet-4-20250514",
+  private batchTimer: NodeJS.Timeout | null = null;
+  
+  async checkPermission(tool: Tool, input: any): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.pending.push({ tool, input, resolve });
       
-      tools: [
-        customFileAnalyzer,
-        // Add more custom tools
-      ],
-      
-      systemPrompt: `You are a specialized code analysis agent.
-      Your role is to help developers understand and improve code quality.
-      
-      When analyzing code:
-      - Use analyze_code_complexity for metrics
-      - Provide specific, actionable recommendations
-      - Highlight security concerns
-      - Suggest modern best practices`,
-      
-      onToolExecute: (tool, result) => {
-        console.log(`[TOOL] ${tool.name}:`, result);
-      },
-      
-      onError: (error) => {
-        console.error("[ERROR]", error);
+      if (!this.batchTimer) {
+        this.batchTimer = setTimeout(() => this.processBatch(), 100);
       }
     });
   }
   
-  async analyzeProject(projectPath: string) {
-    const query = `
-    Please perform a comprehensive analysis of the project at ${projectPath}:
-    1. Analyze complexity of all source files
-    2. Identify files that need refactoring
-    3. Check for common anti-patterns
-    4. Suggest architectural improvements
-    `;
+  private async processBatch() {
+    const batch = this.pending.splice(0);
+    this.batchTimer = null;
     
-    const response = await this.engine.query(query);
-    return response;
+    console.log(`\n⚠️  ${batch.length} tools need permission:`);
+    batch.forEach((req, i) => {
+      console.log(`  ${i + 1}. ${req.tool.name}`);
+    });
+    
+    const answer = await prompt("Approve all? (y/n): ");
+    const approved = answer.toLowerCase() === "y";
+    
+    batch.forEach(req => req.resolve(approved));
   }
 }
-
-// Usage
-const agent = new CustomCodeAgent();
-const analysis = await agent.analyzeProject("/path/to/project");
-console.log(analysis);
 ```
 
-## Key Takeaways
+### MCP Server Connection Issues
 
-1. **Core Loop**: Message → Claude API → Tool Use → Execute → Loop
-2. **Tool System**: 40+ built-in tools, category-based permissions, parallel execution
-3. **Extensibility**: Custom tools via `buildTool`, custom commands, MCP integration
-4. **Production Harness**: Streaming, retries, compaction, sub-agents, telemetry
-5. **Remote Control**: Hourly settings sync, killswitches, feature flags via GrowthBook
-6. **Privacy Considerations**: Telemetry captures environment, repo hash, tool usage (see `docs/01-telemetry-and-privacy.md`)
+```bash
+# Problem: MCP server won't connect
+# Debug steps:
 
-For implementation details, refer to the full research reports in `docs/` (EN/JA/KO/ZH).
+# 1. Test server directly
+npx -y @modelcontextprotocol/server-filesystem /tmp
+
+# 2. Check logs
+export AGENT_DEBUG=true
+export MCP_LOG_LEVEL=debug
+
+# 3. Verify server config
+cat ~/.config/my-agent/mcp.json
+
+# 4. Check environment variables are accessible
+echo $GITHUB_TOKEN
+
+# 5. Test with minimal config
+{
+  "mcpServers": {
+    "test": {
+      "command": "node",
+      "args": ["--version"]
+    }
+  }
+}
+```
+
+### Memory Leaks in Long Sessions
+
+```typescript
+// Problem: Agent consumes too much memory over time
+// Solution: Periodic cleanup
+class AgentWithCleanup {
+  private cleanupInterval = setInterval(() => {
+    this.cleanup();
+  }, 60000); // Every minute
+  
+  private cleanup() {
+    // Clear old tool results
+    this.messages = this.messages.filter((m, i) => {
+      if (m.role === "user" && m.content.includes("tool_result")) {
+        return i >= this.messages.length - 100; // Keep last 100
+      }
+      return true;
+    });
+    
+    // Force GC if available
+    if (global.gc) {
+      global.gc();
+    }
+  }
+  
+  destroy() {
+    clearInterval(this.cleanupInterval);
+  }
+}
+```
+
+## Key Architectural Insights
+
+1. **Separation of Concerns**: Query engine (logic) vs REPL (UI) enables headless operation
+2. **Tool Orchestration**: Parallel execution with dependency tracking improves performance
+3. **Permission Layering**: Different trust levels for different operations
+4. **Sub-Agent Delegation**: Specialized prompts for focused tasks
+5. **Context Management**: Proactive compaction prevents runtime errors
+6. **Streaming Everything**: Real-time feedback improves UX dramatically
+7. **MCP as Plugin System**: External tools without rebuilding agent
+8. **State Persistence**: Resume interrupted work seamlessly
+9. **Telemetry by Default**: Understand how users actually use your agent
+10. **Remote Control**: Feature flags enable safe rollouts and killswitches
+
+## References
+
+- **Core Loop**: `src/query.ts` (~785KB - main agent logic)
+- **Tool System**: `src/Tool.ts`, `src/tools.ts`
+- **Query Engine**: `src/QueryEngine.ts` (headless SDK)
+- **Streaming Executor**: `src/services/tools/StreamingToolExecutor.ts`
+- **MCP Manager**: `src/services/mcp/`
+- **Permission System**: `src/hooks/toolPermission/`
+- **Context Compaction**: `src/services/compact/`
+- **Deep Analysis**: `docs/en/` (telemetry, hidden features, remote control, roadmap)
+
+This architecture represents production-grade patterns for building reliable, scalable coding agents.
