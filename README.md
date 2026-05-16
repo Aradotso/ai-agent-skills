@@ -20,6 +20,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 
 | Skill | skills.sh | Source | Date |
 |-------|-----------|--------|------|
+| [agent-skills-framework](skills/agent-skills-framework/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-skills-framework) | [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) | 2026-05-16 |
 <!-- SKILL_INDEX -->
 
 ---
