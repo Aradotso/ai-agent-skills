@@ -33,6 +33,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [awesome-agentic-ai-zh-learning](skills/awesome-agentic-ai-zh-learning/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-agentic-ai-zh-learning) | [WenyuChiou/awesome-agentic-ai-zh](https://github.com/WenyuChiou/awesome-agentic-ai-zh) | 2026-05-16 |
 | [awesome-agent-skills](skills/awesome-agent-skills/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-agent-skills) | [VoltAgent/awesome-agent-skills](https://github.com/VoltAgent/awesome-agent-skills) | 2026-05-16 |
 | [agent-skills-context-engineering](skills/agent-skills-context-engineering/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-skills-context-engineering) | [muratcankoylan/Agent-Skills-for-Context-Engineering](https://github.com/muratcankoylan/Agent-Skills-for-Context-Engineering) | 2026-05-16 |
+| [hermes-agent-framework](skills/hermes-agent-framework/) | [install](https://skills.sh/aradotso/ai-agent-skills/hermes-agent-framework) | [alchaincyf/hermes-agent-orange-book](https://github.com/alchaincyf/hermes-agent-orange-book) | 2026-05-16 |
 <!-- SKILL_INDEX -->
 
 ---
