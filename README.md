@@ -25,6 +25,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [vercel-agent-browser](skills/vercel-agent-browser/) | [install](https://skills.sh/aradotso/ai-agent-skills/vercel-agent-browser) | [vercel-labs/agent-browser](https://github.com/vercel-labs/agent-browser) | 2026-05-16 |
 | [claude-code-agent-architecture](skills/claude-code-agent-architecture/) | [install](https://skills.sh/aradotso/ai-agent-skills/claude-code-agent-architecture) | [sanbuphy/learn-coding-agent](https://github.com/sanbuphy/learn-coding-agent) | 2026-05-16 |
 | [agent-reach-internet-access](skills/agent-reach-internet-access/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-reach-internet-access) | [Panniantong/Agent-Reach](https://github.com/Panniantong/Agent-Reach) | 2026-05-16 |
+| [agency-agents-zh-skill](skills/agency-agents-zh-skill/) | [install](https://skills.sh/aradotso/ai-agent-skills/agency-agents-zh-skill) | [jnMetaCode/agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) | 2026-05-16 |
 <!-- SKILL_INDEX -->
 
 ---
