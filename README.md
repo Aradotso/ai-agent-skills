@@ -26,6 +26,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [claude-code-agent-architecture](skills/claude-code-agent-architecture/) | [install](https://skills.sh/aradotso/ai-agent-skills/claude-code-agent-architecture) | [sanbuphy/learn-coding-agent](https://github.com/sanbuphy/learn-coding-agent) | 2026-05-16 |
 | [agent-reach-internet-access](skills/agent-reach-internet-access/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-reach-internet-access) | [Panniantong/Agent-Reach](https://github.com/Panniantong/Agent-Reach) | 2026-05-16 |
 | [agency-agents-zh-skill](skills/agency-agents-zh-skill/) | [install](https://skills.sh/aradotso/ai-agent-skills/agency-agents-zh-skill) | [jnMetaCode/agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) | 2026-05-16 |
+| [open-multi-agent-orchestration](skills/open-multi-agent-orchestration/) | [install](https://skills.sh/aradotso/ai-agent-skills/open-multi-agent-orchestration) | [open-multi-agent/open-multi-agent](https://github.com/open-multi-agent/open-multi-agent) | 2026-05-16 |
 <!-- SKILL_INDEX -->
 
 ---
