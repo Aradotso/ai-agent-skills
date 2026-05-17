@@ -39,6 +39,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [mercury-agent-deployment](skills/mercury-agent-deployment/) | [install](https://skills.sh/aradotso/ai-agent-skills/mercury-agent-deployment) | [cosmicstack-labs/mercury-agent](https://github.com/cosmicstack-labs/mercury-agent) | 2026-05-16 |
 | [cloudflare-agentic-inbox](skills/cloudflare-agentic-inbox/) | [install](https://skills.sh/aradotso/ai-agent-skills/cloudflare-agentic-inbox) | [cloudflare/agentic-inbox](https://github.com/cloudflare/agentic-inbox) | 2026-05-16 |
 | [agent-orchestrator-parallel-coding](skills/agent-orchestrator-parallel-coding/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-orchestrator-parallel-coding) | [ComposioHQ/agent-orchestrator](https://github.com/ComposioHQ/agent-orchestrator) | 2026-05-17 |
+| [pixel-agents-vscode](skills/pixel-agents-vscode/) | [install](https://skills.sh/aradotso/ai-agent-skills/pixel-agents-vscode) | [pablodelucca/pixel-agents](https://github.com/pablodelucca/pixel-agents) | 2026-05-17 |
 <!-- SKILL_INDEX -->
 
 ---
