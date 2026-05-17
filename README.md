@@ -48,6 +48,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [agentic-stack-portable-agent-memory](skills/agentic-stack-portable-agent-memory/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-stack-portable-agent-memory) | [codejunkie99/agentic-stack](https://github.com/codejunkie99/agentic-stack) | 2026-05-17 |
 | [agents-towards-production](skills/agents-towards-production/) | [install](https://skills.sh/aradotso/ai-agent-skills/agents-towards-production) | [NirDiamant/agents-towards-production](https://github.com/NirDiamant/agents-towards-production) | 2026-05-17 |
 | [world2agent-protocol](skills/world2agent-protocol/) | [install](https://skills.sh/aradotso/ai-agent-skills/world2agent-protocol) | [machinepulse-ai/world2agent](https://github.com/machinepulse-ai/world2agent) | 2026-05-17 |
+| [open-agent-sdk-typescript](skills/open-agent-sdk-typescript/) | [install](https://skills.sh/aradotso/ai-agent-skills/open-agent-sdk-typescript) | [codeany-ai/open-agent-sdk-typescript](https://github.com/codeany-ai/open-agent-sdk-typescript) | 2026-05-17 |
 <!-- SKILL_INDEX -->
 
 ---
