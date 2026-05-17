@@ -65,6 +65,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [awesome-agentic-patterns-catalog](skills/awesome-agentic-patterns-catalog/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-agentic-patterns-catalog) | [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns) | 2026-05-17 |
 | [agentic-coding-flywheel-setup](skills/agentic-coding-flywheel-setup/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-coding-flywheel-setup) | [Dicklesworthstone/agentic_coding_flywheel_setup](https://github.com/Dicklesworthstone/agentic_coding_flywheel_setup) | 2026-05-17 |
 | [agentic-context-engine](skills/agentic-context-engine/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-context-engine) | [kayba-ai/agentic-context-engine](https://github.com/kayba-ai/agentic-context-engine) | 2026-05-17 |
+| [prps-agentic-engineering](skills/prps-agentic-engineering/) | [install](https://skills.sh/aradotso/ai-agent-skills/prps-agentic-engineering) | [Wirasm/PRPs-agentic-eng](https://github.com/Wirasm/PRPs-agentic-eng) | 2026-05-17 |
 <!-- SKILL_INDEX -->
 
 ---
