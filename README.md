@@ -68,6 +68,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [prps-agentic-engineering](skills/prps-agentic-engineering/) | [install](https://skills.sh/aradotso/ai-agent-skills/prps-agentic-engineering) | [Wirasm/PRPs-agentic-eng](https://github.com/Wirasm/PRPs-agentic-eng) | 2026-05-17 |
 | [agentic-commerce-protocol](skills/agentic-commerce-protocol/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-commerce-protocol) | [agentic-commerce-protocol/agentic-commerce-protocol](https://github.com/agentic-commerce-protocol/agentic-commerce-protocol) | 2026-05-17 |
 | [production-grade-agentic-system](skills/production-grade-agentic-system/) | [install](https://skills.sh/aradotso/ai-agent-skills/production-grade-agentic-system) | [FareedKhan-dev/production-grade-agentic-system](https://github.com/FareedKhan-dev/production-grade-agentic-system) | 2026-05-17 |
+| [power-bi-agentic-development](skills/power-bi-agentic-development/) | [install](https://skills.sh/aradotso/ai-agent-skills/power-bi-agentic-development) | [data-goblin/power-bi-agentic-development](https://github.com/data-goblin/power-bi-agentic-development) | 2026-05-17 |
 <!-- SKILL_INDEX -->
 
 ---
