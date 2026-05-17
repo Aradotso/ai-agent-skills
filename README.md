@@ -59,6 +59,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [vercel-open-agents](skills/vercel-open-agents/) | [install](https://skills.sh/aradotso/ai-agent-skills/vercel-open-agents) | [vercel-labs/open-agents](https://github.com/vercel-labs/open-agents) | 2026-05-17 |
 | [awesome-openclaw-agents](skills/awesome-openclaw-agents/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-openclaw-agents) | [mergisi/awesome-openclaw-agents](https://github.com/mergisi/awesome-openclaw-agents) | 2026-05-17 |
 | [agentation-visual-feedback](skills/agentation-visual-feedback/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentation-visual-feedback) | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | 2026-05-17 |
+| [agentic-design-patterns-chinese](skills/agentic-design-patterns-chinese/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-design-patterns-chinese) | [xindoo/agentic-design-patterns](https://github.com/xindoo/agentic-design-patterns) | 2026-05-17 |
 <!-- SKILL_INDEX -->
 
 ---
