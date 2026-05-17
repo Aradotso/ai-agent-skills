@@ -62,6 +62,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [agentic-design-patterns-chinese](skills/agentic-design-patterns-chinese/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-design-patterns-chinese) | [xindoo/agentic-design-patterns](https://github.com/xindoo/agentic-design-patterns) | 2026-05-17 |
 | [agentic-rag-for-dummies](skills/agentic-rag-for-dummies/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-rag-for-dummies) | [GiovanniPasq/agentic-rag-for-dummies](https://github.com/GiovanniPasq/agentic-rag-for-dummies) | 2026-05-17 |
 | [all-agentic-architectures](skills/all-agentic-architectures/) | [install](https://skills.sh/aradotso/ai-agent-skills/all-agentic-architectures) | [FareedKhan-dev/all-agentic-architectures](https://github.com/FareedKhan-dev/all-agentic-architectures) | 2026-05-17 |
+| [awesome-agentic-patterns-catalog](skills/awesome-agentic-patterns-catalog/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-agentic-patterns-catalog) | [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns) | 2026-05-17 |
 <!-- SKILL_INDEX -->
 
 ---
