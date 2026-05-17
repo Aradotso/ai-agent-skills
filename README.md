@@ -41,6 +41,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [agent-orchestrator-parallel-coding](skills/agent-orchestrator-parallel-coding/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-orchestrator-parallel-coding) | [ComposioHQ/agent-orchestrator](https://github.com/ComposioHQ/agent-orchestrator) | 2026-05-17 |
 | [pixel-agents-vscode](skills/pixel-agents-vscode/) | [install](https://skills.sh/aradotso/ai-agent-skills/pixel-agents-vscode) | [pablodelucca/pixel-agents](https://github.com/pablodelucca/pixel-agents) | 2026-05-17 |
 | [page-agent-web-automation](skills/page-agent-web-automation/) | [install](https://skills.sh/aradotso/ai-agent-skills/page-agent-web-automation) | [alibaba/page-agent](https://github.com/alibaba/page-agent) | 2026-05-17 |
+| [photo-agents-autonomous-llm](skills/photo-agents-autonomous-llm/) | [install](https://skills.sh/aradotso/ai-agent-skills/photo-agents-autonomous-llm) | [jmerelnyc/Photo-agents](https://github.com/jmerelnyc/Photo-agents) | 2026-05-17 |
 <!-- SKILL_INDEX -->
 
 ---
