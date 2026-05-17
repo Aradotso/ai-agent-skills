@@ -55,6 +55,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [hermes-agent-self-evolution](skills/hermes-agent-self-evolution/) | [install](https://skills.sh/aradotso/ai-agent-skills/hermes-agent-self-evolution) | [NousResearch/hermes-agent-self-evolution](https://github.com/NousResearch/hermes-agent-self-evolution) | 2026-05-17 |
 | [data-analysis-agent-business-intelligence](skills/data-analysis-agent-business-intelligence/) | [install](https://skills.sh/aradotso/ai-agent-skills/data-analysis-agent-business-intelligence) | [Zafer-Liu/Data-Analysis-Agent](https://github.com/Zafer-Liu/Data-Analysis-Agent) | 2026-05-17 |
 | [hyperagents-self-improving-ai](skills/hyperagents-self-improving-ai/) | [install](https://skills.sh/aradotso/ai-agent-skills/hyperagents-self-improving-ai) | [facebookresearch/HyperAgents](https://github.com/facebookresearch/HyperAgents) | 2026-05-17 |
+| [snaplii-agent-payments](skills/snaplii-agent-payments/) | [install](https://skills.sh/aradotso/ai-agent-skills/snaplii-agent-payments) | [Snaplii-Inc/agent-to-merchant-payments](https://github.com/Snaplii-Inc/agent-to-merchant-payments) | 2026-05-17 |
 <!-- SKILL_INDEX -->
 
 ---
