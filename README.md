@@ -54,6 +54,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [agentic-ai-prompt-research](skills/agentic-ai-prompt-research/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-ai-prompt-research) | [Leonxlnx/agentic-ai-prompt-research](https://github.com/Leonxlnx/agentic-ai-prompt-research) | 2026-05-17 |
 | [hermes-agent-self-evolution](skills/hermes-agent-self-evolution/) | [install](https://skills.sh/aradotso/ai-agent-skills/hermes-agent-self-evolution) | [NousResearch/hermes-agent-self-evolution](https://github.com/NousResearch/hermes-agent-self-evolution) | 2026-05-17 |
 | [data-analysis-agent-business-intelligence](skills/data-analysis-agent-business-intelligence/) | [install](https://skills.sh/aradotso/ai-agent-skills/data-analysis-agent-business-intelligence) | [Zafer-Liu/Data-Analysis-Agent](https://github.com/Zafer-Liu/Data-Analysis-Agent) | 2026-05-17 |
+| [hyperagents-self-improving-ai](skills/hyperagents-self-improving-ai/) | [install](https://skills.sh/aradotso/ai-agent-skills/hyperagents-self-improving-ai) | [facebookresearch/HyperAgents](https://github.com/facebookresearch/HyperAgents) | 2026-05-17 |
 <!-- SKILL_INDEX -->
 
 ---
