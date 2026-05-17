@@ -43,6 +43,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [page-agent-web-automation](skills/page-agent-web-automation/) | [install](https://skills.sh/aradotso/ai-agent-skills/page-agent-web-automation) | [alibaba/page-agent](https://github.com/alibaba/page-agent) | 2026-05-17 |
 | [photo-agents-autonomous-llm](skills/photo-agents-autonomous-llm/) | [install](https://skills.sh/aradotso/ai-agent-skills/photo-agents-autonomous-llm) | [jmerelnyc/Photo-agents](https://github.com/jmerelnyc/Photo-agents) | 2026-05-17 |
 | [awesome-claude-code-subagents](skills/awesome-claude-code-subagents/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-claude-code-subagents) | [VoltAgent/awesome-claude-code-subagents](https://github.com/VoltAgent/awesome-claude-code-subagents) | 2026-05-17 |
+| [openmonoagent-local-ai-coding-agent](skills/openmonoagent-local-ai-coding-agent/) | [install](https://skills.sh/aradotso/ai-agent-skills/openmonoagent-local-ai-coding-agent) | [StartupHakk/OpenMonoAgent.ai](https://github.com/StartupHakk/OpenMonoAgent.ai) | 2026-05-17 |
 <!-- SKILL_INDEX -->
 
 ---
