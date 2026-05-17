@@ -70,6 +70,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [production-grade-agentic-system](skills/production-grade-agentic-system/) | [install](https://skills.sh/aradotso/ai-agent-skills/production-grade-agentic-system) | [FareedKhan-dev/production-grade-agentic-system](https://github.com/FareedKhan-dev/production-grade-agentic-system) | 2026-05-17 |
 | [power-bi-agentic-development](skills/power-bi-agentic-development/) | [install](https://skills.sh/aradotso/ai-agent-skills/power-bi-agentic-development) | [data-goblin/power-bi-agentic-development](https://github.com/data-goblin/power-bi-agentic-development) | 2026-05-17 |
 | [awesome-agentic-reasoning](skills/awesome-agentic-reasoning/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-agentic-reasoning) | [weitianxin/Awesome-Agentic-Reasoning](https://github.com/weitianxin/Awesome-Agentic-Reasoning) | 2026-05-17 |
+| [agentic-soc-platform](skills/agentic-soc-platform/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-soc-platform) | [FunnyWolf/agentic-soc-platform](https://github.com/FunnyWolf/agentic-soc-platform) | 2026-05-17 |
 <!-- SKILL_INDEX -->
 
 ---
