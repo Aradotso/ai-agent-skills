@@ -45,6 +45,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [awesome-claude-code-subagents](skills/awesome-claude-code-subagents/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-claude-code-subagents) | [VoltAgent/awesome-claude-code-subagents](https://github.com/VoltAgent/awesome-claude-code-subagents) | 2026-05-17 |
 | [openmonoagent-local-ai-coding-agent](skills/openmonoagent-local-ai-coding-agent/) | [install](https://skills.sh/aradotso/ai-agent-skills/openmonoagent-local-ai-coding-agent) | [StartupHakk/OpenMonoAgent.ai](https://github.com/StartupHakk/OpenMonoAgent.ai) | 2026-05-17 |
 | [tencentdb-agent-memory](skills/tencentdb-agent-memory/) | [install](https://skills.sh/aradotso/ai-agent-skills/tencentdb-agent-memory) | [Tencent/TencentDB-Agent-Memory](https://github.com/Tencent/TencentDB-Agent-Memory) | 2026-05-17 |
+| [agentic-stack-portable-agent-memory](skills/agentic-stack-portable-agent-memory/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-stack-portable-agent-memory) | [codejunkie99/agentic-stack](https://github.com/codejunkie99/agentic-stack) | 2026-05-17 |
 <!-- SKILL_INDEX -->
 
 ---
