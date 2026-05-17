@@ -58,6 +58,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [snaplii-agent-payments](skills/snaplii-agent-payments/) | [install](https://skills.sh/aradotso/ai-agent-skills/snaplii-agent-payments) | [Snaplii-Inc/agent-to-merchant-payments](https://github.com/Snaplii-Inc/agent-to-merchant-payments) | 2026-05-17 |
 | [vercel-open-agents](skills/vercel-open-agents/) | [install](https://skills.sh/aradotso/ai-agent-skills/vercel-open-agents) | [vercel-labs/open-agents](https://github.com/vercel-labs/open-agents) | 2026-05-17 |
 | [awesome-openclaw-agents](skills/awesome-openclaw-agents/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-openclaw-agents) | [mergisi/awesome-openclaw-agents](https://github.com/mergisi/awesome-openclaw-agents) | 2026-05-17 |
+| [agentation-visual-feedback](skills/agentation-visual-feedback/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentation-visual-feedback) | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | 2026-05-17 |
 <!-- SKILL_INDEX -->
 
 ---
