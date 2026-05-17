@@ -50,6 +50,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [world2agent-protocol](skills/world2agent-protocol/) | [install](https://skills.sh/aradotso/ai-agent-skills/world2agent-protocol) | [machinepulse-ai/world2agent](https://github.com/machinepulse-ai/world2agent) | 2026-05-17 |
 | [open-agent-sdk-typescript](skills/open-agent-sdk-typescript/) | [install](https://skills.sh/aradotso/ai-agent-skills/open-agent-sdk-typescript) | [codeany-ai/open-agent-sdk-typescript](https://github.com/codeany-ai/open-agent-sdk-typescript) | 2026-05-17 |
 | [awesome-hermes-agent-ecosystem](skills/awesome-hermes-agent-ecosystem/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-hermes-agent-ecosystem) | [0xNyk/awesome-hermes-agent](https://github.com/0xNyk/awesome-hermes-agent) | 2026-05-17 |
+| [swiftui-agent-skill](skills/swiftui-agent-skill/) | [install](https://skills.sh/aradotso/ai-agent-skills/swiftui-agent-skill) | [twostraws/SwiftUI-Agent-Skill](https://github.com/twostraws/SwiftUI-Agent-Skill) | 2026-05-17 |
 <!-- SKILL_INDEX -->
 
 ---
