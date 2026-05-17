@@ -51,6 +51,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [open-agent-sdk-typescript](skills/open-agent-sdk-typescript/) | [install](https://skills.sh/aradotso/ai-agent-skills/open-agent-sdk-typescript) | [codeany-ai/open-agent-sdk-typescript](https://github.com/codeany-ai/open-agent-sdk-typescript) | 2026-05-17 |
 | [awesome-hermes-agent-ecosystem](skills/awesome-hermes-agent-ecosystem/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-hermes-agent-ecosystem) | [0xNyk/awesome-hermes-agent](https://github.com/0xNyk/awesome-hermes-agent) | 2026-05-17 |
 | [swiftui-agent-skill](skills/swiftui-agent-skill/) | [install](https://skills.sh/aradotso/ai-agent-skills/swiftui-agent-skill) | [twostraws/SwiftUI-Agent-Skill](https://github.com/twostraws/SwiftUI-Agent-Skill) | 2026-05-17 |
+| [agentic-ai-prompt-research](skills/agentic-ai-prompt-research/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-ai-prompt-research) | [Leonxlnx/agentic-ai-prompt-research](https://github.com/Leonxlnx/agentic-ai-prompt-research) | 2026-05-17 |
 <!-- SKILL_INDEX -->
 
 ---
