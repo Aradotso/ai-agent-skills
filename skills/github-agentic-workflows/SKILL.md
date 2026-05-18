@@ -1,680 +1,630 @@
 ---
 name: github-agentic-workflows
-description: Create and configure GitHub Agentic Workflows for automated repository maintenance, code review, CI monitoring, documentation, and more
+description: Create and manage AI-powered GitHub workflows that autonomously maintain repositories, review code, update docs, and handle developer tasks.
 triggers:
-  - set up GitHub Agentic Workflows
-  - create an agentic workflow for my repo
-  - configure gh-aw for automated maintenance
-  - add AI code review workflow
-  - automate issue triage with agents
-  - implement repo assist workflow
-  - deploy agentic workflows to GitHub
-  - configure CI doctor workflow
+  - "set up a GitHub agentic workflow"
+  - "create an AI workflow for repository maintenance"
+  - "add automated code review with gh-aw"
+  - "configure repo assist workflow"
+  - "how do I use GitHub agentic workflows"
+  - "automate issue triage with AI"
+  - "set up CI doctor workflow"
+  - "create custom agentic workflow"
 ---
 
-# GitHub Agentic Workflows (gh-aw)
+# GitHub Agentic Workflows
 
 > Skill by [ara.so](https://ara.so) — AI Agent Skills collection.
 
-GitHub Agentic Workflows (gh-aw) is a framework for creating autonomous AI agents that run as GitHub Actions workflows. It provides a collection of ready-to-use workflows for repository maintenance, code review, CI monitoring, documentation updates, and more. Workflows are defined in markdown files in `.github/workflows/` and can use tools, MCP servers, and GitHub APIs.
+GitHub Agentic Workflows (gh-aw) is a framework for creating AI-powered automation workflows that can autonomously maintain repositories, review code, triage issues, update documentation, and perform developer tasks. Workflows are defined in simple Markdown files and run as GitHub Actions.
+
+## What It Does
+
+- **Autonomous Repository Maintenance**: AI agents that triage issues, label PRs, fix bugs, and maintain documentation
+- **Code Review**: Automated PR reviews with configurable personas (grumpy reviewer, nitpick reviewer, etc.)
+- **CI/CD Intelligence**: Monitor and diagnose CI failures, optimize workflows, track costs
+- **Documentation**: Auto-update docs, maintain wikis, check links, generate glossaries
+- **Planning & Reporting**: Generate status reports, research summaries, activity chronicles
+- **Security**: Scan for malicious code, generate VEX statements for security alerts
 
 ## Installation
 
 ### Prerequisites
 
-1. A GitHub repository
-2. GitHub Actions enabled
-3. API keys for AI models (OpenAI, Anthropic, etc.)
+1. GitHub repository with Actions enabled
+2. GitHub App or Personal Access Token with appropriate permissions
+3. Access to an AI model provider (OpenAI, Anthropic, etc.)
 
 ### Basic Setup
 
-1. **Add workflow files** to `.github/workflows/` directory:
+1. Install the `gh-aw` CLI:
+
+```bash
+# Using npm
+npm install -g @github/gh-aw
+
+# Or using GitHub CLI extension
+gh extension install github/gh-aw
+```
+
+2. Create `.github/workflows` directory in your repository:
 
 ```bash
 mkdir -p .github/workflows
 ```
 
-2. **Create a workflow file** (e.g., `.github/workflows/issue-triage.md`):
+3. Copy a workflow from the Agentics collection:
 
-```markdown
----
+```bash
+# Example: Issue Triage workflow
+curl -o .github/workflows/issue-triage.yml \
+  https://raw.githubusercontent.com/githubnext/agentics/main/.github/workflows/issue-triage.yml
+
+curl -o .github/workflows/issue-triage.md \
+  https://raw.githubusercontent.com/githubnext/agentics/main/workflows/issue-triage.md
+```
+
+4. Configure secrets in your repository settings:
+   - `GITHUB_TOKEN` (automatically available)
+   - `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` (for AI model access)
+
+## Workflow Structure
+
+Agentic workflows consist of two files:
+
+1. **YAML file** (`.github/workflows/*.yml`) - GitHub Actions configuration
+2. **Markdown file** (`.github/workflows/*.md`) - Agent instructions and behavior
+
+### Example: Issue Triage Workflow
+
+**`.github/workflows/issue-triage.yml`**:
+
+```yaml
 name: Issue Triage
 on:
   issues:
     types: [opened, edited]
   pull_request:
     types: [opened, edited]
-schedule:
-  - cron: "0 */6 * * *"
----
 
-# Issue Triage
-
-Automatically label and triage new issues and pull requests.
-
-## Task
-
-Review the issue or pull request and:
-1. Add appropriate labels (bug, feature, documentation, etc.)
-2. Determine priority (high, medium, low)
-3. Add a brief triage comment explaining your assessment
-
-Use the GitHub API tools to apply labels and post comments.
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/gh-aw@v1
+        with:
+          workflow: .github/workflows/issue-triage.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 ```
 
-3. **Configure secrets** in GitHub repository settings:
-   - `ANTHROPIC_API_KEY` or `OPENAI_API_KEY`
-   - `GITHUB_TOKEN` (automatically provided)
-
-4. **Install gh-aw CLI** (optional, for local testing):
-
-```bash
-npm install -g @github/gh-aw
-```
-
-## Core Concepts
-
-### Workflow Structure
-
-Workflows are markdown files with YAML frontmatter:
+**`.github/workflows/issue-triage.md`**:
 
 ```markdown
----
-name: Workflow Name
-on:
-  schedule:
-    - cron: "0 0 * * *"  # Daily at midnight
-  issues:
-    types: [opened]
-model: claude-3-5-sonnet-20241022
-imports:
-  - shared/formatting.md
----
+# Issue Triage Agent
 
-# Workflow Title
+You are a helpful issue triage assistant. When a new issue or pull request is opened:
 
-Description of what this workflow does.
+1. Read the title and body carefully
+2. Analyze the content to determine appropriate labels
+3. Apply relevant labels from the repository's label set
+4. Add a welcoming comment if this is a first-time contributor
 
-## Task
+## Available Tools
 
-Detailed instructions for the agent.
+- `github.issues.addLabels` - Add labels to issues
+- `github.issues.createComment` - Comment on issues
+- `github.pulls.requestReviewers` - Request reviewers for PRs
+
+## Labels to Consider
+
+- `bug` - Something isn't working
+- `enhancement` - New feature or request
+- `documentation` - Documentation improvements
+- `good first issue` - Good for newcomers
+- `help wanted` - Extra attention needed
+
+## Example Analysis
+
+For a bug report mentioning crashes, apply: `bug`, potentially `help wanted`
+For a feature request, apply: `enhancement`
+For documentation fixes, apply: `documentation`, potentially `good first issue`
 ```
 
-### Triggers
+## Key Workflow Types
 
-Common trigger patterns:
+### Maintainer Workflows
+
+**Repo Assist** - Comprehensive repository assistant:
 
 ```yaml
-# Schedule-based
-on:
-  schedule:
-    - cron: "0 9 * * 1"  # Weekly on Monday at 9 AM
-
-# Event-based
-on:
-  issues:
-    types: [opened, labeled]
-  pull_request:
-    types: [opened, synchronize]
-  push:
-    branches: [main]
-
-# Manual trigger
-on:
-  workflow_dispatch:
-
-# Comment commands
-on:
-  issue_comment:
-    types: [created]
-```
-
-### Imports (Shared Fragments)
-
-Reuse common configurations:
-
-```yaml
-imports:
-  - shared/formatting.md     # Standard report formatting
-  - shared/reporting.md      # Workflow run links
-  - shared/arxiv.md          # arXiv research papers MCP
-  - shared/markitdown.md     # Document conversion
-  - shared/ffmpeg.md         # Video/audio processing
-```
-
-## Key Workflows
-
-### Repo Assist (Comprehensive Maintenance)
-
-```markdown
----
 name: Repo Assist
 on:
   schedule:
-    - cron: "0 */4 * * *"  # Every 4 hours
+    - cron: '0 */6 * * *'  # Every 6 hours
   issues:
-    types: [opened, labeled]
+    types: [opened, edited, labeled]
   pull_request:
-    types: [opened]
-model: claude-3-5-sonnet-20241022
----
+    types: [opened, edited, synchronize]
 
-# Repo Assist
-
-A comprehensive repository assistant that triages issues, investigates problems, 
-fixes bugs, and maintains activity summaries.
-
-## Task
-
-1. **Triage New Items**: Review unlabeled issues and PRs, add labels and priority
-2. **Investigate Issues**: For issues labeled `needs-investigation`, analyze the 
-   problem and add findings
-3. **Fix Bugs**: For issues labeled `bug` and `ready`, create a PR with a fix
-4. **Update Summary**: Maintain the ACTIVITY.md file with recent changes
-
-Use GitHub API tools to search, label, comment, and create PRs.
+jobs:
+  assist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: github/gh-aw@v1
+        with:
+          workflow: .github/workflows/repo-assist.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 ```
 
-### Issue Triage (Simple Labeling)
+### Code Review Workflows
 
-```markdown
----
-name: Issue Triage
-on:
-  issues:
-    types: [opened, edited]
-  pull_request:
-    types: [opened, edited]
-model: gpt-4o
----
+**Grumpy Reviewer** - On-demand opinionated reviews:
 
-# Issue Triage
-
-Triage and label new issues and pull requests.
-
-## Task
-
-For each new or updated issue/PR:
-1. Read the title and body
-2. Determine the type: bug, feature, documentation, question
-3. Assess priority: high, medium, low
-4. Add appropriate labels using the GitHub API
-5. Post a brief triage comment
-
-Be concise and helpful.
-```
-
-### CI Doctor (Failure Investigation)
-
-```markdown
----
-name: CI Doctor
-on:
-  workflow_run:
-    workflows: ["*"]
-    types: [completed]
-model: claude-3-5-sonnet-20241022
----
-
-# CI Doctor
-
-Monitor CI workflows and investigate failures automatically.
-
-## Task
-
-When a workflow fails:
-1. Fetch the workflow run logs
-2. Identify the failure cause (flaky test, dependency issue, code bug, etc.)
-3. Search for similar past failures
-4. Determine if it's a known issue or new problem
-5. Post a comment on the associated PR or create an issue
-6. If it's a simple fix (e.g., dependency version), create a PR
-
-Focus on actionable insights.
-```
-
-### Grumpy Reviewer (Code Review)
-
-```markdown
----
+```yaml
 name: Grumpy Reviewer
 on:
   issue_comment:
     types: [created]
-model: claude-3-5-sonnet-20241022
----
 
-# Grumpy Reviewer
-
-Triggered by `/grumpy-review` command. Provides thorough, opinionated code review.
-
-## Task
-
-When a PR comment contains `/grumpy-review`:
-1. Fetch the PR diff
-2. Review for: code quality, performance, security, maintainability, tests
-3. Be critical but constructive
-4. Point out potential bugs, anti-patterns, and missed edge cases
-5. Suggest specific improvements with code examples
-6. Post review comments on specific lines where possible
-
-Be thorough and grumpy, but helpful.
+jobs:
+  review:
+    if: contains(github.event.comment.body, '/grumpy-review')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: github/gh-aw@v1
+        with:
+          workflow: .github/workflows/grumpy-reviewer.md
 ```
 
-### Documentation Updater
+### Documentation Workflows
 
-```markdown
----
-name: Documentation Update on Push
-on:
-  push:
-    branches: [main]
-model: gpt-4o
-imports:
-  - shared/formatting.md
----
+**Daily Doc Updater**:
 
-# Documentation Update
-
-Update documentation automatically when code changes are pushed to main.
-
-## Task
-
-1. Fetch the diff of the recent push
-2. Identify which docs might be affected (README, API docs, guides)
-3. For each affected doc:
-   - Check if updates are needed
-   - Update the documentation to reflect code changes
-   - Ensure examples still work
-4. Create a PR with doc updates if changes are needed
-
-Focus on keeping docs in sync with code.
-```
-
-### Weekly Research
-
-```markdown
----
-name: Weekly Research
+```yaml
+name: Documentation Updater
 on:
   schedule:
-    - cron: "0 9 * * 1"  # Monday 9 AM
-model: claude-3-5-sonnet-20241022
-imports:
-  - shared/arxiv.md
----
+    - cron: '0 9 * * *'  # Daily at 9 AM
+  workflow_dispatch:
 
-# Weekly Research
-
-Collect research updates and industry trends relevant to this project.
-
-## Task
-
-1. Search arXiv for papers related to: [project topics]
-2. Scan GitHub trending repos in relevant languages/topics
-3. Check Hacker News and relevant subreddits
-4. Summarize findings in RESEARCH.md
-5. Create issues for promising ideas to investigate
-6. Update the team via a discussion post
-
-Focus on actionable insights and emerging trends.
+jobs:
+  update-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/gh-aw@v1
+        with:
+          workflow: .github/workflows/doc-updater.md
 ```
 
-### Dependabot PR Bundler
+## Custom Workflow Creation
+
+### Basic Template
 
 ```markdown
----
-name: Dependabot PR Bundler
-on:
-  schedule:
-    - cron: "0 10 * * 1"  # Monday 10 AM
-model: gpt-4o
----
+# My Custom Agent
 
-# Dependabot PR Bundler
+## Role
+You are a [describe the agent's role and purpose].
 
-Bundle compatible dependabot updates into a single PR.
+## Triggers
+This workflow runs when [describe trigger conditions].
 
-## Task
+## Tasks
 
-1. List all open dependabot PRs
-2. Group by ecosystem (npm, pip, cargo, etc.)
-3. For each group, determine which updates are compatible
-4. Create a new branch
-5. Apply compatible updates
-6. Run tests
-7. Create a bundled PR
-8. Close the individual dependabot PRs with a comment linking to the bundle
+1. [First task description]
+2. [Second task description]
+3. [Third task description]
 
-Be conservative - only bundle if likely to be compatible.
+## Available Tools
+
+List the GitHub API tools you'll use:
+- `github.issues.create` - Create new issues
+- `github.repos.createOrUpdateFileContents` - Update files
+- `github.pulls.create` - Create pull requests
+
+## Guidelines
+
+- [Guideline 1]
+- [Guideline 2]
+- [Guideline 3]
+
+## Output Format
+
+Provide results as:
+- Summary of actions taken
+- Links to created issues/PRs
+- Any recommendations
+```
+
+### Using Shared Fragments
+
+Import reusable components:
+
+```markdown
+# My Workflow
+
+imports: [shared/formatting.md, shared/arxiv.md]
+
+## Tasks
+
+Use the arXiv MCP server to search for relevant papers on [topic].
+Format the output using the standard formatting guidelines.
+```
+
+### Advanced: MCP Server Integration
+
+```markdown
+# Research Assistant
+
+imports: [shared/arxiv.md, shared/markitdown.md]
+
+## Tasks
+
+1. Search arXiv for papers on "machine learning optimization"
+2. Download the top 3 papers as PDFs
+3. Convert PDFs to Markdown using MarkItDown
+4. Summarize findings in an issue
+
+## MCP Servers
+
+- **arxiv**: Search and retrieve academic papers
+- **markitdown**: Convert PDFs to readable Markdown
 ```
 
 ## Configuration
 
-### Model Selection
-
-Specify the AI model in frontmatter:
-
-```yaml
-model: claude-3-5-sonnet-20241022    # Anthropic (recommended)
-model: gpt-4o                         # OpenAI
-model: gpt-4o-mini                    # Faster, cheaper
-```
-
 ### Environment Variables
 
-Configure via repository secrets:
+Set in repository secrets or `.env`:
 
-- `ANTHROPIC_API_KEY` - Anthropic API key
-- `OPENAI_API_KEY` - OpenAI API key
-- `GITHUB_TOKEN` - Auto-provided by GitHub Actions
-- `GH_AW_TOKEN` - Optional: PAT for cross-repo operations
+```bash
+# Required
+GITHUB_TOKEN=ghp_your_token_here
+OPENAI_API_KEY=sk-your-key-here
 
-### Rate Limiting & Costs
+# Optional - Alternative AI providers
+ANTHROPIC_API_KEY=sk-ant-your-key-here
+AZURE_OPENAI_API_KEY=your-azure-key-here
+AZURE_OPENAI_ENDPOINT=https://your-endpoint.openai.azure.com
 
-Control API usage:
-
-```markdown
----
-name: Expensive Workflow
-on:
-  schedule:
-    - cron: "0 0 * * 0"  # Weekly instead of daily
-model: gpt-4o-mini         # Use cheaper model
-max_tokens: 4000           # Limit response length
----
+# Optional - Cost tracking
+GH_AW_ENABLE_COST_TRACKING=true
 ```
 
-### Firewall & Token Tracking
+### Workflow Permissions
 
-Enable cost tracking:
+Required permissions in workflow YAML:
 
 ```yaml
-# .github/workflows/cost-tracker.md
----
-name: Cost Tracker
-on:
-  pull_request:
-    types: [opened, synchronize]
----
-
-Post token usage summaries using token-usage.jsonl from gh-aw's firewall.
+permissions:
+  contents: write        # To create/update files
+  issues: write          # To manage issues
+  pull-requests: write   # To manage PRs
+  discussions: write     # To manage discussions (if needed)
 ```
 
 ## Common Patterns
 
-### Multi-Stage Workflows
-
-Break complex tasks into stages:
-
-```markdown
-## Task
-
-### Stage 1: Investigation
-1. Analyze the current state
-2. Identify problems
-3. Create investigation notes
-
-### Stage 2: Planning
-1. Review investigation notes
-2. Create action plan
-3. Estimate effort
-
-### Stage 3: Execution
-1. Implement fixes
-2. Run tests
-3. Create PR
-
-Complete each stage before proceeding.
-```
-
 ### Command-Triggered Workflows
 
-Respond to comment commands:
+Allow users to trigger agents via comments:
 
-```markdown
----
-name: Repo Ask
+```yaml
 on:
   issue_comment:
     types: [created]
----
 
-# Repo Ask
-
-Triggered by `/ask <question>` in comments.
-
-## Task
-
-When a comment starts with `/ask`:
-1. Extract the question
-2. Search relevant code and docs
-3. Analyze and formulate answer
-4. Post reply with findings and code references
-
-Only respond to users with write access.
+jobs:
+  command-handler:
+    if: |
+      contains(github.event.comment.body, '/plan') ||
+      contains(github.event.comment.body, '/fix')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: github/gh-aw@v1
+        with:
+          workflow: .github/workflows/commands.md
 ```
 
-### Iterative Improvement
+### Scheduled Maintenance
 
-Build on previous work:
-
-```markdown
-## Task
-
-1. Check if IMPROVEMENTS.md exists
-2. If exists, read previous findings
-3. Identify the next highest-priority improvement
-4. Implement it
-5. Update IMPROVEMENTS.md with progress
-
-Run daily to continuously improve the codebase.
-```
-
-### Parent-Child Issue Management
-
-```markdown
-## Task
-
-For issues labeled `epic`:
-1. Parse the checklist of sub-tasks
-2. Create child issues for uncreated tasks
-3. Link child issues with "Sub-issue of #parent"
-4. Update parent issue checklist with links
-5. When all children close, close parent
-
-Maintain the relationship automatically.
-```
-
-## Advanced Usage
-
-### Custom Tools
-
-Define custom tools in workflow:
-
-```markdown
-## Tools
-
-### search_codebase
-Search the codebase for patterns.
-- pattern: string - Regex or text pattern
-- file_types: string[] - File extensions to search
-
-### run_benchmark
-Execute performance benchmarks.
-- test_file: string - Path to benchmark file
-- iterations: number - Number of runs
-```
-
-### MCP Server Integration
-
-Use Model Context Protocol servers:
+Run workflows on a schedule:
 
 ```yaml
-imports:
-  - shared/arxiv.md          # Research papers
-  - shared/markitdown.md     # Document conversion
-  - shared/ffmpeg.md         # Media processing
+on:
+  schedule:
+    - cron: '0 0 * * 1'  # Weekly on Monday
+    - cron: '0 9 * * *'  # Daily at 9 AM
+    - cron: '0 */6 * * *'  # Every 6 hours
 ```
 
-Then use in task:
+### Multi-Stage Workflows
+
+Chain multiple agents together:
 
 ```markdown
-## Task
+# Multi-Stage Pipeline
 
-1. Use the arXiv MCP to search for papers on: [topic]
-2. Download top 3 papers
-3. Use MarkItDown to convert PDFs to markdown
-4. Analyze and summarize findings
-5. Create an issue with recommendations
+## Stage 1: Analysis
+Analyze the repository for issues.
+
+## Stage 2: Planning
+Create a plan to address the issues.
+
+## Stage 3: Execution
+Implement the plan and create PRs.
+
+## Stage 4: Verification
+Verify the changes and update status.
 ```
 
-### Cross-Repository Operations
-
-Use PAT for multi-repo workflows:
+### Conditional Execution
 
 ```markdown
-## Task
+# Conditional Agent
 
-1. Scan all repositories in the organization
-2. Identify repos missing SECURITY.md
-3. Create PRs in each repo with a template SECURITY.md
-4. Track progress in a central dashboard issue
+## Pre-Check
 
-Requires GH_AW_TOKEN with org-wide permissions.
+Before proceeding, verify:
+- There are open issues labeled "needs-triage"
+- No other triage workflow is currently running
+- The repository has been active in the last 7 days
+
+If conditions aren't met, exit gracefully.
+
+## Main Task
+
+[Rest of workflow...]
+```
+
+## Real-World Examples
+
+### Example 1: Bug Fix Automation
+
+```markdown
+# Bug Fix Agent
+
+## Role
+You are an experienced developer who investigates and fixes bugs.
+
+## Workflow
+
+1. **Identify**: Find issues labeled "bug" that haven't been updated in 3 days
+2. **Investigate**: 
+   - Read the issue description
+   - Check related code files
+   - Review recent commits that might be related
+   - Look for similar closed issues
+3. **Diagnose**: Determine the root cause
+4. **Fix**: 
+   - Create a branch named `fix/issue-{number}`
+   - Implement the fix
+   - Write or update tests
+   - Commit changes with descriptive message
+5. **PR**: Create a pull request referencing the issue
+6. **Update**: Comment on the original issue with findings and PR link
+
+## Tools
+
+- `github.search.issuesAndPullRequests` - Find bugs
+- `github.repos.getContent` - Read code files
+- `github.git.createRef` - Create branch
+- `github.repos.createOrUpdateFileContents` - Update files
+- `github.pulls.create` - Create PR
+- `github.issues.createComment` - Update issue
+
+## Quality Standards
+
+- All fixes must include tests
+- Code must follow existing style conventions
+- Commit messages must be descriptive
+- PRs must reference the issue number
+```
+
+### Example 2: Documentation Sync
+
+```markdown
+# Documentation Synchronizer
+
+imports: [shared/formatting.md]
+
+## Role
+Keep documentation in sync with code changes.
+
+## Workflow
+
+1. **Detect Changes**: 
+   - Find files changed in the last 24 hours
+   - Filter for source code files (.js, .py, .go, etc.)
+   - Identify public APIs or functions modified
+
+2. **Check Documentation**:
+   - Locate corresponding documentation files
+   - Compare documented behavior with actual code
+   - Identify discrepancies
+
+3. **Update Documentation**:
+   - Create branch `docs/auto-sync-{date}`
+   - Update affected documentation files
+   - Add examples if new features were added
+   - Update any code snippets
+
+4. **Create PR**:
+   - Title: "docs: sync with code changes from {date}"
+   - Body: List all changes with links to commits
+   - Request review from code authors
+
+## File Mappings
+
+- `src/api/*.js` → `docs/api/*.md`
+- `src/cli/*.js` → `docs/cli-reference.md`
+- `lib/*.py` → `docs/library-reference.md`
+
+## Output Format
+
+Use the standard formatting from shared/formatting.md
+```
+
+### Example 3: CI Cost Optimizer
+
+```markdown
+# CI Cost Optimizer
+
+imports: [shared/reporting.md]
+
+## Role
+Monitor and optimize CI/CD costs.
+
+## Analysis Tasks
+
+1. **Collect Data**:
+   - Get all workflow runs from the past 7 days
+   - Calculate total execution time per workflow
+   - Identify slowest steps in each workflow
+
+2. **Identify Waste**:
+   - Find workflows with high failure rates
+   - Detect redundant test runs
+   - Spot overly aggressive schedule triggers
+   - Find unnecessarily large runners
+
+3. **Generate Report**:
+   - Calculate estimated costs (if applicable)
+   - Create visualization of run times
+   - Highlight optimization opportunities
+   - Provide specific recommendations
+
+4. **Create Issue**:
+   - Title: "CI Optimization Report - Week {number}"
+   - Include all findings and recommendations
+   - Tag with "ci", "optimization", "cost-savings"
+
+## Cost Calculations
+
+- Small runner: ~$0.008/minute
+- Medium runner: ~$0.016/minute
+- Large runner: ~$0.032/minute
+
+## Optimization Checks
+
+- [ ] Are tests running in parallel where possible?
+- [ ] Are caches being used effectively?
+- [ ] Are workflows skipping unnecessary runs?
+- [ ] Are matrix builds optimized?
+- [ ] Are dependencies installed efficiently?
 ```
 
 ## Troubleshooting
 
 ### Workflow Not Triggering
 
-Check:
-- YAML frontmatter syntax is valid
-- Trigger events are correct
-- File is in `.github/workflows/` with `.md` extension
-- Workflow is enabled in repository settings
+Check trigger configuration:
 
-### API Rate Limits
-
-Solutions:
-- Use `gpt-4o-mini` instead of `gpt-4o`
-- Reduce workflow frequency
-- Add caching logic
-- Use conditional execution
-
-### Agent Not Finding Files
-
-Ensure agent searches before acting:
-
-```markdown
-## Task
-
-1. **First**, list all markdown files in the docs/ directory
-2. **Then**, read each file
-3. Only after reading, make updates
+```yaml
+# Make sure triggers match your intent
+on:
+  issues:
+    types: [opened, edited]  # Not just [opened]
+  pull_request:
+    types: [opened, synchronize]  # Include synchronize for new commits
 ```
 
-### Permissions Errors
+### Permission Denied Errors
 
-Check repository settings:
-- Actions have write permissions
-- Secrets are configured
-- PAT has required scopes
+Ensure proper permissions:
 
-### Workflow Debugging
-
-Add logging:
-
-```markdown
-## Task
-
-Log each step:
-1. "Starting investigation..."
-2. Log files found
-3. Log analysis results
-4. "Creating PR..."
-
-Post logs as a comment if workflow fails.
+```yaml
+permissions:
+  contents: write  # Required for file changes
+  issues: write    # Required for issue operations
+  pull-requests: write  # Required for PR operations
 ```
 
-### Model Context Limits
+### AI Model Timeouts
 
-For large repositories:
+Use streaming and set appropriate timeouts:
 
 ```markdown
-## Task
+## Configuration
 
-Work incrementally:
-1. List all files to process
-2. Process 10 files at a time
-3. Maintain progress in PROGRESS.md
-4. Resume from last position on next run
+- Model: claude-3-5-sonnet-20241022
+- Max tokens: 4000
+- Timeout: 300 seconds
+- Stream: true
+```
 
-This avoids context limit issues.
+### Rate Limiting
+
+Implement backoff and respect rate limits:
+
+```markdown
+## Rate Limiting
+
+- Wait 1 second between API calls
+- Use conditional requests (If-None-Match headers)
+- Cache responses when possible
+- Batch operations where supported
+```
+
+### Debugging Workflows
+
+Enable debug logging:
+
+```yaml
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: github/gh-aw@v1
+        with:
+          workflow: .github/workflows/my-workflow.md
+          debug: true
+        env:
+          ACTIONS_STEP_DEBUG: true
+```
+
+### Cost Management
+
+Track and limit costs:
+
+```markdown
+imports: [shared/reporting.md]
+
+## Cost Controls
+
+- Maximum tokens per run: 100,000
+- Alert threshold: $10/day
+- Enable cost tracking in reports
+- Use cheaper models for simple tasks (gpt-4o-mini)
 ```
 
 ## Best Practices
 
-1. **Start small**: Begin with simple workflows like issue triage
-2. **Test locally**: Use `gh-aw` CLI to test before deploying
-3. **Monitor costs**: Use cost-tracker workflow
-4. **Version control**: Keep workflows in git
-5. **Documentation**: Comment complex logic
-6. **Idempotency**: Design workflows to be safely re-runnable
-7. **Graceful degradation**: Handle API failures gracefully
-8. **Security**: Never commit API keys; use secrets
-9. **Permissions**: Check user permissions before executing commands
-10. **Observability**: Log actions and outcomes
+1. **Start Simple**: Begin with basic workflows (issue triage) before complex ones (code generation)
+2. **Test Locally**: Use `gh-aw run` to test workflows before deploying
+3. **Monitor Costs**: Enable cost tracking and set budgets
+4. **Iterate**: Refine agent instructions based on actual behavior
+5. **Use Shared Fragments**: Reuse common patterns from the shared library
+6. **Clear Instructions**: Write explicit, step-by-step instructions for agents
+7. **Error Handling**: Include fallback behavior for common failure cases
+8. **Human Review**: For destructive operations, create PRs instead of direct commits
 
-## Example: Complete Workflow Setup
+## Resources
 
-```bash
-# 1. Create workflow directory
-mkdir -p .github/workflows
-
-# 2. Add repo assist workflow
-cat > .github/workflows/repo-assist.md << 'EOF'
----
-name: Repo Assist
-on:
-  schedule:
-    - cron: "0 */4 * * *"
-  issues:
-    types: [opened]
-  pull_request:
-    types: [opened]
-model: claude-3-5-sonnet-20241022
-imports:
-  - shared/formatting.md
----
-
-# Repo Assist
-
-Comprehensive repository maintenance assistant.
-
-## Task
-
-Every 4 hours:
-1. Triage new issues and PRs (add labels, priority)
-2. Investigate issues marked `needs-investigation`
-3. Fix bugs marked `bug` and `ready` (create PRs)
-4. Update ACTIVITY.md with recent changes
-5. Close issues that are resolved but not closed
-
-Be proactive but cautious with code changes.
-EOF
-
-# 3. Configure secrets in GitHub UI
-# Settings > Secrets and variables > Actions > New repository secret
-# Add: ANTHROPIC_API_KEY
-
-# 4. Commit and push
-git add .github/workflows/repo-assist.md
-git commit -m "Add repo assist workflow"
-git push
-
-# 5. Monitor workflow runs
-# Actions tab in GitHub repository
-```
-
-The workflow will now run automatically based on the schedule and events.
+- [Official Documentation](https://github.github.com/gh-aw/)
+- [Agentics Collection](https://github.com/githubnext/agentics)
+- [Agentics Beyond Code](https://github.com/chrizbo/agentics-beyond-code)
+- [Example Workflows](https://github.com/githubnext/agentics/tree/main/workflows)
