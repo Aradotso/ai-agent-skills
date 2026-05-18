@@ -1,259 +1,201 @@
 ---
 name: awesome-adaptation-agentic-ai
-description: Curated collection of research papers on adaptation strategies for agentic AI systems with tool execution and output signals
+description: Curated research collection on adaptation strategies for agentic AI systems, covering agent and tool adaptation methods with RL, SFT, and DPO approaches
 triggers:
-  - show me papers on agentic AI adaptation
-  - how do I find research on tool-augmented agents
-  - what are the latest methods for agent adaptation with tools
-  - browse agentic AI adaptation papers
-  - find papers on reinforcement learning for AI agents
-  - search for tool adaptation research papers
-  - show agent adaptation methods and benchmarks
-  - what papers cover LLM agent fine-tuning
+  - find papers on agentic AI adaptation
+  - how do AI agents adapt their tool use
+  - research on tool execution adaptation
+  - agent reinforcement learning methods
+  - lookup agentic AI adaptation techniques
+  - show me agent adaptation frameworks
+  - what are tool adaptation strategies
+  - find research on adaptive AI agents
 ---
 
 # Awesome Adaptation of Agentic AI
 
 > Skill by [ara.so](https://ara.so) — AI Agent Skills collection.
 
-This skill provides expertise in navigating and utilizing the **Awesome Adaptation of Agentic AI** repository — a comprehensive, curated collection of research papers on adaptation strategies for AI agents. The repository categorizes papers into Agent Adaptation (A1: Tool Execution Signaled, A2: Agent Output Signaled) and Tool Adaptation (T1: Agent-Agnostic, T2: Agent-Supervised).
+## Overview
 
-## What This Repository Provides
+This repository is a curated research collection accompanying the paper "Adaptation of Agentic AI" (arXiv:2512.16301). It systematically organizes papers on how AI agents adapt their behavior, particularly focusing on:
 
-The repository accompanies the paper "Adaptation of Agentic AI" (arXiv:2512.16301) and organizes state-of-the-art research papers on:
+- **Agent Adaptation**: Methods to improve agent decision-making through tool execution signals (A1) or output signals (A2)
+- **Tool Adaptation**: Approaches to optimize tools either independently (T1) or with agent supervision (T2)
 
-- **Agent Adaptation**: Methods for adapting AI agents using feedback from tool execution or agent outputs
-  - **A1 (Tool Execution Signaled)**: RL-based, SFT, and DPO methods that use tool execution feedback
-  - **A2 (Agent Output Signaled)**: Methods that use agent output quality as signals
-- **Tool Adaptation**: Strategies for adapting tools themselves
-  - **T1 (Agent-Agnostic)**: Tool improvements independent of specific agents
-  - **T2 (Agent-Supervised)**: Tool adaptations guided by agent behavior
+The collection categorizes 40+ research papers by adaptation strategy, training method (RL, SFT, DPO), task domain, and implementation details.
 
-Each paper entry includes:
-- Publication venue and date
-- Links to papers and code repositories
-- Task domains (coding, formal theorem proving, tool-calling, IR, etc.)
-- Tools used (code executors, compilers, APIs, retrievers)
-- Agent backbones (LLaMA, Qwen, DeepSeek, etc.)
-- Training methods (GRPO, PPO, SFT, DPO, AlphaZero)
+## Repository Structure
 
-## Installation & Access
+```
+awesome-adaptation-of-agentic-ai/
+├── README.md                 # Main paper collection with categorized tables
+├── images/
+│   ├── intro.png            # Overview diagram
+│   ├── a1_illustrate.png    # Tool execution signaled adaptation
+│   ├── a1_timeline.png      # Development timeline
+│   ├── paper_icon.png       # Paper link icons
+│   └── code_icon.png        # Code link icons
+└── LICENSE
+```
+
+## Installation & Usage
+
+### Cloning the Repository
 
 ```bash
 # Clone the repository
 git clone https://github.com/pat-jj/Awesome-Adaptation-of-Agentic-AI.git
 cd Awesome-Adaptation-of-Agentic-AI
 
-# View the README
+# View the main README
 cat README.md
-
-# Browse images
-ls images/
 ```
 
-The repository is primarily a documentation resource (no code to install), but you can:
+### Browsing Papers
+
+The repository organizes papers into four main categories:
+
+1. **A1: Tool Execution Signaled Agent Adaptation**
+   - RL-based methods (GRPO, PPO, AlphaZero-like)
+   - SFT & DPO methods
+
+2. **A2: Agent Output Signaled Adaptation**
+   - Coming in future updates
+
+3. **T1: Agent-Agnostic Tool Adaptation**
+   - Coming in future updates
+
+4. **T2: Agent-Supervised Tool Adaptation**
+   - Coming in future updates
+
+## Key Research Categories
+
+### A1: Tool Execution Signaled (RL-Based)
+
+Papers where agents learn from tool execution feedback using reinforcement learning:
+
+**Notable Methods:**
+- **Orion** (2025.11): IR agents with GRPO on LFM2
+- **DeepSeek-R1-Zero** (2025.01): Coding agents with code executor feedback
+- **DeepSeek-Prover-V2** (2025.04): Formal theorem proving with Lean compiler
+- **FTRL** (2025.08): Multi-step tool-use with GRPO
+
+**Common Pattern:**
+```
+Agent → Tool Call → Execution Feedback → RL Update (GRPO/PPO)
+```
+
+### A1: Tool Execution Signaled (SFT & DPO)
+
+Papers using supervised fine-tuning and direct preference optimization:
+
+**Notable Methods:**
+- **ToolLLM** (2023.07): API planning with real-world APIs
+- **RetPO** (2024.02): Information retrieval with DPO
+- **AWL** (2024.12): Scientific reasoning with adaptive learning
+
+**Common Pattern:**
+```
+Agent → Tool Call → Execution Trace → Supervised Learning
+```
+
+## Common Use Cases
+
+### Finding Papers by Task
+
+**Example: Formal Theorem Proving**
 
 ```bash
-# Keep it updated with latest papers
-git pull origin main
-
-# Search for specific topics
+# Search README for theorem proving papers
 grep -i "theorem proving" README.md
-grep -i "GRPO" README.md
 ```
 
-## Repository Structure
+Papers include: AlphaProof, BFS-Prover-V2, Goedel-Prover-V2, Leanabell-Prover-V2, DeepSeek-Prover-V1.5/V2
 
-```
-Awesome-Adaptation-of-Agentic-AI/
-├── README.md           # Main curated list
-├── images/            # Illustrations and timelines
-│   ├── intro.png
-│   ├── a1_illustrate.png
-│   ├── a1_timeline.png
-│   ├── paper_icon.png
-│   └── code_icon.png
-└── LICENSE
-```
-
-## Key Usage Patterns
-
-### Finding Papers by Method Type
-
-**RL-Based Agent Adaptation (A1)**:
-The repository catalogs methods using reinforcement learning for tool-execution feedback:
-
-```markdown
-Examples:
-- Orion (2025.11): IR with retrievers, GRPO on LFM2
-- AlphaProof (2025.10): Formal theorem proving with Lean, AlphaZero
-- Tool-R1 (2025.09): General tool reasoning, GRPO on Qwen2.5
-- DeepSeek-R1-Zero (2025.01): Coding with code executor, GRPO
-```
-
-**SFT & DPO Methods (A1)**:
-```markdown
-Examples:
-- AWL (2024.12): Scientific reasoning, SFT+DPO on Llama-3.1/Qwen-2.5
-- ToolLLM (2023.07): Real-world API planning, SFT on LLaMA/Vicuna
-- RetPO (2024.02): IR with retrievers, SFT+DPO on LLaMA2
-```
-
-### Searching by Task Domain
+**Example: Coding & Code Execution**
 
 ```bash
-# Find all papers on formal theorem proving
-grep -A 1 "Formal Theorem Proving" README.md
-
-# Find papers on coding tasks
-grep -A 1 "Coding" README.md | grep -E "Time|Method|Paper"
-
-# Find papers using specific tools (e.g., Lean compiler)
-grep "Lean" README.md
+# Find coding-related papers
+grep -i "coding\|code executor" README.md
 ```
 
-### Filtering by Agent Backbone
+Papers include: olmOCR2, R1-Code-Interpreter, Code-R1, DeepSeek-R1-Zero, RLEF, LeDex, CYCLE, CodeAct
 
-```python
-# Example: Extract papers using Qwen models
-import re
+### Finding Papers by Method
 
-with open('README.md', 'r') as f:
-    content = f.read()
+**Example: GRPO (Group Relative Policy Optimization)**
 
-# Find all table rows mentioning Qwen
-qwen_papers = re.findall(r'\|.*Qwen.*\|', content)
-for paper in qwen_papers[:5]:
-    print(paper)
+```bash
+# List all GRPO papers
+grep "GRPO" README.md
 ```
 
-### Accessing Paper Links Programmatically
+Commonly used in: Tool-N1, DeepSeek-Prover-V2, SQL-R1, Rec-R1, DeepRetrieval, etc.
 
-```python
-import re
-import requests
+**Example: DPO (Direct Preference Optimization)**
 
-# Extract arXiv links from README
-with open('README.md', 'r') as f:
-    readme = f.read()
-
-# Pattern: [Paper](https://arxiv.org/abs/XXXX.XXXXX)
-arxiv_pattern = r'\[Paper\]\((https://arxiv\.org/abs/[\d.]+)\)'
-papers = re.findall(arxiv_pattern, readme)
-
-print(f"Found {len(papers)} arXiv papers")
-for i, url in enumerate(papers[:3], 1):
-    print(f"{i}. {url}")
+```bash
+# List all DPO papers
+grep "DPO" README.md
 ```
 
-### Tracking Development Timelines
+Used in: AWL, LeReT, TP-LLaMA, RetPO
 
-The repository includes timeline visualizations for method evolution:
+### Finding Papers by Model Backbone
+
+**Example: Qwen2.5-based agents**
+
+```bash
+# Find Qwen2.5 implementations
+grep "Qwen2.5" README.md
+```
+
+Models include: olmOCR2, ToolExpander, BFS-Prover-V2, WebGen-Agent, Tool-R1, etc.
+
+## Accessing Paper Resources
+
+### Paper Links
+
+All papers include arXiv or conference links:
 
 ```markdown
-A1 Methods Timeline: images/a1_timeline.png
-- Shows progression from 2023 (ToolLLM) to 2025 (Orion, olmOCR2)
-- Visualizes the shift from SFT-only to RL-based approaches
+[Paper](https://arxiv.org/abs/2512.16301)
 ```
 
-## Common Research Workflows
+### Code Repositories
 
-### 1. Finding Recent Work in a Specific Domain
+Many papers provide implementation code:
 
-```bash
-# Find 2025 papers on tool-calling
-grep "2025" README.md | grep -i "tool-calling"
-
-# Find papers with code available
-grep -B 2 "Code\]" README.md | grep "Method"
+```markdown
+[Code](https://github.com/example/repo)
 ```
 
-### 2. Comparing Training Methods
+### Reading Strategy
 
 ```python
-# Count papers by training method
-import re
-
-with open('README.md', 'r') as f:
-    content = f.read()
-
-methods = ['GRPO', 'PPO', 'SFT', 'DPO', 'AlphaZero']
-for method in methods:
-    count = len(re.findall(method, content))
-    print(f"{method}: {count} papers")
-```
-
-### 3. Building a Reading List
-
-```python
-# Extract papers published in top venues
-import re
-
-venues = ['Nature', 'NeurIPS', 'ICML', 'ICLR', 'NAACL']
-venue_pattern = r'\| \d+\.\d+ \| (.*?) \| (' + '|'.join(venues) + r").*?\[Paper\]\((.*?)\)"
-
-with open('README.md', 'r') as f:
-    content = f.read()
-
-matches = re.findall(venue_pattern, content)
-for method, venue, url in matches[:5]:
-    print(f"- {method.strip()} ({venue}): {url}")
-```
-
-### 4. Tracking Code Implementations
-
-```bash
-# Find all GitHub repositories linked
-grep -o "https://github.com/[^)]*" README.md | sort -u > github_repos.txt
-
-# Count papers with available code
-grep -c "Code\]" README.md
-```
-
-## Working with Paper Metadata
-
-### Extracting Structured Data
-
-```python
-import re
-
-def parse_table_row(row):
-    """Parse a markdown table row into structured data"""
-    parts = [p.strip() for p in row.split('|')[1:-1]]
-    if len(parts) < 6:
-        return None
+# Pseudo-code for systematic review
+def research_adaptation_strategy(task_domain, method_type):
+    """
+    Navigate to specific adaptation category
     
-    # Extract paper link
-    paper_match = re.search(r'\[Paper\]\((.*?)\)', parts[2])
-    code_match = re.search(r'\[Code\]\((.*?)\)', parts[2])
+    Args:
+        task_domain: e.g., "coding", "theorem proving", "IR"
+        method_type: "RL", "SFT", "DPO"
     
-    return {
-        'date': parts[0],
-        'method': parts[1].split()[0],
-        'venue': parts[2].split('<br>')[0],
-        'paper_url': paper_match.group(1) if paper_match else None,
-        'code_url': code_match.group(1) if code_match else None,
-        'task': parts[3],
-        'tools': parts[4],
-        'backbone': parts[5],
-        'tuning': parts[6] if len(parts) > 6 else None
-    }
-
-# Example usage
-with open('README.md', 'r') as f:
-    lines = f.readlines()
-
-table_rows = [l for l in lines if l.startswith('| 202')]
-papers = [parse_table_row(row) for row in table_rows[:5]]
-
-for paper in papers:
-    if paper:
-        print(f"{paper['method']}: {paper['task']} using {paper['tuning']}")
+    Returns:
+        List of relevant papers with links
+    """
+    # 1. Go to appropriate section (A1, A2, T1, T2)
+    # 2. Filter by method_type (RL-based vs SFT/DPO)
+    # 3. Search table for task_domain
+    # 4. Check paper links, code availability, model backbones
+    pass
 ```
 
-## Citation Information
+## Citation Format
 
-When using this repository in research:
+When using this repository for research:
 
 ```bibtex
 @article{jiang2025adaptation,
@@ -264,200 +206,99 @@ When using this repository in research:
 }
 ```
 
-## Configuration for Automation
+## Contributing
 
-### Setting Up Alerts for New Papers
+The repository welcomes pull requests for:
 
-```python
-# monitor_updates.py
-import subprocess
-import time
+- New papers on agentic AI adaptation
+- Updates to existing paper information
+- Corrections to categorizations
+- Additional metadata (benchmarks, datasets)
 
-def check_for_updates():
-    """Check if repository has new commits"""
-    result = subprocess.run(
-        ['git', 'fetch', 'origin'],
-        capture_output=True,
-        text=True
-    )
-    
-    status = subprocess.run(
-        ['git', 'status', '-uno'],
-        capture_output=True,
-        text=True
-    ).stdout
-    
-    if 'behind' in status:
-        print("New papers available!")
-        subprocess.run(['git', 'pull'])
-        return True
-    return False
+**Contribution Pattern:**
 
-# Run weekly
-while True:
-    check_for_updates()
-    time.sleep(604800)  # 1 week
+```bash
+# 1. Fork the repository
+# 2. Add paper to appropriate category in README.md
+# 3. Follow existing table format:
+# | Time | Method | Venue | Task(s) | Tool(s) | Agent Backbone | Tuning |
+
+# Example entry:
+# | 2025.XX | YourMethod | Venue<br>🔗 [Paper](link)<br>💻 [Code](link) | Task | Tools | Model | Method |
+
+# 4. Submit pull request
 ```
 
-### Building a Custom Filter
+## Key Insights from the Collection
 
-```python
-# filter_papers.py
-import re
-import sys
+### Adaptation Taxonomy
 
-def filter_papers(task=None, backbone=None, year=None, has_code=False):
-    """Filter papers by criteria"""
-    with open('README.md', 'r') as f:
-        content = f.read()
-    
-    # Split into table rows
-    rows = [l for l in content.split('\n') if l.startswith('| 202')]
-    
-    results = []
-    for row in rows:
-        if year and not row.startswith(f'| {year}'):
-            continue
-        if task and task.lower() not in row.lower():
-            continue
-        if backbone and backbone.lower() not in row.lower():
-            continue
-        if has_code and '[Code]' not in row:
-            continue
-        results.append(row)
-    
-    return results
+1. **Signal Type**:
+   - Tool execution feedback (A1)
+   - Agent output quality (A2)
 
-# Usage
-if __name__ == '__main__':
-    papers = filter_papers(task='coding', has_code=True, year='2025')
-    for paper in papers:
-        print(paper)
-```
+2. **Training Methods**:
+   - **GRPO**: Group Relative Policy Optimization (most common in 2025)
+   - **PPO**: Proximal Policy Optimization
+   - **AlphaZero-like**: Self-play with value/policy networks
+   - **SFT**: Supervised fine-tuning on execution traces
+   - **DPO**: Direct preference optimization
+
+3. **Trend**: Growing use of GRPO for tool-augmented agents (2025), especially with Qwen2.5 and DeepSeek models
+
+### Domain Coverage
+
+- **Coding**: Code execution sandboxes (DeepSeek-R1-Zero, R1-Code-Interpreter)
+- **Formal Math**: Lean compilers (AlphaProof, DeepSeek-Prover)
+- **Information Retrieval**: Search engines, retrievers (DeepRetrieval, ReZero)
+- **Tool-Calling**: API execution (ToolLLM, Tool-N1, ToolExpander)
+- **Web Agents**: GUI interaction (WebGen-Agent)
 
 ## Troubleshooting
 
-### Images Not Displaying
+### Finding Specific Research
+
+**Q: How do I find papers using a specific model like LLaMA3?**
 
 ```bash
-# Ensure you're viewing on GitHub or have images/ folder
-ls images/
-
-# If cloned, images should be present
-# If viewing raw README, use absolute GitHub URLs
+grep -i "llama3" README.md
 ```
 
-### Finding Specific Venues
+**Q: Which papers have open-source code?**
 
 ```bash
-# List all unique venues
-grep -E "^\| 202" README.md | cut -d'|' -f3 | cut -d'<' -f1 | sort -u
-
-# Find all NeurIPS papers
-grep "NeurIPS" README.md
+# Look for code icon in tables
+grep "code_icon.png" README.md
 ```
 
-### Broken Links
-
-```python
-# check_links.py
-import re
-import requests
-
-with open('README.md', 'r') as f:
-    content = f.read()
-
-links = re.findall(r'https://[^\s\)]+', content)
-
-for link in links[:10]:  # Test first 10
-    try:
-        response = requests.head(link, timeout=5)
-        if response.status_code >= 400:
-            print(f"Broken: {link}")
-    except:
-        print(f"Error checking: {link}")
-```
-
-## Advanced Usage
-
-### Generating Summary Statistics
-
-```python
-# statistics.py
-import re
-from collections import Counter
-
-with open('README.md', 'r') as f:
-    content = f.read()
-
-# Count by year
-years = re.findall(r'\| (202\d)\.\d+', content)
-print("Papers by year:", Counter(years))
-
-# Count by training method
-methods = re.findall(r'\| (GRPO|PPO|SFT|DPO|AlphaZero)', content)
-print("Papers by method:", Counter(methods))
-
-# Count by backbone
-backbones = re.findall(r'\| (Qwen|LLaMA|DeepSeek|GPT)[^\|]*\|', content)
-print("Papers by backbone:", Counter([b.strip().split()[0] for b in backbones]))
-```
-
-### Creating a Local Database
-
-```python
-# build_db.py
-import sqlite3
-import re
-
-conn = sqlite3.connect('papers.db')
-c = conn.cursor()
-
-c.execute('''CREATE TABLE IF NOT EXISTS papers
-             (method TEXT, date TEXT, venue TEXT, task TEXT, 
-              backbone TEXT, tuning TEXT, paper_url TEXT, code_url TEXT)''')
-
-with open('README.md', 'r') as f:
-    content = f.read()
-
-# Parse and insert (simplified)
-rows = [l for l in content.split('\n') if l.startswith('| 202')]
-for row in rows:
-    parts = [p.strip() for p in row.split('|')[1:-1]]
-    if len(parts) >= 6:
-        c.execute('INSERT INTO papers VALUES (?,?,?,?,?,?,?,?)',
-                  (parts[1], parts[0], parts[2], parts[3], 
-                   parts[5], parts[6] if len(parts) > 6 else '', '', ''))
-
-conn.commit()
-conn.close()
-```
-
-## Integration with Research Workflows
-
-### Mendeley/Zotero Import
+**Q: What are the most recent papers?**
 
 ```bash
-# Export BibTeX entries (manual extraction example)
-grep -A 10 "Method" README.md | grep "Paper\]" | \
-  sed 's/.*\(https:\/\/arxiv.org\/abs\/\([0-9.]*\)\).*/\2/' | \
-  while read arxiv_id; do
-    curl "https://export.arxiv.org/api/query?id_list=$arxiv_id" >> papers.xml
-  done
+# Check Time column (sorted by date within categories)
+# Most recent: 2025.11 (Orion), 2025.10 (olmOCR2, AlphaProof)
 ```
 
-### Notion Database Population
+### Understanding Abbreviations
 
-```python
-# notion_sync.py (requires notion-client)
-# pip install notion-client
-from notion_client import Client
+- **IR**: Information Retrieval
+- **GRPO**: Group Relative Policy Optimization
+- **PPO**: Proximal Policy Optimization
+- **SFT**: Supervised Fine-Tuning
+- **DPO**: Direct Preference Optimization
+- **TTRL**: Test-Time Reinforcement Learning
+- **EI**: Expert Iteration
 
-notion = Client(auth=os.environ["NOTION_TOKEN"])
-database_id = os.environ["NOTION_DATABASE_ID"]
+### Repository Maintenance
 
-# Parse README and create entries
-# (Full implementation depends on your Notion schema)
-```
+The repository is actively maintained with:
+- **Last Update**: 2026-05-15 (per metadata)
+- **Stars**: 650+ (growing at ~3 stars/day)
+- **Open Issues**: 2
 
-This repository is a living document — contributions are welcome via pull requests to add new papers or correct information.
+For questions or issues, check: https://github.com/pat-jj/Awesome-Adaptation-of-Agentic-AI/issues
+
+## Related Resources
+
+- **Homepage**: https://arxiv.org/abs/2512.16301
+- **License**: CC BY-NC-ND 4.0 (content), NOASSERTION (code)
+- **Topics**: adaptation, agentic-ai, large-language-models
