@@ -76,6 +76,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [awesome-adaptation-agentic-ai](skills/awesome-adaptation-agentic-ai/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-adaptation-agentic-ai) | [pat-jj/Awesome-Adaptation-of-Agentic-AI](https://github.com/pat-jj/Awesome-Adaptation-of-Agentic-AI) | 2026-05-18 |
 | [github-agentic-workflows](skills/github-agentic-workflows/) | [install](https://skills.sh/aradotso/ai-agent-skills/github-agentic-workflows) | [githubnext/agentics](https://github.com/githubnext/agentics) | 2026-05-18 |
 | [infinite-agentic-loop-claude](skills/infinite-agentic-loop-claude/) | [install](https://skills.sh/aradotso/ai-agent-skills/infinite-agentic-loop-claude) | [disler/infinite-agentic-loop](https://github.com/disler/infinite-agentic-loop) | 2026-05-18 |
+| [agents-best-practices-harness-design](skills/agents-best-practices-harness-design/) | [install](https://skills.sh/aradotso/ai-agent-skills/agents-best-practices-harness-design) | [DenisSergeevitch/agents-best-practices](https://github.com/DenisSergeevitch/agents-best-practices) | 2026-05-18 |
 <!-- SKILL_INDEX -->
 
 ---
