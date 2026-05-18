@@ -72,6 +72,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [awesome-agentic-reasoning](skills/awesome-agentic-reasoning/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-agentic-reasoning) | [weitianxin/Awesome-Agentic-Reasoning](https://github.com/weitianxin/Awesome-Agentic-Reasoning) | 2026-05-17 |
 | [agentic-soc-platform](skills/agentic-soc-platform/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-soc-platform) | [FunnyWolf/agentic-soc-platform](https://github.com/FunnyWolf/agentic-soc-platform) | 2026-05-17 |
 | [agentic-data-scientist](skills/agentic-data-scientist/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-data-scientist) | [K-Dense-AI/agentic-data-scientist](https://github.com/K-Dense-AI/agentic-data-scientist) | 2026-05-18 |
+| [gam-agentic-memory](skills/gam-agentic-memory/) | [install](https://skills.sh/aradotso/ai-agent-skills/gam-agentic-memory) | [VectorSpaceLab/general-agentic-memory](https://github.com/VectorSpaceLab/general-agentic-memory) | 2026-05-18 |
 <!-- SKILL_INDEX -->
 
 ---
