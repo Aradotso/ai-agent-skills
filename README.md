@@ -78,6 +78,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [infinite-agentic-loop-claude](skills/infinite-agentic-loop-claude/) | [install](https://skills.sh/aradotso/ai-agent-skills/infinite-agentic-loop-claude) | [disler/infinite-agentic-loop](https://github.com/disler/infinite-agentic-loop) | 2026-05-18 |
 | [agents-best-practices-harness-design](skills/agents-best-practices-harness-design/) | [install](https://skills.sh/aradotso/ai-agent-skills/agents-best-practices-harness-design) | [DenisSergeevitch/agents-best-practices](https://github.com/DenisSergeevitch/agents-best-practices) | 2026-05-18 |
 | [google-agents-cli](skills/google-agents-cli/) | [install](https://skills.sh/aradotso/ai-agent-skills/google-agents-cli) | [google/agents-cli](https://github.com/google/agents-cli) | 2026-05-21 |
+| [datawhale-agent-learning-hub](skills/datawhale-agent-learning-hub/) | [install](https://skills.sh/aradotso/ai-agent-skills/datawhale-agent-learning-hub) | [datawhalechina/Agent-Learning-Hub](https://github.com/datawhalechina/Agent-Learning-Hub) | 2026-05-22 |
 <!-- SKILL_INDEX -->
 
 ---
