@@ -79,6 +79,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [agents-best-practices-harness-design](skills/agents-best-practices-harness-design/) | [install](https://skills.sh/aradotso/ai-agent-skills/agents-best-practices-harness-design) | [DenisSergeevitch/agents-best-practices](https://github.com/DenisSergeevitch/agents-best-practices) | 2026-05-18 |
 | [google-agents-cli](skills/google-agents-cli/) | [install](https://skills.sh/aradotso/ai-agent-skills/google-agents-cli) | [google/agents-cli](https://github.com/google/agents-cli) | 2026-05-21 |
 | [datawhale-agent-learning-hub](skills/datawhale-agent-learning-hub/) | [install](https://skills.sh/aradotso/ai-agent-skills/datawhale-agent-learning-hub) | [datawhalechina/Agent-Learning-Hub](https://github.com/datawhalechina/Agent-Learning-Hub) | 2026-05-22 |
+| [cowagent-ai-assistant](skills/cowagent-ai-assistant/) | [install](https://skills.sh/aradotso/ai-agent-skills/cowagent-ai-assistant) | [zhayujie/CowAgent](https://github.com/zhayujie/CowAgent) | 2026-05-24 |
 <!-- SKILL_INDEX -->
 
 ---
