@@ -81,6 +81,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [datawhale-agent-learning-hub](skills/datawhale-agent-learning-hub/) | [install](https://skills.sh/aradotso/ai-agent-skills/datawhale-agent-learning-hub) | [datawhalechina/Agent-Learning-Hub](https://github.com/datawhalechina/Agent-Learning-Hub) | 2026-05-22 |
 | [cowagent-ai-assistant](skills/cowagent-ai-assistant/) | [install](https://skills.sh/aradotso/ai-agent-skills/cowagent-ai-assistant) | [zhayujie/CowAgent](https://github.com/zhayujie/CowAgent) | 2026-05-24 |
 | [tradingagents-astock-multi-agent-framework](skills/tradingagents-astock-multi-agent-framework/) | [install](https://skills.sh/aradotso/ai-agent-skills/tradingagents-astock-multi-agent-framework) | [simonlin1212/TradingAgents-astock](https://github.com/simonlin1212/TradingAgents-astock) | 2026-05-25 |
+| [agent-governance-toolkit](skills/agent-governance-toolkit/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-governance-toolkit) | [microsoft/agent-governance-toolkit](https://github.com/microsoft/agent-governance-toolkit) | 2026-05-26 |
 <!-- SKILL_INDEX -->
 
 ---
