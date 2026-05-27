@@ -82,6 +82,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [cowagent-ai-assistant](skills/cowagent-ai-assistant/) | [install](https://skills.sh/aradotso/ai-agent-skills/cowagent-ai-assistant) | [zhayujie/CowAgent](https://github.com/zhayujie/CowAgent) | 2026-05-24 |
 | [tradingagents-astock-multi-agent-framework](skills/tradingagents-astock-multi-agent-framework/) | [install](https://skills.sh/aradotso/ai-agent-skills/tradingagents-astock-multi-agent-framework) | [simonlin1212/TradingAgents-astock](https://github.com/simonlin1212/TradingAgents-astock) | 2026-05-25 |
 | [agent-governance-toolkit](skills/agent-governance-toolkit/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-governance-toolkit) | [microsoft/agent-governance-toolkit](https://github.com/microsoft/agent-governance-toolkit) | 2026-05-26 |
+| [agentic-seo-skill](skills/agentic-seo-skill/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-seo-skill) | [Bhanunamikaze/Agentic-SEO-Skill](https://github.com/Bhanunamikaze/Agentic-SEO-Skill) | 2026-05-27 |
 <!-- SKILL_INDEX -->
 
 ---
