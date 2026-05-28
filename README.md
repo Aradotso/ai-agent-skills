@@ -83,6 +83,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [tradingagents-astock-multi-agent-framework](skills/tradingagents-astock-multi-agent-framework/) | [install](https://skills.sh/aradotso/ai-agent-skills/tradingagents-astock-multi-agent-framework) | [simonlin1212/TradingAgents-astock](https://github.com/simonlin1212/TradingAgents-astock) | 2026-05-25 |
 | [agent-governance-toolkit](skills/agent-governance-toolkit/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-governance-toolkit) | [microsoft/agent-governance-toolkit](https://github.com/microsoft/agent-governance-toolkit) | 2026-05-26 |
 | [agentic-seo-skill](skills/agentic-seo-skill/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-seo-skill) | [Bhanunamikaze/Agentic-SEO-Skill](https://github.com/Bhanunamikaze/Agentic-SEO-Skill) | 2026-05-27 |
+| [locoagent-social-media-automation](skills/locoagent-social-media-automation/) | [install](https://skills.sh/aradotso/ai-agent-skills/locoagent-social-media-automation) | [LocoreMind/locoagent](https://github.com/LocoreMind/locoagent) | 2026-05-28 |
 <!-- SKILL_INDEX -->
 
 ---
