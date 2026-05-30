@@ -87,6 +87,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [elephant-agent-personal-ai](skills/elephant-agent-personal-ai/) | [install](https://skills.sh/aradotso/ai-agent-skills/elephant-agent-personal-ai) | [agentic-in/elephant-agent](https://github.com/agentic-in/elephant-agent) | 2026-05-30 |
 | [ktx-ai-data-agents-context-layer](skills/ktx-ai-data-agents-context-layer/) | [install](https://skills.sh/aradotso/ai-agent-skills/ktx-ai-data-agents-context-layer) | [Kaelio/ktx-ai-data-agents-mcp-context-skills](https://github.com/Kaelio/ktx-ai-data-agents-mcp-context-skills) | 2026-05-30 |
 | [ktx-ai-data-context-layer](skills/ktx-ai-data-context-layer/) | [install](https://skills.sh/aradotso/ai-agent-skills/ktx-ai-data-context-layer) | [Kaelio/ktx-ai-data-agents-mcp-context-skills](https://github.com/Kaelio/ktx-ai-data-agents-mcp-context-skills) | 2026-05-30 |
+| [ktx-data-agent-context-layer](skills/ktx-data-agent-context-layer/) | [install](https://skills.sh/aradotso/ai-agent-skills/ktx-data-agent-context-layer) | [Kaelio/ktx-ai-data-agents-mcp-context-skills](https://github.com/Kaelio/ktx-ai-data-agents-mcp-context-skills) | 2026-05-30 |
 <!-- SKILL_INDEX -->
 
 ---
