@@ -84,6 +84,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [agent-governance-toolkit](skills/agent-governance-toolkit/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-governance-toolkit) | [microsoft/agent-governance-toolkit](https://github.com/microsoft/agent-governance-toolkit) | 2026-05-26 |
 | [agentic-seo-skill](skills/agentic-seo-skill/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-seo-skill) | [Bhanunamikaze/Agentic-SEO-Skill](https://github.com/Bhanunamikaze/Agentic-SEO-Skill) | 2026-05-27 |
 | [locoagent-social-media-automation](skills/locoagent-social-media-automation/) | [install](https://skills.sh/aradotso/ai-agent-skills/locoagent-social-media-automation) | [LocoreMind/locoagent](https://github.com/LocoreMind/locoagent) | 2026-05-28 |
+| [elephant-agent-personal-ai](skills/elephant-agent-personal-ai/) | [install](https://skills.sh/aradotso/ai-agent-skills/elephant-agent-personal-ai) | [agentic-in/elephant-agent](https://github.com/agentic-in/elephant-agent) | 2026-05-30 |
 <!-- SKILL_INDEX -->
 
 ---
