@@ -86,6 +86,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [locoagent-social-media-automation](skills/locoagent-social-media-automation/) | [install](https://skills.sh/aradotso/ai-agent-skills/locoagent-social-media-automation) | [LocoreMind/locoagent](https://github.com/LocoreMind/locoagent) | 2026-05-28 |
 | [elephant-agent-personal-ai](skills/elephant-agent-personal-ai/) | [install](https://skills.sh/aradotso/ai-agent-skills/elephant-agent-personal-ai) | [agentic-in/elephant-agent](https://github.com/agentic-in/elephant-agent) | 2026-05-30 |
 | [ktx-ai-data-agents-context-layer](skills/ktx-ai-data-agents-context-layer/) | [install](https://skills.sh/aradotso/ai-agent-skills/ktx-ai-data-agents-context-layer) | [Kaelio/ktx-ai-data-agents-mcp-context-skills](https://github.com/Kaelio/ktx-ai-data-agents-mcp-context-skills) | 2026-05-30 |
+| [ktx-ai-data-context-layer](skills/ktx-ai-data-context-layer/) | [install](https://skills.sh/aradotso/ai-agent-skills/ktx-ai-data-context-layer) | [Kaelio/ktx-ai-data-agents-mcp-context-skills](https://github.com/Kaelio/ktx-ai-data-agents-mcp-context-skills) | 2026-05-30 |
 <!-- SKILL_INDEX -->
 
 ---
