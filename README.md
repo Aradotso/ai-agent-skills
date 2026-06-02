@@ -90,6 +90,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [ktx-data-agent-context-layer](skills/ktx-data-agent-context-layer/) | [install](https://skills.sh/aradotso/ai-agent-skills/ktx-data-agent-context-layer) | [Kaelio/ktx-ai-data-agents-mcp-context-skills](https://github.com/Kaelio/ktx-ai-data-agents-mcp-context-skills) | 2026-05-30 |
 | [ktx-context-layer-data-agents](skills/ktx-context-layer-data-agents/) | [install](https://skills.sh/aradotso/ai-agent-skills/ktx-context-layer-data-agents) | [Kaelio/ktx-ai-data-agents-mcp-context-skills](https://github.com/Kaelio/ktx-ai-data-agents-mcp-context-skills) | 2026-05-30 |
 | [matlab-agentic-toolkit](skills/matlab-agentic-toolkit/) | [install](https://skills.sh/aradotso/ai-agent-skills/matlab-agentic-toolkit) | [matlab/matlab-agentic-toolkit](https://github.com/matlab/matlab-agentic-toolkit) | 2026-05-31 |
+| [lark-coding-agent-bridge](skills/lark-coding-agent-bridge/) | [install](https://skills.sh/aradotso/ai-agent-skills/lark-coding-agent-bridge) | [zarazhangrui/lark-coding-agent-bridge](https://github.com/zarazhangrui/lark-coding-agent-bridge) | 2026-06-02 |
 <!-- SKILL_INDEX -->
 
 ---
