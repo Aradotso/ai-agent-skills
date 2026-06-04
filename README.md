@@ -92,6 +92,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [matlab-agentic-toolkit](skills/matlab-agentic-toolkit/) | [install](https://skills.sh/aradotso/ai-agent-skills/matlab-agentic-toolkit) | [matlab/matlab-agentic-toolkit](https://github.com/matlab/matlab-agentic-toolkit) | 2026-05-31 |
 | [lark-coding-agent-bridge](skills/lark-coding-agent-bridge/) | [install](https://skills.sh/aradotso/ai-agent-skills/lark-coding-agent-bridge) | [zarazhangrui/lark-coding-agent-bridge](https://github.com/zarazhangrui/lark-coding-agent-bridge) | 2026-06-02 |
 | [duel-agents-routing](skills/duel-agents-routing/) | [install](https://skills.sh/aradotso/ai-agent-skills/duel-agents-routing) | [2aronS/Duel-Agents](https://github.com/2aronS/Duel-Agents) | 2026-06-03 |
+| [litellm-agent-platform](skills/litellm-agent-platform/) | [install](https://skills.sh/aradotso/ai-agent-skills/litellm-agent-platform) | [LiteLLM-Labs/litellm-agent-platform](https://github.com/LiteLLM-Labs/litellm-agent-platform) | 2026-06-04 |
 <!-- SKILL_INDEX -->
 
 ---
