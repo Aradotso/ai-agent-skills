@@ -93,6 +93,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [lark-coding-agent-bridge](skills/lark-coding-agent-bridge/) | [install](https://skills.sh/aradotso/ai-agent-skills/lark-coding-agent-bridge) | [zarazhangrui/lark-coding-agent-bridge](https://github.com/zarazhangrui/lark-coding-agent-bridge) | 2026-06-02 |
 | [duel-agents-routing](skills/duel-agents-routing/) | [install](https://skills.sh/aradotso/ai-agent-skills/duel-agents-routing) | [2aronS/Duel-Agents](https://github.com/2aronS/Duel-Agents) | 2026-06-03 |
 | [litellm-agent-platform](skills/litellm-agent-platform/) | [install](https://skills.sh/aradotso/ai-agent-skills/litellm-agent-platform) | [LiteLLM-Labs/litellm-agent-platform](https://github.com/LiteLLM-Labs/litellm-agent-platform) | 2026-06-04 |
+| [500-ai-agents-projects-catalog](skills/500-ai-agents-projects-catalog/) | [install](https://skills.sh/aradotso/ai-agent-skills/500-ai-agents-projects-catalog) | [ashishpatel26/500-AI-Agents-Projects](https://github.com/ashishpatel26/500-AI-Agents-Projects) | 2026-06-06 |
 <!-- SKILL_INDEX -->
 
 ---
