@@ -95,6 +95,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [litellm-agent-platform](skills/litellm-agent-platform/) | [install](https://skills.sh/aradotso/ai-agent-skills/litellm-agent-platform) | [LiteLLM-Labs/litellm-agent-platform](https://github.com/LiteLLM-Labs/litellm-agent-platform) | 2026-06-04 |
 | [500-ai-agents-projects-catalog](skills/500-ai-agents-projects-catalog/) | [install](https://skills.sh/aradotso/ai-agent-skills/500-ai-agents-projects-catalog) | [ashishpatel26/500-AI-Agents-Projects](https://github.com/ashishpatel26/500-AI-Agents-Projects) | 2026-06-06 |
 | [agentic-ai-research-agent](skills/agentic-ai-research-agent/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-ai-research-agent) | [https-deeplearning-ai/agentic-ai-public](https://github.com/https-deeplearning-ai/agentic-ai-public) | 2026-06-08 |
+| [deeplearning-ai-agentic-research-agent](skills/deeplearning-ai-agentic-research-agent/) | [install](https://skills.sh/aradotso/ai-agent-skills/deeplearning-ai-agentic-research-agent) | [https-deeplearning-ai/agentic-ai-public](https://github.com/https-deeplearning-ai/agentic-ai-public) | 2026-06-08 |
 <!-- SKILL_INDEX -->
 
 ---
