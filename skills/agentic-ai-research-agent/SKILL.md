@@ -1,15 +1,15 @@
 ---
 name: agentic-ai-research-agent
-description: Build and run reflective research agents with FastAPI, Postgres, and multi-step workflows using Tavily, arXiv, and Wikipedia tools
+description: FastAPI research agent service with planning, tool-using agents (Tavily, arXiv, Wikipedia), and Postgres state management
 triggers:
-  - how do I create a research agent workflow
-  - set up the agentic AI research service
-  - build a multi-step research agent with reflection
-  - use tavily arxiv wikipedia in an agent workflow
-  - deploy research agent with FastAPI and Postgres
-  - create a task-based research agent with progress tracking
-  - implement planning and execution agents
-  - build reflective research agent with tool use
+  - set up the agentic research agent service
+  - run a research workflow with planning agents
+  - create a multi-step research task with tavily and arxiv
+  - implement reflective research agent with fastapi
+  - build an agent workflow with planning and execution
+  - configure the research agent postgres backend
+  - generate a research report using agentic ai
+  - debug the fastapi research agent service
 ---
 
 # Agentic AI Research Agent Skill
@@ -18,40 +18,45 @@ triggers:
 
 ## Overview
 
-The **agentic-ai-public** project is a Research Agent service that implements a reflective, multi-step workflow for conducting research tasks. It combines planning agents, execution agents (research, writer, editor), and tool-using capabilities (Tavily search, arXiv papers, Wikipedia) in a FastAPI web service backed by Postgres for state management.
+The Agentic AI Research Agent is a FastAPI service that orchestrates multi-step research workflows using AI agents. It features:
 
-Key features:
-- Multi-agent workflow with planner, research, writer, and editor agents
-- Tool integration: Tavily web search, arXiv academic papers, Wikipedia
-- Task state tracking with Postgres
-- Real-time progress monitoring via REST API
-- Web UI for initiating research tasks
-- Single-container Docker deployment
+- **Planning Agent**: Breaks down research tasks into executable steps
+- **Executor Agents**: Research, writer, and editor agents that use tools
+- **Research Tools**: Integration with Tavily search, arXiv papers, and Wikipedia
+- **State Management**: PostgreSQL tracks task progress and results
+- **Async Execution**: Threaded workflow execution with live progress tracking
+- **Web UI**: Simple interface to kick off research tasks
+
+The system uses a reflective workflow pattern where agents plan, execute, and refine research outputs iteratively.
 
 ## Installation
 
-### Prerequisites
+### Docker Setup (Recommended)
+
+1. **Clone the repository:**
 
 ```bash
-# Required: Docker installed
-# API keys in .env file:
-cat > .env << EOF
-OPENAI_API_KEY=your-openai-key
-TAVILY_API_KEY=your-tavily-key
-EOF
-```
-
-### Build and Run
-
-```bash
-# Clone the repository
 git clone https://github.com/deeplearning-ai/agentic-ai-public.git
 cd agentic-ai-public
+```
 
-# Build Docker image
+2. **Create `.env` file with API keys:**
+
+```bash
+# .env
+OPENAI_API_KEY=your-openai-key-here
+TAVILY_API_KEY=your-tavily-key-here
+```
+
+3. **Build the Docker image:**
+
+```bash
 docker build -t fastapi-postgres-service .
+```
 
-# Run container (exposes FastAPI on 8000, Postgres on 5432)
+4. **Run the container:**
+
+```bash
 docker run --rm -it \
   -p 8000:8000 \
   -p 5432:5432 \
@@ -60,178 +65,180 @@ docker run --rm -it \
   fastapi-postgres-service
 ```
 
-### Access Points
+The container runs both PostgreSQL and the FastAPI service in a single container for development.
 
-- Web UI: `http://localhost:8000/`
-- API Docs: `http://localhost:8000/docs`
-- Postgres: `postgresql://app:local@localhost:5432/appdb`
+### Local Development Setup
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Set up PostgreSQL separately
+export DATABASE_URL="postgresql://user:password@localhost:5432/appdb"
+
+# Run the service
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
 
 ## Project Structure
 
 ```
 .
-├── main.py                    # FastAPI app with routes
+├── main.py                      # FastAPI app with routes
 ├── src/
-│   ├── planning_agent.py      # Planner and executor logic
-│   ├── agents.py              # Research/writer/editor agents
-│   └── research_tools.py      # Tavily, arXiv, Wikipedia tools
+│   ├── planning_agent.py        # Planner and executor logic
+│   ├── agents.py                # Research, writer, editor agents
+│   └── research_tools.py        # Tool implementations
 ├── templates/
-│   └── index.html             # Web UI template
-├── static/                    # CSS/JS assets
+│   └── index.html               # Web UI
+├── static/                      # CSS/JS assets
 ├── docker/
-│   └── entrypoint.sh          # Container initialization
+│   └── entrypoint.sh           # Container startup script
 ├── requirements.txt
-├── Dockerfile
-└── README.md
+└── Dockerfile
 ```
 
-## Core API Usage
+## Core Concepts
 
-### Generate Research Report
+### Task Lifecycle
+
+1. **Submit** → Task created with UUID
+2. **Planning** → Planner agent breaks down research query
+3. **Execution** → Each step runs through appropriate agent (research/writer/editor)
+4. **Completion** → Final report generated and stored
+
+### Database Schema
+
+The service uses SQLAlchemy models:
+
+```python
+from sqlalchemy import Column, String, Text, DateTime, Integer
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+class TaskStatus(Base):
+    __tablename__ = "task_status"
+    task_id = Column(String, primary_key=True)
+    status = Column(String)  # "running", "completed", "failed"
+    prompt = Column(Text)
+    model = Column(String)
+    final_report = Column(Text, nullable=True)
+    created_at = Column(DateTime)
+    updated_at = Column(DateTime)
+
+class TaskProgress(Base):
+    __tablename__ = "task_progress"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    task_id = Column(String)
+    step_number = Column(Integer)
+    step_name = Column(String)
+    status = Column(String)
+    result = Column(Text, nullable=True)
+    timestamp = Column(DateTime)
+```
+
+## API Reference
+
+### POST `/generate_report`
+
+Kick off a research task:
 
 ```python
 import requests
-import json
 
-# Initiate a research task
 response = requests.post(
     "http://localhost:8000/generate_report",
-    headers={"Content-Type": "application/json"},
     json={
         "prompt": "Large Language Models for scientific discovery",
         "model": "openai:gpt-4o"
     }
 )
-
-task_data = response.json()
-task_id = task_data["task_id"]
-print(f"Task initiated: {task_id}")
+task_id = response.json()["task_id"]
+print(f"Task started: {task_id}")
 ```
 
-### Monitor Progress
-
-```python
-# Poll task progress
-progress_response = requests.get(
-    f"http://localhost:8000/task_progress/{task_id}"
-)
-progress = progress_response.json()
-
-print(f"Status: {progress['status']}")
-print(f"Current step: {progress['current_step']}")
-print(f"Steps completed: {progress['steps_completed']}")
-
-# Get detailed step information
-for step in progress.get('steps', []):
-    print(f"  - {step['name']}: {step['status']}")
+**Request Body:**
+```json
+{
+  "prompt": "Research topic or question",
+  "model": "openai:gpt-4o"
+}
 ```
 
-### Retrieve Final Report
-
-```python
-# Get final task status and report
-status_response = requests.get(
-    f"http://localhost:8000/task_status/{task_id}"
-)
-result = status_response.json()
-
-if result['status'] == 'completed':
-    print("Research Report:")
-    print(result['report'])
-else:
-    print(f"Task status: {result['status']}")
-    print(f"Error: {result.get('error', 'N/A')}")
+**Response:**
+```json
+{
+  "task_id": "uuid-string"
+}
 ```
 
-## Building Custom Research Tools
+### GET `/task_progress/{task_id}`
 
-### Creating a New Research Tool
+Poll for live progress updates:
 
 ```python
-# src/research_tools.py
 import requests
-from typing import Dict, List
+import time
 
-def custom_search_tool(query: str, max_results: int = 5) -> List[Dict]:
-    """
-    Custom research tool template.
+task_id = "your-task-id"
+
+while True:
+    response = requests.get(f"http://localhost:8000/task_progress/{task_id}")
+    data = response.json()
     
-    Args:
-        query: Search query string
-        max_results: Maximum number of results to return
-        
-    Returns:
-        List of result dictionaries with 'title', 'content', 'url'
-    """
-    results = []
+    print(f"Status: {data['status']}")
+    for step in data['progress']:
+        print(f"  Step {step['step_number']}: {step['step_name']} - {step['status']}")
     
-    # Implement your search logic
-    # Example: API call to custom data source
-    response = requests.get(
-        "https://api.example.com/search",
-        params={"q": query, "limit": max_results}
-    )
+    if data['status'] in ['completed', 'failed']:
+        break
     
-    if response.status_code == 200:
-        data = response.json()
-        for item in data.get("results", []):
-            results.append({
-                "title": item.get("title", ""),
-                "content": item.get("snippet", ""),
-                "url": item.get("url", "")
-            })
-    
-    return results
+    time.sleep(2)
 ```
 
-### Using Built-in Tools
-
-```python
-# Example: Using Tavily search
-from src.research_tools import tavily_search_tool
-import os
-
-# Ensure TAVILY_API_KEY is set in environment
-results = tavily_search_tool(
-    query="quantum computing applications",
-    max_results=10
-)
-
-for result in results:
-    print(f"Title: {result['title']}")
-    print(f"Content: {result['content'][:200]}...")
-    print(f"URL: {result['url']}\n")
+**Response:**
+```json
+{
+  "task_id": "uuid",
+  "status": "running",
+  "prompt": "Research question",
+  "progress": [
+    {
+      "step_number": 1,
+      "step_name": "Planning",
+      "status": "completed",
+      "result": "Step output",
+      "timestamp": "2025-01-01T12:00:00"
+    }
+  ]
+}
 ```
 
+### GET `/task_status/{task_id}`
+
+Get final status and report:
+
 ```python
-# Example: Searching arXiv
-from src.research_tools import arxiv_search_tool
+import requests
 
-papers = arxiv_search_tool(
-    query="machine learning optimization",
-    max_results=5
-)
+response = requests.get(f"http://localhost:8000/task_status/{task_id}")
+data = response.json()
 
-for paper in papers:
-    print(f"Title: {paper['title']}")
-    print(f"Authors: {paper['authors']}")
-    print(f"Summary: {paper['summary'][:300]}...")
-    print(f"PDF: {paper['pdf_url']}\n")
+if data['status'] == 'completed':
+    print(data['final_report'])
 ```
 
-```python
-# Example: Wikipedia search
-from src.research_tools import wikipedia_search_tool
-
-wiki_results = wikipedia_search_tool(
-    query="artificial intelligence",
-    max_results=3
-)
-
-for article in wiki_results:
-    print(f"Title: {article['title']}")
-    print(f"Summary: {article['content'][:400]}...")
-    print(f"URL: {article['url']}\n")
+**Response:**
+```json
+{
+  "task_id": "uuid",
+  "status": "completed",
+  "prompt": "Research question",
+  "final_report": "Generated research report...",
+  "created_at": "2025-01-01T12:00:00",
+  "updated_at": "2025-01-01T12:05:00"
+}
 ```
 
 ## Implementing Custom Agents
@@ -239,92 +246,79 @@ for article in wiki_results:
 ### Research Agent Pattern
 
 ```python
-# src/agents.py
-from typing import Dict, List
-import aisuite
+from typing import List, Dict
+import os
 
-client = aisuite.Client()
-
-def research_agent(topic: str, tools: List) -> Dict:
+def research_agent(query: str, model: str = "openai:gpt-4o") -> str:
     """
-    Research agent that uses multiple tools to gather information.
-    
-    Args:
-        topic: Research topic
-        tools: List of tool functions to use
-        
-    Returns:
-        Dictionary with research findings
+    Research agent that uses tools to gather information.
     """
-    findings = []
-    
-    for tool in tools:
-        try:
-            results = tool(topic)
-            findings.extend(results)
-        except Exception as e:
-            print(f"Tool error: {e}")
-            continue
-    
-    # Synthesize findings using LLM
-    prompt = f"""
-    Based on the following research findings about "{topic}":
-    
-    {format_findings(findings)}
-    
-    Provide a comprehensive summary of key insights.
-    """
-    
-    response = client.chat.completions.create(
-        model="openai:gpt-4o",
-        messages=[{"role": "user", "content": prompt}]
+    from src.research_tools import (
+        tavily_search_tool,
+        arxiv_search_tool,
+        wikipedia_search_tool
     )
     
-    return {
-        "topic": topic,
-        "raw_findings": findings,
-        "summary": response.choices[0].message.content
-    }
-
-def format_findings(findings: List[Dict]) -> str:
-    """Format findings for LLM consumption."""
-    formatted = []
-    for i, finding in enumerate(findings, 1):
-        formatted.append(f"{i}. {finding.get('title', 'Untitled')}")
-        formatted.append(f"   {finding.get('content', '')[:200]}...")
-    return "\n".join(formatted)
+    # Define available tools
+    tools = [
+        tavily_search_tool,
+        arxiv_search_tool,
+        wikipedia_search_tool
+    ]
+    
+    # Use aisuite or similar to call LLM with tools
+    client = get_ai_client()
+    
+    messages = [
+        {
+            "role": "system",
+            "content": "You are a research assistant. Use tools to gather information."
+        },
+        {
+            "role": "user",
+            "content": query
+        }
+    ]
+    
+    response = client.chat.completions.create(
+        model=model,
+        messages=messages,
+        tools=tools,
+        tool_choice="auto"
+    )
+    
+    # Handle tool calls and aggregate results
+    return process_tool_results(response)
 ```
 
 ### Writer Agent Pattern
 
 ```python
-def writer_agent(research_data: Dict, style: str = "academic") -> str:
+def writer_agent(research_data: str, topic: str, model: str = "openai:gpt-4o") -> str:
     """
-    Writer agent that creates structured reports from research.
+    Writer agent that synthesizes research into a report.
+    """
+    client = get_ai_client()
     
-    Args:
-        research_data: Output from research agent
-        style: Writing style (academic, blog, technical)
-        
-    Returns:
-        Formatted report string
-    """
     prompt = f"""
-    Write a {style} report on "{research_data['topic']}" based on this research:
+    Based on the following research data, write a comprehensive report on: {topic}
     
-    {research_data['summary']}
+    Research Data:
+    {research_data}
     
-    Structure the report with:
-    1. Introduction
-    2. Key Findings
-    3. Analysis
-    4. Conclusion
-    5. References
+    Format the report with:
+    - Executive Summary
+    - Key Findings
+    - Detailed Analysis
+    - Conclusion
     """
     
     response = client.chat.completions.create(
-        model="openai:gpt-4o",
-        messages=[{"role": "user", "content": prompt}]
+        model=model,
+        messages=[
+            {"role": "system", "content": "You are an expert technical writer."},
+            {"role": "user", "content": prompt}
+        ]
     )
     
     return response.choices[0].message.content
@@ -333,181 +327,259 @@ def writer_agent(research_data: Dict, style: str = "academic") -> str:
 ### Editor Agent Pattern
 
 ```python
-def editor_agent(draft_report: str, criteria: List[str]) -> Dict:
+def editor_agent(draft: str, model: str = "openai:gpt-4o") -> str:
     """
-    Editor agent that reviews and improves reports.
-    
-    Args:
-        draft_report: Initial report draft
-        criteria: List of editing criteria to check
-        
-    Returns:
-        Dictionary with edited report and feedback
+    Editor agent that refines and improves the draft.
     """
-    criteria_text = "\n".join([f"- {c}" for c in criteria])
+    client = get_ai_client()
     
     prompt = f"""
-    Review and edit this report according to these criteria:
-    {criteria_text}
+    Review and improve this draft report:
     
-    Original Report:
-    {draft_report}
+    {draft}
     
-    Provide:
-    1. Edited version
-    2. List of changes made
-    3. Quality score (1-10)
+    Focus on:
+    - Clarity and coherence
+    - Factual accuracy
+    - Proper structure
+    - Professional tone
     """
     
     response = client.chat.completions.create(
-        model="openai:gpt-4o",
-        messages=[{"role": "user", "content": prompt}]
+        model=model,
+        messages=[
+            {"role": "system", "content": "You are an expert editor."},
+            {"role": "user", "content": prompt}
+        ]
     )
     
-    content = response.choices[0].message.content
+    return response.choices[0].message.content
+```
+
+## Research Tools Implementation
+
+### Tavily Search Tool
+
+```python
+import requests
+import os
+
+def tavily_search_tool(query: str, max_results: int = 5) -> dict:
+    """
+    Search the web using Tavily API.
+    """
+    api_key = os.getenv("TAVILY_API_KEY")
+    if not api_key:
+        return {"error": "TAVILY_API_KEY not set"}
     
-    return {
-        "edited_report": content,
-        "original": draft_report
+    url = "https://api.tavily.com/search"
+    payload = {
+        "api_key": api_key,
+        "query": query,
+        "max_results": max_results,
+        "search_depth": "advanced"
     }
+    
+    response = requests.post(url, json=payload)
+    
+    if response.status_code == 200:
+        data = response.json()
+        return {
+            "results": [
+                {
+                    "title": r["title"],
+                    "url": r["url"],
+                    "content": r["content"]
+                }
+                for r in data.get("results", [])
+            ]
+        }
+    
+    return {"error": f"Tavily API error: {response.status_code}"}
+```
+
+### arXiv Search Tool
+
+```python
+import requests
+import xml.etree.ElementTree as ET
+
+def arxiv_search_tool(query: str, max_results: int = 5) -> dict:
+    """
+    Search arXiv for academic papers.
+    """
+    base_url = "http://export.arxiv.org/api/query"
+    params = {
+        "search_query": f"all:{query}",
+        "start": 0,
+        "max_results": max_results
+    }
+    
+    response = requests.get(base_url, params=params)
+    
+    if response.status_code != 200:
+        return {"error": f"arXiv API error: {response.status_code}"}
+    
+    root = ET.fromstring(response.content)
+    ns = {"atom": "http://www.w3.org/2005/Atom"}
+    
+    papers = []
+    for entry in root.findall("atom:entry", ns):
+        papers.append({
+            "title": entry.find("atom:title", ns).text.strip(),
+            "authors": [
+                author.find("atom:name", ns).text
+                for author in entry.findall("atom:author", ns)
+            ],
+            "summary": entry.find("atom:summary", ns).text.strip(),
+            "link": entry.find("atom:id", ns).text,
+            "published": entry.find("atom:published", ns).text
+        })
+    
+    return {"papers": papers}
+```
+
+### Wikipedia Search Tool
+
+```python
+import wikipedia
+
+def wikipedia_search_tool(query: str, sentences: int = 3) -> dict:
+    """
+    Search Wikipedia for information.
+    """
+    try:
+        # Search for pages
+        search_results = wikipedia.search(query, results=3)
+        
+        if not search_results:
+            return {"error": "No Wikipedia results found"}
+        
+        # Get summary of top result
+        page = wikipedia.page(search_results[0], auto_suggest=False)
+        
+        return {
+            "title": page.title,
+            "summary": wikipedia.summary(query, sentences=sentences),
+            "url": page.url,
+            "related": search_results[1:]
+        }
+    
+    except wikipedia.exceptions.DisambiguationError as e:
+        return {
+            "error": "Disambiguation needed",
+            "options": e.options[:5]
+        }
+    except wikipedia.exceptions.PageError:
+        return {"error": "Page not found"}
 ```
 
 ## Planning Agent Workflow
 
-### Implementing a Planner
+The planning agent coordinates the entire research workflow:
 
 ```python
-# src/planning_agent.py
 from typing import List, Dict
+import json
 
-def planner_agent(user_prompt: str) -> List[Dict]:
+def planner_agent(prompt: str, model: str = "openai:gpt-4o") -> List[Dict]:
     """
-    Planner agent that breaks down research into steps.
-    
-    Args:
-        user_prompt: User's research request
-        
-    Returns:
-        List of execution steps with tool assignments
+    Plans the research workflow by breaking down the task.
     """
-    prompt = f"""
-    Create a research plan for: "{user_prompt}"
+    client = get_ai_client()
     
-    Break this into steps with format:
-    1. [RESEARCH] Topic to research
-    2. [WRITE] Section to write
-    3. [EDIT] Criteria to check
+    planning_prompt = f"""
+    Create a research plan for: {prompt}
     
-    Return as JSON array with step_number, action, description, tools.
+    Break this down into steps using these agent types:
+    - research: Gather information using search tools
+    - writer: Synthesize information into content
+    - editor: Review and improve content
+    
+    Return a JSON array of steps:
+    [
+      {{"step": 1, "agent": "research", "task": "description"}},
+      {{"step": 2, "agent": "writer", "task": "description"}},
+      {{"step": 3, "agent": "editor", "task": "description"}}
+    ]
     """
     
     response = client.chat.completions.create(
-        model="openai:gpt-4o",
-        messages=[{"role": "user", "content": prompt}]
+        model=model,
+        messages=[
+            {"role": "system", "content": "You are a research planning expert."},
+            {"role": "user", "content": planning_prompt}
+        ]
     )
     
-    # Parse response into structured plan
     plan_text = response.choices[0].message.content
-    # Implementation would parse JSON and return structured steps
-    
-    return parse_plan(plan_text)
+    return json.loads(plan_text)
 
-def executor_agent_step(step: Dict, context: Dict) -> Dict:
+
+def executor_agent_step(step: Dict, context: str, model: str) -> str:
     """
-    Execute a single step from the plan.
-    
-    Args:
-        step: Step dictionary from planner
-        context: Accumulated context from previous steps
-        
-    Returns:
-        Step result with outputs
+    Executes a single step of the plan.
     """
-    action = step["action"]
+    agent_type = step["agent"]
+    task = step["task"]
     
-    if action == "RESEARCH":
-        from src.research_tools import tavily_search_tool, arxiv_search_tool
-        tools = [tavily_search_tool, arxiv_search_tool]
-        result = research_agent(step["description"], tools)
-        
-    elif action == "WRITE":
-        result = writer_agent(context.get("research_data", {}))
-        
-    elif action == "EDIT":
-        result = editor_agent(
-            context.get("draft", ""),
-            step.get("criteria", ["clarity", "accuracy"])
-        )
-    
-    return {
-        "step_number": step["step_number"],
-        "action": action,
-        "result": result,
-        "status": "completed"
-    }
+    if agent_type == "research":
+        return research_agent(task, model)
+    elif agent_type == "writer":
+        return writer_agent(context, task, model)
+    elif agent_type == "editor":
+        return editor_agent(context, model)
+    else:
+        return f"Unknown agent type: {agent_type}"
 ```
 
-## Database Integration
+## Database Operations
 
-### Task Management with SQLAlchemy
+### Recording Progress
 
 ```python
-# main.py
-from sqlalchemy import create_engine, Column, String, Text, DateTime, Integer
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-import os
+from sqlalchemy.orm import Session
 from datetime import datetime
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://app:local@127.0.0.1:5432/appdb")
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(bind=engine)
-Base = declarative_base()
-
-class Task(Base):
-    __tablename__ = "tasks"
-    
-    id = Column(String, primary_key=True)
-    prompt = Column(Text, nullable=False)
-    model = Column(String, nullable=False)
-    status = Column(String, default="pending")
-    current_step = Column(Integer, default=0)
-    total_steps = Column(Integer, default=0)
-    report = Column(Text)
-    error = Column(Text)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-Base.metadata.create_all(bind=engine)
-
-# Create a new task
-def create_task(prompt: str, model: str) -> str:
-    import uuid
-    task_id = str(uuid.uuid4())
-    
-    db = SessionLocal()
-    task = Task(
-        id=task_id,
-        prompt=prompt,
-        model=model,
-        status="pending"
+def record_step_progress(
+    session: Session,
+    task_id: str,
+    step_number: int,
+    step_name: str,
+    status: str,
+    result: str = None
+):
+    """
+    Record progress for a specific step.
+    """
+    progress = TaskProgress(
+        task_id=task_id,
+        step_number=step_number,
+        step_name=step_name,
+        status=status,
+        result=result,
+        timestamp=datetime.utcnow()
     )
-    db.add(task)
-    db.commit()
-    db.close()
-    
-    return task_id
+    session.add(progress)
+    session.commit()
 
-# Update task progress
-def update_task_progress(task_id: str, step: int, total: int, status: str):
-    db = SessionLocal()
-    task = db.query(Task).filter(Task.id == task_id).first()
+
+def update_task_status(
+    session: Session,
+    task_id: str,
+    status: str,
+    final_report: str = None
+):
+    """
+    Update overall task status.
+    """
+    task = session.query(TaskStatus).filter_by(task_id=task_id).first()
     if task:
-        task.current_step = step
-        task.total_steps = total
         task.status = status
-        db.commit()
-    db.close()
+        task.updated_at = datetime.utcnow()
+        if final_report:
+            task.final_report = final_report
+        session.commit()
 ```
 
 ## Configuration
@@ -516,233 +588,414 @@ def update_task_progress(task_id: str, step: int, total: int, status: str):
 
 ```bash
 # Required
-OPENAI_API_KEY=sk-...           # OpenAI API key for LLM calls
-TAVILY_API_KEY=tvly-...         # Tavily search API key
+OPENAI_API_KEY=sk-...
+TAVILY_API_KEY=tvly-...
 
-# Database (optional, defaults provided)
+# Database (auto-configured in Docker)
 DATABASE_URL=postgresql://app:local@127.0.0.1:5432/appdb
+
+# Optional overrides
 POSTGRES_USER=app
 POSTGRES_PASSWORD=local
 POSTGRES_DB=appdb
 
-# Optional
-RESET_DB_ON_STARTUP=0           # Set to 1 to drop tables on start
+# Development
+RESET_DB_ON_STARTUP=0  # Set to 1 to drop tables on startup
 ```
 
-### Custom Model Configuration
+### Model Configuration
+
+The service supports different AI models via the `aisuite` pattern:
 
 ```python
-# Using different models
-models = {
-    "openai": "openai:gpt-4o",
-    "openai-mini": "openai:gpt-4o-mini",
-    "anthropic": "anthropic:claude-3-5-sonnet-20241022",
+# In requests, specify model as:
+{
+  "model": "openai:gpt-4o",        # OpenAI GPT-4
+  "model": "openai:gpt-4o-mini",   # OpenAI GPT-4 Mini
+  "model": "anthropic:claude-3",   # Anthropic Claude (if configured)
 }
-
-# Make request with specific model
-response = requests.post(
-    "http://localhost:8000/generate_report",
-    json={
-        "prompt": "AI safety research",
-        "model": models["anthropic"]
-    }
-)
 ```
 
 ## Common Patterns
 
-### Async Research Workflow
+### Complete Research Workflow
 
 ```python
-import asyncio
-import aiohttp
-
-async def async_research_workflow(prompts: List[str]):
-    """Run multiple research tasks concurrently."""
-    async with aiohttp.ClientSession() as session:
-        tasks = []
-        for prompt in prompts:
-            task = session.post(
-                "http://localhost:8000/generate_report",
-                json={"prompt": prompt, "model": "openai:gpt-4o"}
-            )
-            tasks.append(task)
-        
-        responses = await asyncio.gather(*tasks)
-        task_ids = [await r.json() for r in responses]
-        
-        return task_ids
-
-# Usage
-prompts = [
-    "Quantum computing breakthroughs",
-    "AI in healthcare",
-    "Renewable energy innovations"
-]
-task_ids = asyncio.run(async_research_workflow(prompts))
-```
-
-### Polling with Timeout
-
-```python
+import requests
 import time
 
-def wait_for_completion(task_id: str, timeout: int = 300) -> Dict:
+def run_research_task(prompt: str, model: str = "openai:gpt-4o") -> str:
     """
-    Poll task until completion or timeout.
-    
-    Args:
-        task_id: Task identifier
-        timeout: Maximum seconds to wait
-        
-    Returns:
-        Final task result
+    Submit a research task and wait for completion.
     """
-    start_time = time.time()
+    # Start task
+    response = requests.post(
+        "http://localhost:8000/generate_report",
+        json={"prompt": prompt, "model": model}
+    )
+    task_id = response.json()["task_id"]
+    print(f"Task {task_id} started")
     
-    while time.time() - start_time < timeout:
-        response = requests.get(f"http://localhost:8000/task_status/{task_id}")
-        result = response.json()
+    # Poll until complete
+    while True:
+        response = requests.get(
+            f"http://localhost:8000/task_progress/{task_id}"
+        )
+        data = response.json()
         
-        if result['status'] in ['completed', 'failed']:
-            return result
+        print(f"Status: {data['status']}")
         
-        time.sleep(5)  # Poll every 5 seconds
-    
-    raise TimeoutError(f"Task {task_id} did not complete within {timeout}s")
+        if data['status'] == 'completed':
+            # Get final report
+            response = requests.get(
+                f"http://localhost:8000/task_status/{task_id}"
+            )
+            return response.json()['final_report']
+        
+        elif data['status'] == 'failed':
+            raise Exception("Task failed")
+        
+        time.sleep(3)
+
+# Example usage
+report = run_research_task(
+    "Explain the latest developments in quantum computing for drug discovery"
+)
+print(report)
 ```
 
-### Streaming Progress Updates
+### Batch Research Tasks
 
 ```python
-def stream_progress(task_id: str):
-    """Stream progress updates to console."""
-    last_step = -1
+import requests
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+def submit_batch_tasks(prompts: list) -> dict:
+    """
+    Submit multiple research tasks in parallel.
+    """
+    task_ids = {}
     
-    while True:
-        response = requests.get(f"http://localhost:8000/task_progress/{task_id}")
-        progress = response.json()
-        
-        if progress['current_step'] > last_step:
-            print(f"Step {progress['current_step']}/{progress.get('total_steps', '?')}: "
-                  f"{progress.get('current_step_name', 'Processing...')}")
-            last_step = progress['current_step']
-        
-        if progress['status'] in ['completed', 'failed']:
-            break
-        
-        time.sleep(2)
+    for prompt in prompts:
+        response = requests.post(
+            "http://localhost:8000/generate_report",
+            json={"prompt": prompt, "model": "openai:gpt-4o"}
+        )
+        task_id = response.json()["task_id"]
+        task_ids[task_id] = prompt
     
-    # Get final report
-    final = requests.get(f"http://localhost:8000/task_status/{task_id}").json()
-    return final
+    return task_ids
+
+
+def wait_for_batch(task_ids: dict, timeout: int = 600) -> dict:
+    """
+    Wait for all tasks to complete.
+    """
+    results = {}
+    start_time = time.time()
+    
+    while task_ids and (time.time() - start_time) < timeout:
+        for task_id in list(task_ids.keys()):
+            response = requests.get(
+                f"http://localhost:8000/task_status/{task_id}"
+            )
+            data = response.json()
+            
+            if data['status'] == 'completed':
+                results[task_id] = data['final_report']
+                del task_ids[task_id]
+            elif data['status'] == 'failed':
+                results[task_id] = None
+                del task_ids[task_id]
+        
+        time.sleep(5)
+    
+    return results
+
+# Example usage
+prompts = [
+    "AI safety alignment research",
+    "Multimodal learning architectures",
+    "Efficient transformers for edge devices"
+]
+
+task_ids = submit_batch_tasks(prompts)
+results = wait_for_batch(task_ids)
+
+for task_id, report in results.items():
+    print(f"\n{'='*60}")
+    print(f"Task {task_id}:")
+    print(report)
 ```
 
 ## Troubleshooting
 
-### Container Issues
+### Database Connection Issues
+
+**Problem:** `DATABASE_URL not set` error
+
+```python
+# Verify environment variable
+import os
+print(os.getenv("DATABASE_URL"))
+
+# Should output something like:
+# postgresql://app:local@127.0.0.1:5432/appdb
+```
+
+**Solution:** Ensure the entrypoint script runs or manually set:
 
 ```bash
-# Check if Postgres is running inside container
-docker exec fpsvc pg_lsclusters
+export DATABASE_URL="postgresql://app:local@127.0.0.1:5432/appdb"
+```
 
-# View application logs
-docker logs -f fpsvc
+### Tables Not Persisting
 
-# Connect to Postgres from host
-psql "postgresql://app:local@localhost:5432/appdb"
+**Problem:** Tables disappear after restart
 
-# Inspect database tables
-docker exec -it fpsvc psql -U app -d appdb -c "\dt"
+Check if `main.py` drops tables on startup:
+
+```python
+# In main.py, comment out or guard:
+# Base.metadata.drop_all(bind=engine)  # ← Remove this
+
+# Or guard with environment variable:
+if os.getenv("RESET_DB_ON_STARTUP") == "1":
+    Base.metadata.drop_all(bind=engine)
 ```
 
 ### API Key Errors
 
-```python
-# Verify API keys are loaded
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-if not os.getenv("OPENAI_API_KEY"):
-    raise ValueError("OPENAI_API_KEY not found in environment")
-
-if not os.getenv("TAVILY_API_KEY"):
-    print("Warning: TAVILY_API_KEY not set, Tavily tool will fail")
-```
-
-### Database Connection Issues
-
-```python
-# Test database connection
-from sqlalchemy import create_engine, text
-
-try:
-    engine = create_engine(os.getenv("DATABASE_URL"))
-    with engine.connect() as conn:
-        result = conn.execute(text("SELECT 1"))
-        print("Database connection successful")
-except Exception as e:
-    print(f"Database connection failed: {e}")
-```
-
-### Tool Failures
-
-```python
-# Graceful tool failure handling
-def safe_tool_call(tool_func, query: str, default=None):
-    """Wrapper for tool calls with error handling."""
-    try:
-        return tool_func(query)
-    except Exception as e:
-        print(f"Tool {tool_func.__name__} failed: {e}")
-        return default or []
-
-# Usage in research agent
-from src.research_tools import tavily_search_tool, arxiv_search_tool
-
-results = []
-results.extend(safe_tool_call(tavily_search_tool, "query"))
-results.extend(safe_tool_call(arxiv_search_tool, "query"))
-```
-
-### Template Not Found
+**Problem:** `TAVILY_API_KEY not set` or search failures
 
 ```bash
-# Verify templates directory in container
-docker exec fpsvc ls -la /app/templates/
+# Verify .env file exists
+cat .env
 
-# If missing, rebuild ensuring COPY directive in Dockerfile:
-# COPY templates/ /app/templates/
-# COPY static/ /app/static/
+# Should contain:
+# OPENAI_API_KEY=sk-...
+# TAVILY_API_KEY=tvly-...
+
+# Ensure Docker run includes --env-file
+docker run --env-file .env ...
 ```
 
-### Rate Limiting
+### Task Stuck in "Running" Status
+
+**Problem:** Task never completes
 
 ```python
-import time
-from functools import wraps
+# Check logs for errors
+docker logs -f fpsvc
 
-def rate_limit(calls_per_minute: int):
-    """Rate limiting decorator for API calls."""
-    min_interval = 60.0 / calls_per_minute
-    last_called = [0.0]
-    
-    def decorator(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            elapsed = time.time() - last_called[0]
-            if elapsed < min_interval:
-                time.sleep(min_interval - elapsed)
-            result = func(*args, **kwargs)
-            last_called[0] = time.time()
-            return result
-        return wrapper
-    return decorator
+# Query database directly
+import psycopg2
 
-@rate_limit(calls_per_minute=10)
-def call_wikipedia_api(query: str):
-    # Wikipedia API call implementation
-    pass
+conn = psycopg2.connect(
+    "postgresql://app:local@localhost:5432/appdb"
+)
+cur = conn.cursor()
+
+# Check task status
+cur.execute("SELECT * FROM task_status WHERE task_id = %s", (task_id,))
+print(cur.fetchone())
+
+# Check progress steps
+cur.execute(
+    "SELECT * FROM task_progress WHERE task_id = %s ORDER BY step_number",
+    (task_id,)
+)
+for row in cur.fetchall():
+    print(row)
 ```
+
+### Tool Execution Failures
+
+**Problem:** Research tools return errors
+
+```python
+# Test tools individually
+from src.research_tools import (
+    tavily_search_tool,
+    arxiv_search_tool,
+    wikipedia_search_tool
+)
+
+# Test Tavily
+result = tavily_search_tool("machine learning")
+print(result)
+
+# Test arXiv
+result = arxiv_search_tool("neural networks")
+print(result)
+
+# Test Wikipedia
+result = wikipedia_search_tool("artificial intelligence")
+print(result)
+```
+
+### Memory Issues with Large Reports
+
+**Problem:** Container runs out of memory
+
+```bash
+# Increase Docker memory limits
+docker run --memory=4g --memory-swap=4g ...
+
+# Or limit context passed between steps
+def truncate_context(text: str, max_chars: int = 10000) -> str:
+    """Truncate context to prevent memory issues."""
+    if len(text) > max_chars:
+        return text[:max_chars] + "\n\n[Content truncated...]"
+    return text
+```
+
+### Port Conflicts
+
+**Problem:** `Address already in use` error
+
+```bash
+# Check what's using the ports
+lsof -i :8000
+lsof -i :5432
+
+# Use different ports
+docker run -p 8001:8000 -p 5433:5432 ...
+```
+
+## Testing
+
+### Unit Test Pattern
+
+```python
+import pytest
+from unittest.mock import Mock, patch
+from src.research_tools import tavily_search_tool
+
+def test_tavily_search_success():
+    """Test Tavily search with mocked response."""
+    with patch('requests.post') as mock_post:
+        mock_post.return_value.status_code = 200
+        mock_post.return_value.json.return_value = {
+            "results": [
+                {
+                    "title": "Test",
+                    "url": "http://test.com",
+                    "content": "Test content"
+                }
+            ]
+        }
+        
+        result = tavily_search_tool("test query")
+        assert "results" in result
+        assert len(result["results"]) == 1
+
+
+def test_research_agent():
+    """Test research agent workflow."""
+    with patch('src.agents.get_ai_client') as mock_client:
+        mock_response = Mock()
+        mock_response.choices[0].message.content = "Research findings"
+        mock_client.return_value.chat.completions.create.return_value = mock_response
+        
+        from src.agents import research_agent
+        result = research_agent("test query")
+        assert isinstance(result, str)
+        assert len(result) > 0
+```
+
+### Integration Test
+
+```python
+import requests
+import time
+
+def test_end_to_end_workflow():
+    """Test complete research workflow."""
+    # Submit task
+    response = requests.post(
+        "http://localhost:8000/generate_report",
+        json={
+            "prompt": "Test research topic",
+            "model": "openai:gpt-4o"
+        }
+    )
+    assert response.status_code == 200
+    task_id = response.json()["task_id"]
+    
+    # Wait for completion (with timeout)
+    max_wait = 300  # 5 minutes
+    start = time.time()
+    
+    while time.time() - start < max_wait:
+        response = requests.get(
+            f"http://localhost:8000/task_status/{task_id}"
+        )
+        data = response.json()
+        
+        if data["status"] == "completed":
+            assert data["final_report"] is not None
+            assert len(data["final_report"]) > 0
+            return
+        
+        time.sleep(5)
+    
+    pytest.fail("Task did not complete in time")
+```
+
+## Advanced Usage
+
+### Custom Agent Implementation
+
+```python
+from typing import Callable
+from src.agents import research_agent, writer_agent, editor_agent
+
+# Define custom agent
+def fact_checker_agent(content: str, model: str = "openai:gpt-4o") -> str:
+    """
+    Custom agent that verifies factual claims.
+    """
+    client = get_ai_client()
+    
+    prompt = f"""
+    Verify the factual claims in this content:
+    
+    {content}
+    
+    For each claim:
+    1. Assess accuracy
+    2. Provide sources
+    3. Flag any inaccuracies
+    """
+    
+    response = client.chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "You are a fact-checking expert."},
+            {"role": "user", "content": prompt}
+        ]
+    )
+    
+    return response.choices[0].message.content
+
+
+# Register custom agent in executor
+AGENT_REGISTRY = {
+    "research": research_agent,
+    "writer": writer_agent,
+    "editor": editor_agent,
+    "fact_checker": fact_checker_agent,  # Add custom agent
+}
+
+def executor_agent_step(step: dict, context: str, model: str) -> str:
+    agent_type = step["agent"]
+    agent_func = AGENT_REGISTRY.get(agent_type)
+    
+    if not agent_func:
+        raise ValueError(f"Unknown agent type: {agent_type}")
+    
+    return agent_func(context, model=model)
+```
+
+This skill provides comprehensive coverage of the Agentic AI Research Agent service for AI coding agents to effectively assist developers in using and extending the system.
