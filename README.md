@@ -98,6 +98,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [deeplearning-ai-agentic-research-agent](skills/deeplearning-ai-agentic-research-agent/) | [install](https://skills.sh/aradotso/ai-agent-skills/deeplearning-ai-agentic-research-agent) | [https-deeplearning-ai/agentic-ai-public](https://github.com/https-deeplearning-ai/agentic-ai-public) | 2026-06-08 |
 | [agentic-research-workflow](skills/agentic-research-workflow/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-research-workflow) | [https-deeplearning-ai/agentic-ai-public](https://github.com/https-deeplearning-ai/agentic-ai-public) | 2026-06-10 |
 | [agentic-research-agent-deeplearning](skills/agentic-research-agent-deeplearning/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-research-agent-deeplearning) | [https-deeplearning-ai/agentic-ai-public](https://github.com/https-deeplearning-ai/agentic-ai-public) | 2026-06-11 |
+| [agentic-research-agent-fastapi](skills/agentic-research-agent-fastapi/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-research-agent-fastapi) | [https-deeplearning-ai/agentic-ai-public](https://github.com/https-deeplearning-ai/agentic-ai-public) | 2026-06-11 |
 <!-- SKILL_INDEX -->
 
 ---
