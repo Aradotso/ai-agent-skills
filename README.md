@@ -101,6 +101,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [agentic-research-agent-fastapi](skills/agentic-research-agent-fastapi/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-research-agent-fastapi) | [https-deeplearning-ai/agentic-ai-public](https://github.com/https-deeplearning-ai/agentic-ai-public) | 2026-06-11 |
 | [agentic-harness-engineering](skills/agentic-harness-engineering/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-harness-engineering) | [china-qijizhifeng/agentic-harness-engineering](https://github.com/china-qijizhifeng/agentic-harness-engineering) | 2026-06-16 |
 | [agentsview-local-agent-analytics](skills/agentsview-local-agent-analytics/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentsview-local-agent-analytics) | [kenn-io/agentsview](https://github.com/kenn-io/agentsview) | 2026-06-19 |
+| [xuefeng-agent-gaokao-advisor](skills/xuefeng-agent-gaokao-advisor/) | [install](https://skills.sh/aradotso/ai-agent-skills/xuefeng-agent-gaokao-advisor) | [ziqihe10-droid/xuefeng-agent](https://github.com/ziqihe10-droid/xuefeng-agent) | 2026-06-21 |
 <!-- SKILL_INDEX -->
 
 ---
