@@ -103,6 +103,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [agentsview-local-agent-analytics](skills/agentsview-local-agent-analytics/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentsview-local-agent-analytics) | [kenn-io/agentsview](https://github.com/kenn-io/agentsview) | 2026-06-19 |
 | [xuefeng-agent-gaokao-advisor](skills/xuefeng-agent-gaokao-advisor/) | [install](https://skills.sh/aradotso/ai-agent-skills/xuefeng-agent-gaokao-advisor) | [ziqihe10-droid/xuefeng-agent](https://github.com/ziqihe10-droid/xuefeng-agent) | 2026-06-21 |
 | [burner-agents-privacy](skills/burner-agents-privacy/) | [install](https://skills.sh/aradotso/ai-agent-skills/burner-agents-privacy) | [NotPBShaw/burner-agents](https://github.com/NotPBShaw/burner-agents) | 2026-06-21 |
+| [agent-apprenticeship-ecosystem](skills/agent-apprenticeship-ecosystem/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-apprenticeship-ecosystem) | [Forsy-AI/agent-apprenticeship](https://github.com/Forsy-AI/agent-apprenticeship) | 2026-06-22 |
 <!-- SKILL_INDEX -->
 
 ---
