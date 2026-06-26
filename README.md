@@ -106,6 +106,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [agent-apprenticeship-ecosystem](skills/agent-apprenticeship-ecosystem/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-apprenticeship-ecosystem) | [Forsy-AI/agent-apprenticeship](https://github.com/Forsy-AI/agent-apprenticeship) | 2026-06-22 |
 | [hiclaw-collaborative-agent-os](skills/hiclaw-collaborative-agent-os/) | [install](https://skills.sh/aradotso/ai-agent-skills/hiclaw-collaborative-agent-os) | [agentscope-ai/AgentTeams](https://github.com/agentscope-ai/AgentTeams) | 2026-06-26 |
 | [hiclaw-multi-agent-collaboration](skills/hiclaw-multi-agent-collaboration/) | [install](https://skills.sh/aradotso/ai-agent-skills/hiclaw-multi-agent-collaboration) | [agentscope-ai/AgentTeams](https://github.com/agentscope-ai/AgentTeams) | 2026-06-26 |
+| [hiclaw-multi-agent-orchestration](skills/hiclaw-multi-agent-orchestration/) | [install](https://skills.sh/aradotso/ai-agent-skills/hiclaw-multi-agent-orchestration) | [agentscope-ai/AgentTeams](https://github.com/agentscope-ai/AgentTeams) | 2026-06-26 |
 <!-- SKILL_INDEX -->
 
 ---
