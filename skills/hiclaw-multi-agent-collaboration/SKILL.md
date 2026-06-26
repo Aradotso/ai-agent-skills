@@ -1,72 +1,64 @@
 ---
 name: hiclaw-multi-agent-collaboration
-description: Build and orchestrate collaborative multi-agent systems with HiClaw's Manager-Workers architecture, Matrix rooms, and human-in-the-loop workflows
+description: Set up and manage collaborative multi-agent teams using HiClaw, a Kubernetes-native platform with Matrix rooms for human-in-the-loop AI coordination
 triggers:
-  - set up multi-agent collaboration with HiClaw
-  - create HiClaw agents and teams
-  - deploy HiClaw on Kubernetes
-  - configure HiClaw workers and managers
-  - integrate Matrix chat with AI agents
-  - build collaborative agent workflows with HiClaw
-  - manage HiClaw agent teams and skills
-  - orchestrate multi-agent tasks using HiClaw
+  - set up a collaborative AI agent team with HiClaw
+  - create multiple agents working together in Matrix rooms
+  - deploy HiClaw on Kubernetes with Helm
+  - configure OpenClaw and QwenPaw workers in HiClaw
+  - manage agent teams with human oversight using HiClaw
+  - integrate MCP servers with HiClaw agents
+  - troubleshoot HiClaw multi-agent deployments
+  - orchestrate AI agents with Manager-Workers architecture
 ---
 
 # HiClaw Multi-Agent Collaboration
 
 > Skill by [ara.so](https://ara.so) — AI Agent Skills collection.
 
-HiClaw is an open-source collaborative multi-agent runtime platform built on a Manager-Workers architecture. It enables multiple AI agents to collaborate in controlled Matrix rooms with full human visibility and intervention capabilities. HiClaw orchestrates Agent containers (Manager + Workers) for enterprise-grade, auditable multi-agent coordination.
+HiClaw is an open-source collaborative multi-agent runtime platform that enables multiple AI agents to work together in Matrix rooms with full human visibility and intervention. It uses a Manager-Workers architecture where a central Manager orchestrates multiple Worker agents, all visible in a shared IM interface.
 
-## Core Concepts
+## Key Concepts
 
-- **Manager Agent**: Central orchestrator that coordinates Workers and manages task delegation
-- **Worker Agents**: Specialized agents with specific skills, orchestrated by the Manager
-- **Matrix Rooms**: Communication channels where humans, Manager, and Workers collaborate
-- **OpenClaw Runtime**: Python-based agent runtime (default)
-- **QwenPaw Runtime**: Lightweight alternative runtime (formerly CoPaw)
-- **Hermes Runtime**: Autonomous code execution runtime
-- **Shared File System**: MinIO-backed storage for inter-agent information exchange
-- **Higress AI Gateway**: Centralized traffic management with credential isolation
+- **Manager-Workers Architecture**: Manager agent coordinates Worker agents, eliminating need to oversee individual workers
+- **Matrix Protocol**: Decentralized IM protocol (Tuwunel server + Element client) for agent-human collaboration
+- **Multi-Runtime Support**: OpenClaw (deterministic), QwenPaw (Qwen models), and Hermes (autonomous coding) workers
+- **MinIO Shared Storage**: File system for inter-agent data exchange, reducing token consumption
+- **Higress AI Gateway**: Centralized credential management - workers use consumer tokens, real API keys stay in gateway
+- **Kubernetes-Native**: Custom Resource Definitions (CRDs) for declarative agent management
 
 ## Installation
 
-### Docker Installation (Quick Start)
+### Docker Desktop (Quick Start)
 
 **macOS / Linux:**
-
 ```bash
 bash <(curl -sSL https://higress.ai/hiclaw/install.sh)
 ```
 
-**Windows (PowerShell 7+):**
-
+**Windows PowerShell 7+:**
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force
-$wc=New-Object Net.WebClient
-$wc.Encoding=[Text.Encoding]::UTF8
+$wc = New-Object Net.WebClient
+$wc.Encoding = [Text.Encoding]::UTF8
 iex $wc.DownloadString('https://higress.ai/hiclaw/install.ps1')
 ```
 
-The installer will prompt for:
+The installer prompts for:
 1. LLM provider (OpenAI-compatible APIs supported)
-2. API key (stored securely)
+2. API key (stored securely in Higress gateway)
 3. Network mode (local-only or external access)
 
-**Access the UI:**
-- Open http://127.0.0.1:18088 in your browser
-- Log in to Element Web (Matrix client)
-- The Manager will greet you automatically
+**Access**: Open http://127.0.0.1:18088 in browser, log into Element Web
 
-### Kubernetes Installation (Helm)
+### Kubernetes (Helm)
 
 **Prerequisites:**
 - Kubernetes 1.24+
 - Helm 3.7+
-- Default StorageClass configured
+- Default StorageClass for PVCs
 
-**Install with OpenAI:**
-
+**Install with OpenAI-compatible API:**
 ```bash
 helm repo add higress.io https://higress.io/helm-charts
 helm repo update
@@ -75,12 +67,13 @@ helm install hiclaw higress.io/hiclaw \
   -n hiclaw-system --create-namespace \
   --render-subchart-notes \
   --set credentials.llmApiKey=$LLM_API_KEY \
+  --set credentials.llmBaseUrl=https://api.example.com/v1 \
+  --set credentials.defaultModel=gpt-4 \
   --set credentials.adminPassword=$ADMIN_PASSWORD \
   --set gateway.publicURL=http://localhost:18080
 ```
 
 **Install with Qwen (通义千问):**
-
 ```bash
 helm install hiclaw higress.io/hiclaw \
   -n hiclaw-system --create-namespace \
@@ -92,21 +85,7 @@ helm install hiclaw higress.io/hiclaw \
   --set gateway.publicURL=http://localhost:18080
 ```
 
-**Install with custom OpenAI-compatible provider:**
-
-```bash
-helm install hiclaw higress.io/hiclaw \
-  -n hiclaw-system --create-namespace \
-  --render-subchart-notes \
-  --set credentials.llmApiKey=$LLM_API_KEY \
-  --set credentials.llmBaseUrl=https://api.deepseek.com/v1 \
-  --set credentials.defaultModel=deepseek-chat \
-  --set credentials.adminPassword=$ADMIN_PASSWORD \
-  --set gateway.publicURL=http://localhost:18080
-```
-
-**Use alternative runtimes:**
-
+**With custom runtimes (QwenPaw Manager + Hermes Workers):**
 ```bash
 helm install hiclaw higress.io/hiclaw \
   -n hiclaw-system --create-namespace \
@@ -117,749 +96,546 @@ helm install hiclaw higress.io/hiclaw \
   --set gateway.publicURL=http://localhost:18080
 ```
 
-## Configuration
+## Declarative Resource Management
 
-### Helm Chart Values
-
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| `credentials.llmApiKey` | LLM provider API key | (required) |
-| `credentials.llmProvider` | Provider name | `openai-compat` |
-| `credentials.defaultModel` | Default model | `gpt-5.4` |
-| `credentials.llmBaseUrl` | OpenAI-compatible base URL | (empty for official OpenAI) |
-| `credentials.adminPassword` | Matrix admin password | auto-generated |
-| `gateway.publicURL` | Public URL for Element Web | (required) |
-| `manager.runtime` | Manager runtime | `openclaw` |
-| `worker.defaultRuntime` | Default Worker runtime | `openclaw` |
-
-### Docker Environment Variables
-
-The Docker installation creates a `.env` file with:
-
-```bash
-LLM_API_KEY=your-api-key
-LLM_PROVIDER=openai-compat
-DEFAULT_MODEL=gpt-5.4
-ADMIN_PASSWORD=your-password
-NETWORK_MODE=local
-```
-
-## Kubernetes-Native Resource Management
-
-HiClaw 1.0.9+ supports declarative YAML-based resource management for Workers, Teams, and Humans.
+HiClaw uses Kubernetes-style CRDs for managing Workers, Teams, and Humans.
 
 ### Worker Custom Resource
 
+Create a Worker agent with MCP servers:
+
 ```yaml
-apiVersion: hiclaw.io/v1alpha1
+# worker-example.yaml
+apiVersion: hiclaw.higress.io/v1alpha1
 kind: Worker
 metadata:
-  name: python-dev
+  name: data-analyst
   namespace: hiclaw-system
 spec:
-  runtime: openclaw  # or copaw, hermes
-  description: "Python development specialist"
-  skills:
-    - name: github-search
-      type: mcp
-      config:
-        serverName: github
-        toolName: search_repositories
-    - name: file-operations
-      type: builtin
+  runtime: openclaw
+  model: gpt-4
+  description: "Data analysis specialist with filesystem and database access"
   env:
     - name: CUSTOM_VAR
       value: "custom-value"
+  mcp:
+    servers:
+      - name: filesystem
+        command: npx
+        args:
+          - "-y"
+          - "@modelcontextprotocol/server-filesystem"
+          - "/workspace"
+        env:
+          - name: NODE_ENV
+            value: production
+      - name: postgres
+        command: npx
+        args:
+          - "-y"
+          - "@modelcontextprotocol/server-postgres"
+        env:
+          - name: POSTGRES_CONNECTION
+            value: "postgresql://user:pass@postgres:5432/db"
 ```
 
-**Apply Worker:**
-
+Apply the Worker:
 ```bash
-kubectl apply -f worker-python-dev.yaml
+kubectl apply -f worker-example.yaml
+
+# Check status
+kubectl get workers -n hiclaw-system
+kubectl describe worker data-analyst -n hiclaw-system
 ```
 
 ### Team Custom Resource
 
+Define a team of Workers with a Team Leader:
+
 ```yaml
-apiVersion: hiclaw.io/v1alpha1
+# team-example.yaml
+apiVersion: hiclaw.higress.io/v1alpha1
 kind: Team
 metadata:
-  name: backend-team
+  name: dev-team
   namespace: hiclaw-system
 spec:
-  description: "Backend development team"
-  leader:
-    runtime: copaw
-    model: gpt-4o
-    mcpServers:
-      - name: github
-        enabled: true
-      - name: filesystem
-        enabled: true
+  description: "Full-stack development team"
   workers:
-    - name: python-dev
-    - name: database-expert
-  humans:
-    - name: alice
-      role: reviewer
+    - backend-engineer
+    - frontend-engineer
+    - data-analyst
+  teamLeader:
+    runtime: openclaw
+    model: gpt-4
+    description: "Coordinates development tasks across team members"
+    mcp:
+      servers:
+        - name: github
+          command: npx
+          args:
+            - "-y"
+            - "@modelcontextprotocol/server-github"
+          env:
+            - name: GITHUB_PERSONAL_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: github-credentials
+                  key: token
 ```
 
-**Create Team:**
-
+Apply the Team:
 ```bash
-kubectl apply -f team-backend.yaml
+kubectl apply -f team-example.yaml
+
+# List teams
+kubectl get teams -n hiclaw-system
+
+# Invite team to Matrix room (done via Manager in Element)
 ```
 
 ### Human Custom Resource
 
+Register human team members:
+
 ```yaml
-apiVersion: hiclaw.io/v1alpha1
+# human-example.yaml
+apiVersion: hiclaw.higress.io/v1alpha1
 kind: Human
 metadata:
   name: alice
   namespace: hiclaw-system
 spec:
+  displayName: "Alice Smith"
   matrixUserId: "@alice:hiclaw.local"
-  role: developer
-  teams:
-    - backend-team
-    - frontend-team
+  email: "alice@example.com"
+  role: "coordinator"
 ```
 
-**Register Human:**
-
+Apply the Human:
 ```bash
-kubectl apply -f human-alice.yaml
+kubectl apply -f human-example.yaml
+
+# List humans
+kubectl get humans -n hiclaw-system
 ```
 
-## CLI Commands
+## Worker Runtimes
 
-HiClaw provides a CLI for resource management (replaces shell scripts in v1.1.0+).
-
-### Worker Management
-
-```bash
-# List Workers
-kubectl get workers -n hiclaw-system
-
-# Describe Worker
-kubectl describe worker python-dev -n hiclaw-system
-
-# Delete Worker
-kubectl delete worker python-dev -n hiclaw-system
-```
-
-### Team Management
-
-```bash
-# List Teams
-kubectl get teams -n hiclaw-system
-
-# Describe Team
-kubectl describe team backend-team -n hiclaw-system
-
-# Delete Team
-kubectl delete team backend-team -n hiclaw-system
-```
-
-### Check Controller Status
-
-```bash
-# View controller logs
-kubectl logs -n hiclaw-system -l app=hiclaw-controller -f
-
-# Check reconciliation metrics
-kubectl get events -n hiclaw-system --sort-by='.lastTimestamp'
-```
-
-## Working with Skills
-
-### MCP Server Skills
-
-HiClaw supports declarative MCP (Model Context Protocol) server configuration.
-
-**Worker with MCP skills:**
+### OpenClaw (Default)
+Deterministic, tool-calling agent with explicit reasoning steps. Best for structured tasks.
 
 ```yaml
-apiVersion: hiclaw.io/v1alpha1
-kind: Worker
-metadata:
-  name: github-worker
 spec:
   runtime: openclaw
-  skills:
-    - name: search-repos
-      type: mcp
-      config:
-        serverName: github
-        toolName: search_repositories
-    - name: create-pr
-      type: mcp
-      config:
-        serverName: github
-        toolName: create_pull_request
+  model: gpt-4
 ```
 
-**Team Leader with MCP servers:**
+### QwenPaw (CoPaw)
+Optimized for Qwen models, 80% less memory than OpenClaw. Ideal for resource-constrained environments.
 
 ```yaml
-apiVersion: hiclaw.io/v1alpha1
+spec:
+  runtime: copaw
+  model: qwen3.5-plus
+```
+
+### Hermes
+Autonomous coding agent with file system access and code execution. Best for development tasks.
+
+```yaml
+spec:
+  runtime: hermes
+  model: gpt-4
+```
+
+## MCP Server Configuration
+
+### Declarative MCP on Worker
+
+```yaml
+apiVersion: hiclaw.higress.io/v1alpha1
+kind: Worker
+metadata:
+  name: devops-agent
+spec:
+  runtime: openclaw
+  mcp:
+    servers:
+      - name: docker
+        command: npx
+        args: ["-y", "@modelcontextprotocol/server-docker"]
+      - name: kubernetes
+        command: npx
+        args: ["-y", "@modelcontextprotocol/server-kubernetes"]
+        env:
+          - name: KUBECONFIG
+            value: /workspace/.kube/config
+```
+
+### Declarative MCP on Team Leader
+
+```yaml
+apiVersion: hiclaw.higress.io/v1alpha1
 kind: Team
 metadata:
-  name: devops-team
+  name: infra-team
 spec:
-  leader:
-    runtime: copaw
-    mcpServers:
-      - name: github
-        enabled: true
-      - name: filesystem
-        enabled: true
-      - name: kubernetes
-        enabled: true
-        config:
-          namespace: default
+  teamLeader:
+    runtime: openclaw
+    mcp:
+      servers:
+        - name: slack
+          command: npx
+          args: ["-y", "@modelcontextprotocol/server-slack"]
+          env:
+            - name: SLACK_BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: slack-creds
+                  key: bot-token
 ```
 
 ### Nacos Skills Registry
 
-HiClaw supports pulling skills from Nacos registries (e.g., skills.sh with 80,000+ community skills).
-
-**Worker with Nacos skills:**
+Workers can pull skills from a remote Nacos registry:
 
 ```yaml
-apiVersion: hiclaw.io/v1alpha1
-kind: Worker
-metadata:
-  name: cloud-worker
 spec:
-  runtime: openclaw
-  skills:
-    - name: aws-s3-upload
-      type: nacos
-      config:
-        registry: https://skills.sh
-        scope: sts-hiclaw
-        skillId: aws-s3-upload-v1
+  mcp:
+    nacos:
+      enabled: true
+      serverAddr: "nacos.example.com:8848"
+      namespace: "hiclaw-skills"
+      group: "ai-registry"
 ```
 
-### Custom Skills in Worker Packages
-
-Workers can include custom skills via `SOUL.md` files in their packages.
-
-**Directory structure:**
-
-```
-worker-package/
-├── SOUL.md           # Worker personality and behavior
-├── skills/
-│   ├── custom-skill-1.py
-│   └── custom-skill-2.py
-└── requirements.txt
-```
-
-## Multi-Runtime Collaboration
-
-HiClaw supports mixing different runtimes in the same Team.
-
-### Example: QwenPaw Leader + Hermes Workers
-
-```yaml
-apiVersion: hiclaw.io/v1alpha1
-kind: Team
-metadata:
-  name: autonomous-coding-team
-spec:
-  description: "Autonomous coding with human oversight"
-  leader:
-    runtime: copaw        # QwenPaw for deterministic coordination
-    model: qwen3.5-plus
-  workers:
-    - name: hermes-coder  # Hermes for autonomous execution
-      runtime: hermes
-    - name: code-reviewer
-      runtime: openclaw   # OpenClaw for review tasks
-```
-
-**Use case:**
-- **QwenPaw Leader**: Task planning and coordination (deterministic)
-- **Hermes Worker**: Autonomous code execution
-- **OpenClaw Worker**: Code review and validation
-
-## Code Examples
-
-### Python: Interacting with HiClaw API
-
-```python
-import requests
-import os
-
-# HiClaw API base URL (gateway)
-API_BASE = os.getenv("HICLAW_API_URL", "http://localhost:18080/api")
-API_KEY = os.getenv("HICLAW_API_KEY")  # Consumer token
-
-headers = {
-    "Authorization": f"Bearer {API_KEY}",
-    "Content-Type": "application/json"
-}
-
-# Create a Worker
-def create_worker(name: str, runtime: str = "openclaw", skills: list = None):
-    payload = {
-        "apiVersion": "hiclaw.io/v1alpha1",
-        "kind": "Worker",
-        "metadata": {"name": name},
-        "spec": {
-            "runtime": runtime,
-            "description": f"{name} agent",
-            "skills": skills or []
-        }
-    }
-    response = requests.post(
-        f"{API_BASE}/workers",
-        headers=headers,
-        json=payload
-    )
-    return response.json()
-
-# Create a Team
-def create_team(name: str, workers: list, leader_runtime: str = "copaw"):
-    payload = {
-        "apiVersion": "hiclaw.io/v1alpha1",
-        "kind": "Team",
-        "metadata": {"name": name},
-        "spec": {
-            "leader": {"runtime": leader_runtime},
-            "workers": [{"name": w} for w in workers]
-        }
-    }
-    response = requests.post(
-        f"{API_BASE}/teams",
-        headers=headers,
-        json=payload
-    )
-    return response.json()
-
-# Example usage
-worker = create_worker(
-    name="python-expert",
-    runtime="openclaw",
-    skills=[
-        {"name": "file-operations", "type": "builtin"},
-        {"name": "github-search", "type": "mcp", "config": {"serverName": "github"}}
-    ]
-)
-
-team = create_team(
-    name="dev-team",
-    workers=["python-expert"],
-    leader_runtime="copaw"
-)
-
-print(f"Worker: {worker}")
-print(f"Team: {team}")
-```
-
-### Go: Kubernetes Controller Pattern
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    
-    hiclawv1alpha1 "github.com/higress-group/hiclaw/api/v1alpha1"
-    corev1 "k8s.io/api/core/v1"
-    metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-    "k8s.io/apimachinery/pkg/runtime"
-    ctrl "sigs.k8s.io/controller-runtime"
-    "sigs.k8s.io/controller-runtime/pkg/client"
-)
-
-// WorkerReconciler reconciles a Worker object
-type WorkerReconciler struct {
-    client.Client
-    Scheme *runtime.Scheme
-}
-
-func (r *WorkerReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-    var worker hiclawv1alpha1.Worker
-    if err := r.Get(ctx, req.NamespacedName, &worker); err != nil {
-        return ctrl.Result{}, client.IgnoreNotFound(err)
-    }
-
-    // Create Worker Pod
-    pod := &corev1.Pod{
-        ObjectMeta: metav1.ObjectMeta{
-            Name:      worker.Name,
-            Namespace: worker.Namespace,
-            Labels: map[string]string{
-                "app":     "hiclaw-worker",
-                "worker":  worker.Name,
-                "runtime": worker.Spec.Runtime,
-            },
-        },
-        Spec: corev1.PodSpec{
-            Containers: []corev1.Container{
-                {
-                    Name:  "worker",
-                    Image: fmt.Sprintf("hiclaw/worker-%s:latest", worker.Spec.Runtime),
-                    Env: append(worker.Spec.Env, corev1.EnvVar{
-                        Name: "WORKER_NAME",
-                        Value: worker.Name,
-                    }),
-                },
-            },
-        },
-    }
-
-    if err := ctrl.SetControllerReference(&worker, pod, r.Scheme); err != nil {
-        return ctrl.Result{}, err
-    }
-
-    if err := r.Create(ctx, pod); err != nil {
-        return ctrl.Result{}, err
-    }
-
-    return ctrl.Result{}, nil
-}
-
-func main() {
-    mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
-        Scheme: scheme,
-    })
-    if err != nil {
-        panic(err)
-    }
-
-    if err := (&WorkerReconciler{
-        Client: mgr.GetClient(),
-        Scheme: mgr.GetScheme(),
-    }).SetupWithManager(mgr); err != nil {
-        panic(err)
-    }
-
-    if err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {
-        panic(err)
-    }
-}
-```
-
-### Shell: Worker Template Marketplace
-
-```bash
-#!/bin/bash
-
-# List available Worker templates
-kubectl get workertemplates -n hiclaw-system
-
-# Create Worker from template
-cat <<EOF | kubectl apply -f -
-apiVersion: hiclaw.io/v1alpha1
-kind: Worker
-metadata:
-  name: my-python-worker
-  namespace: hiclaw-system
-spec:
-  templateRef:
-    name: python-developer-template
-    version: v1.2.0
-  customization:
-    env:
-      - name: PYTHON_VERSION
-        value: "3.11"
-EOF
-
-# Check Worker status
-kubectl get worker my-python-worker -n hiclaw-system -o yaml
-```
+Skills are pulled on-demand from https://skills.sh (80,000+ community skills). Workers access via consumer tokens - real credentials stay in Higress gateway.
 
 ## Common Patterns
 
-### Pattern 1: Human-in-the-Loop Review
+### Create Worker via CLI
 
-```yaml
-apiVersion: hiclaw.io/v1alpha1
-kind: Team
-metadata:
-  name: code-review-team
-spec:
-  description: "Code review with mandatory human approval"
-  leader:
-    runtime: copaw
-  workers:
-    - name: code-analyzer
-    - name: security-scanner
-  humans:
-    - name: senior-dev
-      role: reviewer
-  workflow:
-    approvalRequired: true
-    approvers:
-      - senior-dev
+```bash
+# Install hiclaw CLI (if using Kubernetes deployment)
+kubectl exec -it deployment/hiclaw-manager -n hiclaw-system -- hiclaw
+
+# Create worker
+hiclaw worker create \
+  --name code-reviewer \
+  --runtime openclaw \
+  --model gpt-4 \
+  --description "Code review specialist"
+
+# List workers
+hiclaw worker list
+
+# Delete worker
+hiclaw worker delete code-reviewer
 ```
 
-### Pattern 2: Autonomous + Deterministic Hybrid
+### Manager Commands in Matrix Room
 
-```yaml
-apiVersion: hiclaw.io/v1alpha1
-kind: Team
-metadata:
-  name: hybrid-dev-team
-spec:
-  leader:
-    runtime: copaw          # Deterministic planning
-  workers:
-    - name: hermes-coder    # Autonomous execution
-      runtime: hermes
-    - name: task-planner
-      runtime: openclaw     # Structured task breakdown
+In the Element Web interface, chat with the Manager:
+
+```
+You: Create a worker named "security-auditor" with runtime openclaw
+
+Manager: [Creates worker and responds with confirmation]
+
+You: Create a team called "security-team" with workers security-auditor and devops-agent
+
+Manager: [Creates team, provides Matrix room invitation link]
 ```
 
-### Pattern 3: Shared File System for Context
+### Multi-Agent Collaboration Flow
 
-```yaml
-apiVersion: hiclaw.io/v1alpha1
-kind: Worker
-metadata:
-  name: document-analyzer
-spec:
-  runtime: openclaw
-  storage:
-    minio:
-      enabled: true
-      bucket: shared-docs
-  skills:
-    - name: analyze-document
-      type: custom
-      config:
-        inputPath: /mnt/minio/shared-docs/input
-        outputPath: /mnt/minio/shared-docs/output
-```
+1. **Manager receives task** from human in Matrix room
+2. **Manager analyzes task**, determines required Workers
+3. **Manager creates Workers** if needed (or uses existing)
+4. **Manager creates Team**, invites Workers to new Matrix room
+5. **Workers collaborate** in room, sharing files via MinIO
+6. **Human monitors** in real-time, intervenes if needed
+7. **Manager synthesizes results**, reports back to human
 
-**Usage in Worker code:**
+### File Sharing Between Agents
 
-```python
-import os
-from minio import Minio
+Workers share files via MinIO (S3-compatible):
 
-# MinIO client (credentials injected by HiClaw)
-minio_client = Minio(
-    os.getenv("MINIO_ENDPOINT"),
-    access_key=os.getenv("MINIO_ACCESS_KEY"),
-    secret_key=os.getenv("MINIO_SECRET_KEY"),
-    secure=False
+```go
+// Worker writes file to MinIO
+package main
+
+import (
+    "github.com/minio/minio-go/v7"
+    "github.com/minio/minio-go/v7/pkg/credentials"
 )
 
-# Read shared file
-bucket = "shared-docs"
-object_name = "input/document.pdf"
-minio_client.fget_object(bucket, object_name, "/tmp/document.pdf")
+func uploadToSharedStorage(fileName, content string) error {
+    client, err := minio.New("minio:9000", &minio.Options{
+        Creds:  credentials.NewStaticV4(os.Getenv("MINIO_ACCESS_KEY"), os.Getenv("MINIO_SECRET_KEY"), ""),
+        Secure: false,
+    })
+    if err != nil {
+        return err
+    }
 
-# Process and upload result
-minio_client.fput_object(bucket, "output/analysis.json", "/tmp/analysis.json")
+    _, err = client.FPutObject(context.Background(), "hiclaw-shared", fileName, content, minio.PutObjectOptions{})
+    return err
+}
+```
+
+Workers reference files in Matrix messages - other Workers download from MinIO, avoiding token bloat from embedding file contents.
+
+## Configuration
+
+### Helm Values (Kubernetes)
+
+Key Helm chart values:
+
+```yaml
+# values.yaml
+credentials:
+  llmApiKey: ""              # Required
+  llmProvider: openai-compat # openai-compat, qwen
+  llmBaseUrl: ""             # For non-OpenAI providers
+  defaultModel: gpt-4
+  adminPassword: ""          # Auto-generated if empty
+
+gateway:
+  publicURL: ""              # Required - where users access Element Web
+  
+manager:
+  runtime: openclaw          # openclaw, copaw, hermes
+  
+worker:
+  defaultRuntime: openclaw   # Default for new Workers
+
+minio:
+  persistence:
+    enabled: true
+    size: 10Gi
+
+tuwunel:
+  persistence:
+    enabled: true
+    size: 5Gi
+```
+
+### Environment Variables (Docker)
+
+When using Docker installation, credentials stored in `~/.hiclaw/env`:
+
+```bash
+# ~/.hiclaw/env
+LLM_API_KEY=sk-...
+LLM_BASE_URL=https://api.openai.com/v1
+DEFAULT_MODEL=gpt-4
+ADMIN_PASSWORD=secure-password
+```
+
+### Worker Environment Variables
+
+Custom environment variables for Workers:
+
+```yaml
+spec:
+  env:
+    - name: API_TIMEOUT
+      value: "30"
+    - name: DB_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: db-secret
+          key: password
 ```
 
 ## Troubleshooting
 
-### Docker Installation Issues
-
-**Problem:** Installer fails with "Docker not found"
+### Worker Not Responding in Matrix
 
 ```bash
-# Verify Docker is running
-docker ps
-
-# On macOS, ensure Docker Desktop is started
-open -a Docker
-
-# On Linux, start Docker service
-sudo systemctl start docker
-```
-
-**Problem:** Port conflicts (18080, 18088 already in use)
-
-```bash
-# Check what's using the port
-lsof -i :18080
-
-# Stop HiClaw and restart with custom ports
-docker-compose -f ~/.hiclaw/docker-compose.yml down
-# Edit ~/.hiclaw/.env to change ports
-docker-compose -f ~/.hiclaw/docker-compose.yml up -d
-```
-
-### Kubernetes/Helm Issues
-
-**Problem:** "no matches for kind Worker"
-
-```bash
-# CRDs not installed, reinstall HiClaw
-helm uninstall hiclaw -n hiclaw-system
-helm install hiclaw higress.io/hiclaw -n hiclaw-system --create-namespace
-```
-
-**Problem:** Worker Pod stuck in Pending
-
-```bash
-# Check events
-kubectl describe pod <worker-pod> -n hiclaw-system
-
-# Common issue: no default StorageClass
-kubectl get storageclass
-kubectl patch storageclass <name> -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
-```
-
-**Problem:** Controller not reconciling resources
-
-```bash
-# Check controller logs
-kubectl logs -n hiclaw-system -l app=hiclaw-controller --tail=100
-
-# Check RBAC permissions
-kubectl auth can-i create workers --as=system:serviceaccount:hiclaw-system:hiclaw-controller -n hiclaw-system
-```
-
-### Agent Communication Issues
-
-**Problem:** Workers not responding in Matrix room
-
-```bash
-# Check Worker Pod status
+# Check Worker pod status
 kubectl get pods -n hiclaw-system -l app=hiclaw-worker
 
 # Check Worker logs
-kubectl logs -n hiclaw-system <worker-pod-name>
+kubectl logs -n hiclaw-system deployment/hiclaw-worker-<name> --tail=100
 
-# Verify Matrix server connection
-kubectl exec -n hiclaw-system <worker-pod-name> -- curl http://tuwunel:8008/_matrix/client/versions
+# Describe Worker CR
+kubectl describe worker <name> -n hiclaw-system
 ```
 
-**Problem:** Manager not creating Workers
+Common issues:
+- **Model not available**: Check `spec.model` matches provider capabilities
+- **MCP server failed**: Check MCP server command/args, verify npx package exists
+- **Network errors**: Verify Higress gateway connectivity
+
+### Manager Not Creating Workers
 
 ```bash
 # Check Manager logs
-kubectl logs -n hiclaw-system -l app=hiclaw-manager
+kubectl logs -n hiclaw-system deployment/hiclaw-manager --tail=100
 
-# Verify Manager can access HiClaw API
-kubectl exec -n hiclaw-system <manager-pod-name> -- curl http://hiclaw-controller:8080/api/health
+# Check controller logs
+kubectl logs -n hiclaw-system deployment/hiclaw-controller --tail=100
+
+# Verify RBAC permissions
+kubectl auth can-i create workers --as=system:serviceaccount:hiclaw-system:hiclaw-controller -n hiclaw-system
 ```
 
-### Credential Issues
-
-**Problem:** "LLM API authentication failed"
+### MinIO File Sharing Issues
 
 ```bash
-# Docker: Check .env file
-cat ~/.hiclaw/.env
+# Check MinIO pod
+kubectl get pods -n hiclaw-system -l app=minio
 
-# Kubernetes: Check Secret
-kubectl get secret hiclaw-credentials -n hiclaw-system -o jsonpath='{.data.llmApiKey}' | base64 -d
+# Access MinIO console
+kubectl port-forward -n hiclaw-system svc/minio 9001:9001
+# Open http://localhost:9001
 
-# Update credentials
-kubectl create secret generic hiclaw-credentials \
-  --from-literal=llmApiKey=$NEW_API_KEY \
-  --dry-run=client -o yaml | kubectl apply -f -
-
-# Restart Manager
-kubectl rollout restart deployment hiclaw-manager -n hiclaw-system
+# Check bucket exists
+kubectl exec -n hiclaw-system deployment/minio -- mc ls local/
 ```
 
-### Performance Issues
-
-**Problem:** High memory usage with multiple Workers
+### Matrix Room Not Accessible
 
 ```bash
-# Switch to QwenPaw runtime (80% less memory than OpenClaw)
-kubectl patch worker <worker-name> -n hiclaw-system \
-  --type=merge -p '{"spec":{"runtime":"copaw"}}'
+# Check Tuwunel (Matrix server) status
+kubectl get pods -n hiclaw-system -l app=tuwunel
 
-# Or set as default for new Workers
-helm upgrade hiclaw higress.io/hiclaw -n hiclaw-system \
-  --reuse-values \
-  --set worker.defaultRuntime=copaw
+# Check Matrix federation (if using external access)
+kubectl logs -n hiclaw-system deployment/tuwunel --tail=50
+
+# Reset admin password
+kubectl delete secret -n hiclaw-system tuwunel-admin-credentials
+kubectl rollout restart deployment/tuwunel -n hiclaw-system
 ```
 
-**Problem:** Slow task execution
+### Upgrade Issues
 
 ```bash
-# Check if Workers are using shared file system (reduces token consumption)
-kubectl get worker <worker-name> -n hiclaw-system -o jsonpath='{.spec.storage.minio.enabled}'
-
-# Enable MinIO for Worker
-kubectl patch worker <worker-name> -n hiclaw-system \
-  --type=merge -p '{"spec":{"storage":{"minio":{"enabled":true,"bucket":"shared"}}}}'
-```
-
-## Upgrade Process
-
-### Docker Upgrade
-
-```bash
-# Upgrade to latest (preserves data)
+# Upgrade to latest version
 bash <(curl -sSL https://higress.ai/hiclaw/install.sh)
 
 # Upgrade to specific version
 HICLAW_VERSION=v1.1.2 bash <(curl -sSL https://higress.ai/hiclaw/install.sh)
-```
 
-### Kubernetes Upgrade
-
-```bash
-# Update Helm repo
-helm repo update higress.io
-
-# Upgrade (keeps existing values)
-helm upgrade hiclaw higress.io/hiclaw -n hiclaw-system --reuse-values
-
-# Or upgrade with new values
-helm upgrade hiclaw higress.io/hiclaw -n hiclaw-system \
+# Helm upgrade (Kubernetes)
+helm upgrade hiclaw higress.io/hiclaw \
+  -n hiclaw-system \
   --reuse-values \
-  --set manager.runtime=copaw
+  --version v1.1.2
 ```
 
-## Uninstall
+Data preserved across upgrades - all Workers, Teams, and chat history retained.
 
-### Docker Uninstall
+## Advanced Usage
+
+### Custom Worker Package with SOUL.md
+
+Create Worker with personality/instructions:
 
 ```bash
-# macOS / Linux
-bash <(curl -fsSL https://raw.githubusercontent.com/higress-group/hiclaw/main/install/hiclaw-install.sh) uninstall
+# Create Worker package directory
+mkdir -p my-worker-package
+cd my-worker-package
 
-# Windows
+# Create SOUL.md (optional)
+cat > SOUL.md <<EOF
+# Code Reviewer Agent
+
+You are a meticulous code reviewer specializing in Go and Kubernetes.
+
+## Review Checklist
+- Error handling completeness
+- Resource cleanup (defer statements)
+- Context propagation
+- Security vulnerabilities
+- Performance implications
+
+Always provide constructive feedback with code examples.
+EOF
+
+# Create Worker spec
+cat > worker.yaml <<EOF
+apiVersion: hiclaw.higress.io/v1alpha1
+kind: Worker
+metadata:
+  name: go-code-reviewer
+spec:
+  runtime: openclaw
+  model: gpt-4
+  description: "Go and Kubernetes code review specialist"
+EOF
+
+# Package and apply
+kubectl apply -f worker.yaml
+```
+
+### Token Budget Management
+
+Configure token plans for cost control:
+
+```yaml
+spec:
+  tokenBudget:
+    daily: 100000
+    perRequest: 4000
+    alertThreshold: 0.8  # Alert at 80% usage
+```
+
+### Namespace-Scoped Deployments
+
+Deploy HiClaw with namespace-scoped permissions:
+
+```bash
+helm install hiclaw higress.io/hiclaw \
+  -n team-alpha --create-namespace \
+  --set rbac.scope=namespace \
+  --set credentials.llmApiKey=$LLM_API_KEY \
+  --set gateway.publicURL=http://localhost:18080
+```
+
+Isolates Workers/Teams to specific namespace, useful for multi-tenant environments.
+
+## Uninstallation
+
+### Docker
+
+**macOS / Linux:**
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/higress-group/hiclaw/main/install/hiclaw-install.sh) uninstall
+```
+
+**Windows PowerShell:**
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force
-$wc=New-Object Net.WebClient
-$wc.Encoding=[Text.Encoding]::UTF8
-$s=$wc.DownloadString('https://raw.githubusercontent.com/higress-group/hiclaw/main/install/hiclaw-install.ps1')
+$wc = New-Object Net.WebClient
+$wc.Encoding = [Text.Encoding]::UTF8
+$s = $wc.DownloadString('https://raw.githubusercontent.com/higress-group/hiclaw/main/install/hiclaw-install.ps1')
 & ([scriptblock]::Create($s)) uninstall
 ```
 
-### Kubernetes Uninstall
+Removes all containers, volumes, networks, and workspace directory.
+
+### Kubernetes
 
 ```bash
-# Remove HiClaw (keeps CRDs and PVCs by default)
 helm uninstall hiclaw -n hiclaw-system
 
-# Remove CRDs (WARNING: deletes all Workers, Teams, Humans)
-kubectl delete crd workers.hiclaw.io teams.hiclaw.io humans.hiclaw.io
+# Remove CRDs (optional - deletes all Workers/Teams/Humans)
+kubectl delete crd workers.hiclaw.higress.io
+kubectl delete crd teams.hiclaw.higress.io
+kubectl delete crd humans.hiclaw.higress.io
 
-# Remove namespace (deletes all data)
+# Remove namespace
 kubectl delete namespace hiclaw-system
 ```
-
-## Security Best Practices
-
-1. **Credential Isolation**: Workers receive consumer tokens only. Real API keys stay in the Higress gateway.
-2. **Namespace Scoping**: Use namespace-scoped RBAC for the HiClaw controller.
-3. **Matrix Federation**: Disable federation for internal deployments to prevent external access.
-4. **MCP Server Permissions**: Restrict MCP server access to necessary Workers only.
-5. **Human Approval**: Enable `approvalRequired` in Team workflows for sensitive operations.
 
 ## Resources
 
 - **Official Docs**: https://hiclaw.io
-- **GitHub**: https://github.com/higress-group/hiclaw
-- **Discord**: https://discord.com/invite/NVjNA4BAVw
-- **Skills Marketplace**: https://skills.sh
+- **GitHub**: https://github.com/agentscope-ai/HiClaw
 - **Helm Charts**: https://higress.io/helm-charts
+- **Skills Marketplace**: https://skills.sh
+- **Discord**: https://discord.com/invite/NVjNA4BAVw
