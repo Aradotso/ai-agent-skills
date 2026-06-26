@@ -105,6 +105,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [burner-agents-privacy](skills/burner-agents-privacy/) | [install](https://skills.sh/aradotso/ai-agent-skills/burner-agents-privacy) | [NotPBShaw/burner-agents](https://github.com/NotPBShaw/burner-agents) | 2026-06-21 |
 | [agent-apprenticeship-ecosystem](skills/agent-apprenticeship-ecosystem/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-apprenticeship-ecosystem) | [Forsy-AI/agent-apprenticeship](https://github.com/Forsy-AI/agent-apprenticeship) | 2026-06-22 |
 | [hiclaw-collaborative-agent-os](skills/hiclaw-collaborative-agent-os/) | [install](https://skills.sh/aradotso/ai-agent-skills/hiclaw-collaborative-agent-os) | [agentscope-ai/AgentTeams](https://github.com/agentscope-ai/AgentTeams) | 2026-06-26 |
+| [hiclaw-multi-agent-collaboration](skills/hiclaw-multi-agent-collaboration/) | [install](https://skills.sh/aradotso/ai-agent-skills/hiclaw-multi-agent-collaboration) | [agentscope-ai/AgentTeams](https://github.com/agentscope-ai/AgentTeams) | 2026-06-26 |
 <!-- SKILL_INDEX -->
 
 ---
