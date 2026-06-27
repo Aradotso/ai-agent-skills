@@ -108,6 +108,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [hiclaw-multi-agent-collaboration](skills/hiclaw-multi-agent-collaboration/) | [install](https://skills.sh/aradotso/ai-agent-skills/hiclaw-multi-agent-collaboration) | [agentscope-ai/AgentTeams](https://github.com/agentscope-ai/AgentTeams) | 2026-06-26 |
 | [hiclaw-multi-agent-orchestration](skills/hiclaw-multi-agent-orchestration/) | [install](https://skills.sh/aradotso/ai-agent-skills/hiclaw-multi-agent-orchestration) | [agentscope-ai/AgentTeams](https://github.com/agentscope-ai/AgentTeams) | 2026-06-26 |
 | [agentteams-hiclaw-multi-agent-orchestration](skills/agentteams-hiclaw-multi-agent-orchestration/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentteams-hiclaw-multi-agent-orchestration) | [agentscope-ai/AgentTeams](https://github.com/agentscope-ai/AgentTeams) | 2026-06-26 |
+| [qwen-agentworld-language-world-model](skills/qwen-agentworld-language-world-model/) | [install](https://skills.sh/aradotso/ai-agent-skills/qwen-agentworld-language-world-model) | [QwenLM/Qwen-AgentWorld](https://github.com/QwenLM/Qwen-AgentWorld) | 2026-06-27 |
 <!-- SKILL_INDEX -->
 
 ---
