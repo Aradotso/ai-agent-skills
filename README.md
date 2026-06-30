@@ -110,6 +110,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [agentteams-hiclaw-multi-agent-orchestration](skills/agentteams-hiclaw-multi-agent-orchestration/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentteams-hiclaw-multi-agent-orchestration) | [agentscope-ai/AgentTeams](https://github.com/agentscope-ai/AgentTeams) | 2026-06-26 |
 | [qwen-agentworld-language-world-model](skills/qwen-agentworld-language-world-model/) | [install](https://skills.sh/aradotso/ai-agent-skills/qwen-agentworld-language-world-model) | [QwenLM/Qwen-AgentWorld](https://github.com/QwenLM/Qwen-AgentWorld) | 2026-06-27 |
 | [agent-native-framework](skills/agent-native-framework/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-native-framework) | [BuilderIO/agent-native](https://github.com/BuilderIO/agent-native) | 2026-06-29 |
+| [visa-vulnerability-agentic-harness](skills/visa-vulnerability-agentic-harness/) | [install](https://skills.sh/aradotso/ai-agent-skills/visa-vulnerability-agentic-harness) | [visa/visa-vulnerability-agentic-harness](https://github.com/visa/visa-vulnerability-agentic-harness) | 2026-06-30 |
 <!-- SKILL_INDEX -->
 
 ---
