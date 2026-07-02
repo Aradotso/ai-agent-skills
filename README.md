@@ -112,6 +112,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [agent-native-framework](skills/agent-native-framework/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-native-framework) | [BuilderIO/agent-native](https://github.com/BuilderIO/agent-native) | 2026-06-29 |
 | [visa-vulnerability-agentic-harness](skills/visa-vulnerability-agentic-harness/) | [install](https://skills.sh/aradotso/ai-agent-skills/visa-vulnerability-agentic-harness) | [visa/visa-vulnerability-agentic-harness](https://github.com/visa/visa-vulnerability-agentic-harness) | 2026-06-30 |
 | [agentspace-human-agent-workspace](skills/agentspace-human-agent-workspace/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentspace-human-agent-workspace) | [HKUDS/AgentSpace](https://github.com/HKUDS/AgentSpace) | 2026-07-02 |
+| [launch-your-agent-claude-code](skills/launch-your-agent-claude-code/) | [install](https://skills.sh/aradotso/ai-agent-skills/launch-your-agent-claude-code) | [anthropics/launch-your-agent](https://github.com/anthropics/launch-your-agent) | 2026-07-02 |
 <!-- SKILL_INDEX -->
 
 ---
