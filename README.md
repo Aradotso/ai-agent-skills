@@ -111,6 +111,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [qwen-agentworld-language-world-model](skills/qwen-agentworld-language-world-model/) | [install](https://skills.sh/aradotso/ai-agent-skills/qwen-agentworld-language-world-model) | [QwenLM/Qwen-AgentWorld](https://github.com/QwenLM/Qwen-AgentWorld) | 2026-06-27 |
 | [agent-native-framework](skills/agent-native-framework/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-native-framework) | [BuilderIO/agent-native](https://github.com/BuilderIO/agent-native) | 2026-06-29 |
 | [visa-vulnerability-agentic-harness](skills/visa-vulnerability-agentic-harness/) | [install](https://skills.sh/aradotso/ai-agent-skills/visa-vulnerability-agentic-harness) | [visa/visa-vulnerability-agentic-harness](https://github.com/visa/visa-vulnerability-agentic-harness) | 2026-06-30 |
+| [agentspace-human-agent-workspace](skills/agentspace-human-agent-workspace/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentspace-human-agent-workspace) | [HKUDS/AgentSpace](https://github.com/HKUDS/AgentSpace) | 2026-07-02 |
 <!-- SKILL_INDEX -->
 
 ---
