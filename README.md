@@ -115,6 +115,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [launch-your-agent-claude-code](skills/launch-your-agent-claude-code/) | [install](https://skills.sh/aradotso/ai-agent-skills/launch-your-agent-claude-code) | [anthropics/launch-your-agent](https://github.com/anthropics/launch-your-agent) | 2026-07-02 |
 | [agentic-awesome-skills-installer](skills/agentic-awesome-skills-installer/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentic-awesome-skills-installer) | [sickn33/agentic-awesome-skills](https://github.com/sickn33/agentic-awesome-skills) | 2026-07-08 |
 | [agent-device-mobile-automation](skills/agent-device-mobile-automation/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-device-mobile-automation) | [callstack/agent-device](https://github.com/callstack/agent-device) | 2026-07-14 |
+| [agent-chief-attention-guard](skills/agent-chief-attention-guard/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-chief-attention-guard) | [SmileLikeYe/agent-chief](https://github.com/SmileLikeYe/agent-chief) | 2026-07-15 |
 <!-- SKILL_INDEX -->
 
 ---
