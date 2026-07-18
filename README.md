@@ -117,6 +117,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [agent-device-mobile-automation](skills/agent-device-mobile-automation/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-device-mobile-automation) | [callstack/agent-device](https://github.com/callstack/agent-device) | 2026-07-14 |
 | [agent-chief-attention-guard](skills/agent-chief-attention-guard/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-chief-attention-guard) | [SmileLikeYe/agent-chief](https://github.com/SmileLikeYe/agent-chief) | 2026-07-15 |
 | [agent-as-a-router-coding](skills/agent-as-a-router-coding/) | [install](https://skills.sh/aradotso/ai-agent-skills/agent-as-a-router-coding) | [LanceZPF/agent-as-a-router](https://github.com/LanceZPF/agent-as-a-router) | 2026-07-18 |
+| [ai-agents-from-zero-tutorial](skills/ai-agents-from-zero-tutorial/) | [install](https://skills.sh/aradotso/ai-agent-skills/ai-agents-from-zero-tutorial) | [didilili/ai-agents-from-zero](https://github.com/didilili/ai-agents-from-zero) | 2026-07-18 |
 <!-- SKILL_INDEX -->
 
 ---
