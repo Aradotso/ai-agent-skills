@@ -122,6 +122,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [abai-autoplus-chatgpt-registration](skills/abai-autoplus-chatgpt-registration/) | [install](https://skills.sh/aradotso/ai-agent-skills/abai-autoplus-chatgpt-registration) | [asz798838958/freeAgentIdentity](https://github.com/asz798838958/freeAgentIdentity) | 2026-07-30 |
 | [abai-autoplus-chatgpt-account-manager](skills/abai-autoplus-chatgpt-account-manager/) | [install](https://skills.sh/aradotso/ai-agent-skills/abai-autoplus-chatgpt-account-manager) | [asz798838958/freeAgentIdentity](https://github.com/asz798838958/freeAgentIdentity) | 2026-07-30 |
 | [freeagentidentity-chatgpt-auto-register](skills/freeagentidentity-chatgpt-auto-register/) | [install](https://skills.sh/aradotso/ai-agent-skills/freeagentidentity-chatgpt-auto-register) | [asz798838958/freeAgentIdentity](https://github.com/asz798838958/freeAgentIdentity) | 2026-07-30 |
+| [awesome-long-horizon-agents-survey](skills/awesome-long-horizon-agents-survey/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-long-horizon-agents-survey) | [RUC-NLPIR/Awesome-Long-Horizon-Agents](https://github.com/RUC-NLPIR/Awesome-Long-Horizon-Agents) | 2026-07-30 |
 <!-- SKILL_INDEX -->
 
 ---
