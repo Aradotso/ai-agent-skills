@@ -1,35 +1,31 @@
 ---
 name: abai-autoplus-chatgpt-registration
-description: Multi-threaded automated ChatGPT free account registration and management web panel with headless browser automation
+description: Multi-threaded automated ChatGPT free account registration and management web panel with OAuth bypass using Codex
 triggers:
-  - "set up ChatGPT account registration automation"
-  - "how do I use aBaiAutoplus to register free accounts"
-  - "configure email and captcha providers for account registration"
-  - "manage ChatGPT free accounts with web panel"
-  - "automate ChatGPT account creation with Playwright"
-  - "run account registration tasks with proxy and verification"
-  - "export registered ChatGPT account credentials"
-  - "configure registration strategies for automated signup"
+  - how do I register ChatGPT free accounts automatically
+  - set up aBaiAutoplus for bulk account registration
+  - configure email and captcha providers for ChatGPT registration
+  - manage ChatGPT free accounts with aBaiAutoplus
+  - automate ChatGPT account creation with proxy rotation
+  - troubleshoot aBaiAutoplus registration tasks
+  - export ChatGPT account credentials in bulk
+  - configure BitBrowser profiles for account registration
 ---
 
 # aBaiAutoplus ChatGPT Registration Skill
 
 > Skill by [ara.so](https://ara.so) — AI Agent Skills collection.
 
+aBaiAutoplus is a web-based automation panel for registering, managing, and configuring ChatGPT free accounts at scale. It features multi-threaded registration workflows, OAuth bypass capabilities, pluggable email/SMS/captcha providers, proxy rotation, and BitBrowser integration for fingerprint management.
+
 ## What It Does
 
-aBaiAutoplus is a web-based automation panel for registering, managing, and configuring ChatGPT free accounts at scale. It provides:
-
-- Multi-threaded automated account registration with Playwright browser automation
-- Email provider integration (temporary/custom email services)
-- Captcha solving service integration
-- SMS verification service integration
-- Proxy resource management (static/dynamic)
-- Account status tracking and export
-- Registration strategy configuration
-- Task logging and execution monitoring
-
-The frontend exposes three main sections: Dashboard (overview), ChatGPT Free (account management), and Settings (provider/strategy configuration).
+- **Automated ChatGPT Registration**: Multi-threaded account creation with configurable concurrency and identity generation
+- **Provider Management**: Configure email services, captcha solvers, SMS verification providers, and proxy pools
+- **Account Management**: View, export, and manage registered accounts with status tracking
+- **Web Dashboard**: React-based UI for monitoring registration tasks, account statistics, and system health
+- **BitBrowser Integration**: Profile pool management for browser fingerprinting
+- **Flexible Configuration**: Strategy-based registration with OAuth provider selection
 
 ## Installation
 
@@ -37,16 +33,48 @@ The frontend exposes three main sections: Dashboard (overview), ChatGPT Free (ac
 
 - Python 3.11+
 - Node.js 18+
-- Playwright browsers
+- Playwright (for browser automation)
 
-### Local Setup (Windows)
+### Windows Setup
 
 ```powershell
+# Clone and enter directory
+git clone https://github.com/asz798838958/freeAgentIdentity.git
+cd freeAgentIdentity
+
+# Create virtual environment
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
+
+# Install Python dependencies
 pip install -r requirements.txt
 
-# Install browser runtime for automation
+# Install browser automation runtime
+python -m playwright install chromium
+
+# Build frontend
+cd frontend
+npm install
+npm run build
+cd ..
+
+# Start the server
+python -m uvicorn main:app --host 0.0.0.0 --port 8000
+```
+
+### macOS/Linux Setup
+
+```bash
+# Clone and enter directory
+git clone https://github.com/asz798838958/freeAgentIdentity.git
+cd freeAgentIdentity
+
+# Create virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
 python -m playwright install chromium
 
 # Build frontend
@@ -59,780 +87,454 @@ cd ..
 python -m uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
-### Local Setup (macOS/Linux)
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-
-python -m playwright install chromium
-
-cd frontend
-npm install
-npm run build
-cd ..
-
-python -m uvicorn main:app --host 0.0.0.0 --port 8000
-```
-
-Access the web UI at `http://localhost:8000`.
+Access the web UI at `http://localhost:8000`
 
 ### Docker Deployment
 
 ```bash
+# Start with Docker Compose
 docker compose up -d --build
 ```
-
-Default port is `8000`. For production, always set a password.
-
-### Frontend Development Mode
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Frontend dev server runs on `http://localhost:5173`. Backend must run separately.
 
 ## Configuration
 
 ### Environment Variables
 
-Copy `.env.example` to `.env`:
+Create `.env` file from template:
+
+```bash
+cp .env.example .env
+```
+
+Key environment variables:
 
 ```env
-# Security (required for public deployment)
+# Security (REQUIRED for production)
 APP_PASSWORD=your-secure-password
 
 # Database
 ACCOUNT_MANAGER_DATABASE_URL=sqlite:///./data/account_manager.db
 
-# Optional: Override default settings
-DEFAULT_REGISTRATION_STRATEGY=oauth
-DEFAULT_BROWSER_REUSE=true
+# Optional: Custom host/port
+HOST=0.0.0.0
+PORT=8000
 ```
 
 ### Web UI Configuration
 
-Most settings are configured through the **Settings** menu in the web panel:
+Most configuration is done through the **Settings** menu in the web UI:
 
-- **General**: Theme, language, default registration strategy, browser reuse
-- **Registration Strategy**: Default identity generation, OAuth vs manual, execution mode
-- **Email Service**: Add/enable email providers (temporary email APIs)
-- **Verification Service**: Captcha solver configuration (2Captcha, etc.)
-- **SMS Service**: Phone verification provider setup
-- **Proxy Resources**: Static/dynamic proxy pool management
-- **ChatGPT**: Platform-specific settings
-- **BitBrowser**: Browser profile pool management
-- **Advanced**: Platform capability overrides
+1. **General**: Theme, language, default registration strategy, browser reuse
+2. **Registration Strategy**: Default identity generation, execution method, OAuth providers
+3. **Email Services**: Add and configure email providers (IMAP/POP3 credentials)
+4. **Verification Services**: Configure captcha solving providers
+5. **SMS Services**: Add phone number verification providers
+6. **Proxy Resources**: Configure static/dynamic proxy pools
+7. **ChatGPT**: Platform-specific settings
+8. **BitBrowser**: Profile pool management
+9. **Advanced**: Override platform capabilities
 
-## Key API Endpoints
-
-### Account Management
+## Core Application Structure
 
 ```python
-# GET /api/accounts - List all ChatGPT accounts
-# Query params: platform, status, skip, limit
-import requests
+# main.py - FastAPI application entry point
+from fastapi import FastAPI
+from application.routes import router
 
-response = requests.get(
-    "http://localhost:8000/api/accounts",
-    params={"platform": "chatgpt", "limit": 50}
-)
-accounts = response.json()
+app = FastAPI()
+app.include_router(router)
+
+# application/ - Task orchestration and API endpoints
+# core/ - Core models, configuration, utilities
+# platforms/chatgpt/ - ChatGPT platform adapter
+# frontend/ - React + Vite web UI
 ```
 
-### Registration Tasks
+## Key API Patterns
+
+### Starting a Registration Task
 
 ```python
-# POST /api/tasks/register - Create registration task
-import requests
+# application/tasks/registration_task.py usage pattern
+from application.tasks.registration_task import start_registration_task
 
-task_config = {
-    "platform": "chatgpt",
-    "count": 10,
-    "concurrency": 3,
-    "registration_strategy": {
-        "identity_source": "generated",
-        "execution_mode": "headless",
-        "use_oauth": True
-    },
-    "email_provider": "tempmail_default",
-    "captcha_provider": "2captcha",
-    "proxy_config": {
-        "enabled": True,
-        "provider": "dynamic_pool"
-    }
+# Start automated registration
+task_id = await start_registration_task(
+    count=10,              # Number of accounts to register
+    concurrency=3,         # Parallel threads
+    identity_type="auto",  # Identity generation strategy
+    execution_mode="headless",  # Browser mode
+    oauth_provider="google",    # OAuth method
+    workspace_join=True,   # Auto-join workspace after registration
+)
+```
+
+### Fetching Account List
+
+```python
+# Via API endpoint pattern
+from fastapi import APIRouter
+from core.database import get_session
+
+router = APIRouter()
+
+@router.get("/api/chatgpt/accounts")
+async def list_accounts(
+    status: str = None,
+    platform: str = "chatgpt",
+    skip: int = 0,
+    limit: int = 100
+):
+    """List ChatGPT accounts with filtering"""
+    # Query database with filters
+    # Returns: [{id, email, status, created_at, ...}]
+    pass
+```
+
+### Configuring Email Provider
+
+```python
+# core/providers/email_provider.py pattern
+from core.providers.email_provider import EmailProvider
+
+# Add IMAP email provider
+email_config = {
+    "type": "imap",
+    "host": "imap.gmail.com",
+    "port": 993,
+    "username": os.getenv("EMAIL_USERNAME"),
+    "password": os.getenv("EMAIL_PASSWORD"),
+    "use_ssl": True,
+    "enabled": True,
+    "is_default": True
 }
 
-response = requests.post(
-    "http://localhost:8000/api/tasks/register",
-    json=task_config
-)
-task_id = response.json()["task_id"]
+# Providers are managed through web UI Settings → Email Services
 ```
 
-### Task Monitoring
+### Proxy Configuration
 
 ```python
-# GET /api/tasks/{task_id} - Check task status
-response = requests.get(f"http://localhost:8000/api/tasks/{task_id}")
-status = response.json()
+# core/providers/proxy_provider.py pattern
+from core.providers.proxy_provider import ProxyProvider
 
-# GET /api/tasks/{task_id}/logs - View task logs
-logs_response = requests.get(f"http://localhost:8000/api/tasks/{task_id}/logs")
-logs = logs_response.json()
+# Static proxy configuration
+static_proxy = {
+    "type": "http",
+    "host": "proxy.example.com",
+    "port": 8080,
+    "username": os.getenv("PROXY_USERNAME"),
+    "password": os.getenv("PROXY_PASSWORD")
+}
+
+# Dynamic proxy pool (API-based)
+dynamic_proxy = {
+    "type": "api",
+    "api_url": os.getenv("PROXY_API_URL"),
+    "api_key": os.getenv("PROXY_API_KEY"),
+    "rotation_interval": 300  # seconds
+}
 ```
+
+## Registration Workflow Example
+
+```python
+# Complete registration workflow pattern
+from platforms.chatgpt.registration import ChatGPTRegistration
+from core.identity_generator import generate_identity
+from core.providers import get_email_provider, get_proxy_provider
+
+async def register_chatgpt_account():
+    # 1. Generate random identity
+    identity = generate_identity(locale="en_US")
+    
+    # 2. Get providers
+    email_provider = get_email_provider()
+    proxy = get_proxy_provider().get_proxy()
+    
+    # 3. Initialize registration session
+    registration = ChatGPTRegistration(
+        identity=identity,
+        email_provider=email_provider,
+        proxy=proxy,
+        headless=True
+    )
+    
+    # 4. Execute registration steps
+    try:
+        # Navigate and fill registration form
+        await registration.navigate_to_signup()
+        await registration.fill_identity_info(identity)
+        
+        # Handle OAuth flow
+        await registration.complete_oauth_flow(provider="google")
+        
+        # Verify email
+        verification_code = await email_provider.get_verification_code()
+        await registration.submit_verification(verification_code)
+        
+        # Save account credentials
+        account_data = await registration.get_account_info()
+        await save_account_to_database(account_data)
+        
+        return account_data
+        
+    except Exception as e:
+        await registration.cleanup()
+        raise e
+```
+
+## Batch Operations
 
 ### Export Accounts
 
 ```python
-# POST /api/accounts/export - Export account credentials
-export_config = {
-    "account_ids": [1, 2, 3],
-    "format": "csv",  # or "json"
-    "fields": ["email", "password", "status", "created_at"]
-}
+# Export accounts to JSON/CSV
+from application.services.account_exporter import export_accounts
 
-response = requests.post(
-    "http://localhost:8000/api/accounts/export",
-    json=export_config
+# Export specific accounts
+account_ids = [1, 2, 3, 4, 5]
+export_data = await export_accounts(
+    account_ids=account_ids,
+    format="json",  # or "csv"
+    include_credentials=True
 )
 
-# Download the exported file
-with open("accounts.csv", "wb") as f:
-    f.write(response.content)
+# Result format:
+# [
+#   {
+#     "email": "user@example.com",
+#     "password": "generated_password",
+#     "status": "active",
+#     "created_at": "2026-07-15T10:30:00Z"
+#   }
+# ]
 ```
 
-## Core Code Patterns
-
-### Custom Registration Strategy
+### Bulk Status Update
 
 ```python
-# platforms/chatgpt/registration_strategy.py
-from core.models.registration import RegistrationStrategy, ExecutionMode
-from platforms.chatgpt.automation import ChatGPTAutomation
+# Update multiple account statuses
+from core.database import Account, get_session
 
-class CustomChatGPTStrategy(RegistrationStrategy):
-    """Custom registration implementation"""
-    
-    async def execute(self, context):
-        automation = ChatGPTAutomation(
-            browser_config=context.browser_config,
-            proxy=context.proxy
-        )
+async def mark_accounts_verified(account_ids: list[int]):
+    async with get_session() as session:
+        accounts = await session.query(Account).filter(
+            Account.id.in_(account_ids)
+        ).all()
         
-        # Navigate to signup page
-        await automation.navigate("https://chatgpt.com/signup")
+        for account in accounts:
+            account.status = "verified"
+            account.verified_at = datetime.utcnow()
         
-        # Generate or use provided identity
-        if self.identity_source == "generated":
-            identity = await self.generate_identity()
-        else:
-            identity = context.provided_identity
-        
-        # Get temporary email
-        email_provider = context.email_provider
-        email = await email_provider.get_address()
-        
-        # Fill registration form
-        await automation.fill_email(email)
-        await automation.fill_password(identity.password)
-        
-        # Solve captcha if present
-        if await automation.has_captcha():
-            captcha_provider = context.captcha_provider
-            solution = await captcha_provider.solve(
-                await automation.get_captcha_challenge()
-            )
-            await automation.submit_captcha(solution)
-        
-        # Wait for verification email
-        verification_link = await email_provider.wait_for_verification()
-        await automation.navigate(verification_link)
-        
-        # Complete registration
-        account_info = await automation.get_account_info()
-        
-        return {
-            "email": email,
-            "password": identity.password,
-            "status": "active",
-            "metadata": account_info
-        }
+        await session.commit()
 ```
 
-### Email Provider Integration
+## Frontend Development
 
-```python
-# application/providers/email_provider.py
-from abc import ABC, abstractmethod
+### Development Mode
 
-class EmailProvider(ABC):
-    """Base class for email service providers"""
-    
-    @abstractmethod
-    async def get_address(self) -> str:
-        """Get a temporary email address"""
-        pass
-    
-    @abstractmethod
-    async def wait_for_verification(self, timeout: int = 300) -> str:
-        """Wait for verification email and extract link"""
-        pass
-    
-    @abstractmethod
-    async def cleanup(self):
-        """Release email address"""
-        pass
+```bash
+cd frontend
+npm install
 
-# Example implementation
-class TempMailProvider(EmailProvider):
-    def __init__(self, api_key: str):
-        import os
-        self.api_key = os.getenv("TEMPMAIL_API_KEY", api_key)
-        self.current_email = None
-    
-    async def get_address(self) -> str:
-        import aiohttp
-        async with aiohttp.ClientSession() as session:
-            async with session.post(
-                "https://api.tempmail.service/create",
-                headers={"Authorization": f"Bearer {self.api_key}"}
-            ) as resp:
-                data = await resp.json()
-                self.current_email = data["email"]
-                return self.current_email
-    
-    async def wait_for_verification(self, timeout: int = 300) -> str:
-        import asyncio
-        import aiohttp
-        
-        start_time = asyncio.get_event_loop().time()
-        
-        while asyncio.get_event_loop().time() - start_time < timeout:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(
-                    f"https://api.tempmail.service/inbox/{self.current_email}",
-                    headers={"Authorization": f"Bearer {self.api_key}"}
-                ) as resp:
-                    messages = await resp.json()
-                    
-                    for msg in messages:
-                        if "verify" in msg.get("subject", "").lower():
-                            # Extract verification link from email body
-                            import re
-                            match = re.search(
-                                r'https://chatgpt\.com/verify\?token=[a-zA-Z0-9]+',
-                                msg["body"]
-                            )
-                            if match:
-                                return match.group(0)
-            
-            await asyncio.sleep(5)
-        
-        raise TimeoutError("Verification email not received")
-    
-    async def cleanup(self):
-        self.current_email = None
+# Start dev server (with hot reload)
+npm run dev
+# Frontend: http://localhost:5173
+# Backend must run separately on :8000
 ```
 
-### Captcha Solver Integration
+### Build for Production
 
-```python
-# application/providers/captcha_provider.py
-from abc import ABC, abstractmethod
-
-class CaptchaProvider(ABC):
-    @abstractmethod
-    async def solve(self, challenge_data: dict) -> str:
-        """Solve captcha and return solution"""
-        pass
-
-class TwoCaptchaProvider(CaptchaProvider):
-    def __init__(self):
-        import os
-        self.api_key = os.getenv("TWOCAPTCHA_API_KEY")
-    
-    async def solve(self, challenge_data: dict) -> str:
-        import aiohttp
-        
-        # Submit captcha
-        async with aiohttp.ClientSession() as session:
-            async with session.post(
-                "https://2captcha.com/in.php",
-                data={
-                    "key": self.api_key,
-                    "method": challenge_data.get("method", "userrecaptcha"),
-                    "googlekey": challenge_data.get("sitekey"),
-                    "pageurl": challenge_data.get("url"),
-                    "json": 1
-                }
-            ) as resp:
-                result = await resp.json()
-                request_id = result["request"]
-            
-            # Poll for solution
-            import asyncio
-            for _ in range(60):
-                await asyncio.sleep(5)
-                async with session.get(
-                    f"https://2captcha.com/res.php",
-                    params={
-                        "key": self.api_key,
-                        "action": "get",
-                        "id": request_id,
-                        "json": 1
-                    }
-                ) as resp:
-                    result = await resp.json()
-                    if result["status"] == 1:
-                        return result["request"]
-        
-        raise TimeoutError("Captcha solving timeout")
+```bash
+cd frontend
+npm run build
+# Static files output to frontend/dist/
+# Served by FastAPI in production
 ```
 
-### Proxy Management
+## Common Patterns
+
+### Task Monitoring
 
 ```python
-# application/proxy_manager.py
-from typing import Optional
-import aiohttp
+# Check registration task status
+from application.tasks.task_manager import get_task_status
 
-class ProxyManager:
-    """Manage proxy resources for registration tasks"""
-    
-    def __init__(self):
-        self.static_proxies = []
-        self.dynamic_provider = None
-    
-    def add_static_proxy(self, proxy_url: str):
-        """Add static proxy: http://user:pass@host:port"""
-        self.static_proxies.append(proxy_url)
-    
-    def configure_dynamic_provider(self, provider_url: str, api_key: str):
-        """Configure dynamic proxy provider"""
-        self.dynamic_provider = {
-            "url": provider_url,
-            "api_key": api_key
-        }
-    
-    async def get_proxy(self, prefer_dynamic: bool = True) -> Optional[str]:
-        """Get next available proxy"""
-        if prefer_dynamic and self.dynamic_provider:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(
-                    f"{self.dynamic_provider['url']}/get",
-                    headers={"Authorization": f"Bearer {self.dynamic_provider['api_key']}"}
-                ) as resp:
-                    data = await resp.json()
-                    return data.get("proxy")
-        
-        if self.static_proxies:
-            import random
-            return random.choice(self.static_proxies)
-        
-        return None
-    
-    async def release_proxy(self, proxy_url: str):
-        """Release dynamic proxy back to pool"""
-        if self.dynamic_provider:
-            async with aiohttp.ClientSession() as session:
-                await session.post(
-                    f"{self.dynamic_provider['url']}/release",
-                    json={"proxy": proxy_url},
-                    headers={"Authorization": f"Bearer {self.dynamic_provider['api_key']}"}
-                )
+task_status = await get_task_status(task_id)
+# Returns: {
+#   "status": "running",
+#   "progress": 7,
+#   "total": 10,
+#   "completed": 7,
+#   "failed": 0,
+#   "logs": [...]
+# }
 ```
 
-### Registration Task Runner
+### Account Filtering
 
 ```python
-# application/tasks/registration_task.py
-import asyncio
-from typing import List
-from core.models.account import Account
+# Query accounts by criteria
+from core.database import Account, get_session
 
-class RegistrationTask:
-    """Execute multi-threaded account registration"""
-    
-    def __init__(
-        self,
-        count: int,
-        concurrency: int,
-        strategy,
-        email_provider,
-        captcha_provider,
-        proxy_manager
-    ):
-        self.count = count
-        self.concurrency = concurrency
-        self.strategy = strategy
-        self.email_provider = email_provider
-        self.captcha_provider = captcha_provider
-        self.proxy_manager = proxy_manager
-        self.results = []
-        self.errors = []
-    
-    async def register_single_account(self, index: int) -> Account:
-        """Register one account"""
-        proxy = await self.proxy_manager.get_proxy()
-        
-        try:
-            context = {
-                "browser_config": {"headless": True},
-                "proxy": proxy,
-                "email_provider": self.email_provider,
-                "captcha_provider": self.captcha_provider,
-                "identity_source": "generated"
-            }
-            
-            account_data = await self.strategy.execute(context)
-            
-            # Save to database
-            from core.database import get_db_session
-            async with get_db_session() as session:
-                account = Account(
-                    platform="chatgpt",
-                    email=account_data["email"],
-                    password=account_data["password"],
-                    status=account_data["status"],
-                    metadata=account_data.get("metadata", {})
-                )
-                session.add(account)
-                await session.commit()
-                await session.refresh(account)
-                
-                self.results.append(account)
-                return account
-        
-        except Exception as e:
-            self.errors.append({"index": index, "error": str(e)})
-            raise
-        
-        finally:
-            if proxy:
-                await self.proxy_manager.release_proxy(proxy)
-    
-    async def run(self) -> dict:
-        """Execute registration task with concurrency control"""
-        semaphore = asyncio.Semaphore(self.concurrency)
-        
-        async def bounded_register(index: int):
-            async with semaphore:
-                return await self.register_single_account(index)
-        
-        tasks = [bounded_register(i) for i in range(self.count)]
-        await asyncio.gather(*tasks, return_exceptions=True)
-        
-        return {
-            "total": self.count,
-            "succeeded": len(self.results),
-            "failed": len(self.errors),
-            "accounts": self.results,
-            "errors": self.errors
-        }
+async def get_active_accounts(platform: str = "chatgpt"):
+    async with get_session() as session:
+        accounts = await session.query(Account).filter(
+            Account.platform == platform,
+            Account.status == "active"
+        ).all()
+        return accounts
 ```
 
-## Common Usage Patterns
-
-### Start a Registration Task via API
+### Captcha Solving Integration
 
 ```python
-import requests
-import os
+# core/providers/captcha_provider.py pattern
+from core.providers.captcha_provider import solve_captcha
 
-# Configure task
-task = {
-    "platform": "chatgpt",
-    "count": 5,
-    "concurrency": 2,
-    "registration_strategy": {
-        "identity_source": "generated",
-        "execution_mode": "headless",
-        "use_oauth": True
-    },
-    "email_provider": "tempmail_default",
-    "captcha_provider": "2captcha",
-    "proxy_config": {
-        "enabled": True,
-        "provider": "dynamic_pool"
-    }
-}
-
-# Submit task
-response = requests.post(
-    "http://localhost:8000/api/tasks/register",
-    json=task,
-    headers={"Authorization": f"Bearer {os.getenv('APP_PASSWORD')}"}
+# Solve reCAPTCHA v2
+solution = await solve_captcha(
+    captcha_type="recaptcha_v2",
+    site_key=os.getenv("RECAPTCHA_SITE_KEY"),
+    page_url="https://chatgpt.com/signup",
+    provider="2captcha"  # or configured provider
 )
 
-task_id = response.json()["task_id"]
-print(f"Task created: {task_id}")
-
-# Monitor progress
-import time
-while True:
-    status = requests.get(f"http://localhost:8000/api/tasks/{task_id}").json()
-    print(f"Status: {status['state']} - {status['progress']}%")
-    
-    if status["state"] in ["completed", "failed"]:
-        break
-    
-    time.sleep(5)
-
-# Get results
-accounts = requests.get(
-    f"http://localhost:8000/api/tasks/{task_id}/results"
-).json()
-
-print(f"Registered {len(accounts)} accounts")
-```
-
-### Export Accounts to CSV
-
-```python
-import requests
-import csv
-
-# Fetch all active accounts
-response = requests.get(
-    "http://localhost:8000/api/accounts",
-    params={"status": "active", "limit": 1000}
-)
-accounts = response.json()
-
-# Export to CSV
-with open("chatgpt_accounts.csv", "w", newline="") as f:
-    writer = csv.DictWriter(f, fieldnames=["email", "password", "created_at"])
-    writer.writeheader()
-    
-    for account in accounts:
-        writer.writerow({
-            "email": account["email"],
-            "password": account["password"],
-            "created_at": account["created_at"]
-        })
-
-print(f"Exported {len(accounts)} accounts")
-```
-
-### Configure Providers via Settings API
-
-```python
-import requests
-import os
-
-# Add email provider
-email_config = {
-    "name": "my_tempmail",
-    "type": "tempmail_api",
-    "enabled": True,
-    "is_default": True,
-    "config": {
-        "api_key": os.getenv("TEMPMAIL_API_KEY"),
-        "api_url": "https://api.tempmail.service"
-    }
-}
-
-requests.post(
-    "http://localhost:8000/api/settings/email-providers",
-    json=email_config
-)
-
-# Add captcha provider
-captcha_config = {
-    "name": "2captcha_solver",
-    "type": "2captcha",
-    "enabled": True,
-    "config": {
-        "api_key": os.getenv("TWOCAPTCHA_API_KEY")
-    }
-}
-
-requests.post(
-    "http://localhost:8000/api/settings/captcha-providers",
-    json=captcha_config
-)
-
-# Add static proxies
-proxy_config = {
-    "type": "static",
-    "proxies": [
-        "http://user:pass@proxy1.example.com:8080",
-        "http://user:pass@proxy2.example.com:8080"
-    ]
-}
-
-requests.post(
-    "http://localhost:8000/api/settings/proxy-resources",
-    json=proxy_config
-)
+await page.evaluate(f"document.getElementById('g-recaptcha-response').value='{solution}'")
 ```
 
 ## Troubleshooting
 
-### Browser Automation Fails
+### Registration Fails with "Browser not found"
 
-**Issue**: Playwright browser not found or crashes
+**Problem**: Playwright browsers not installed
 
+**Solution**:
 ```bash
-# Reinstall browser runtime
 python -m playwright install chromium
-
-# Check browser path
-python -c "from playwright.sync_api import sync_playwright; print(sync_playwright().start().chromium.executable_path)"
-
-# Run with visible browser for debugging
-# Set execution_mode: "headed" in registration strategy
 ```
-
-### Captcha Not Solving
-
-**Issue**: Captcha provider returns errors
-
-```python
-# Test captcha provider directly
-from application.providers.captcha_provider import TwoCaptchaProvider
-import asyncio
-
-async def test_captcha():
-    provider = TwoCaptchaProvider()
-    
-    # Check API key
-    print(f"API Key configured: {bool(provider.api_key)}")
-    
-    # Test with dummy challenge
-    try:
-        result = await provider.solve({
-            "method": "userrecaptcha",
-            "sitekey": "6Le-wvkSAAAAAPBMRTvw0Q4Muexq9bi0DJwx_mJ-",
-            "url": "https://chatgpt.com/signup"
-        })
-        print(f"Captcha solved: {result[:20]}...")
-    except Exception as e:
-        print(f"Error: {e}")
-
-asyncio.run(test_captcha())
-```
-
-**Solution**: Verify API key in `.env`, check provider balance, ensure correct captcha type
 
 ### Email Verification Timeout
 
-**Issue**: `wait_for_verification()` times out
+**Problem**: Email provider not receiving verification codes
 
+**Solution**:
+1. Check email provider settings in **Settings → Email Services**
+2. Verify IMAP/POP3 credentials and connection
+3. Check spam/junk folders configuration
+4. Increase verification timeout in registration strategy
+
+### Proxy Connection Errors
+
+**Problem**: Proxy authentication failing or timeouts
+
+**Solution**:
 ```python
-# Increase timeout
-email_provider.wait_for_verification(timeout=600)  # 10 minutes
+# Verify proxy configuration
+# Check proxy provider credentials in .env
+PROXY_USERNAME=your_username
+PROXY_PASSWORD=your_password
 
-# Check email inbox manually
-print(f"Email address: {email_provider.current_email}")
+# Test proxy connection manually
+import httpx
 
-# Debug email provider
-import logging
-logging.basicConfig(level=logging.DEBUG)
+async with httpx.AsyncClient(
+    proxies=f"http://{username}:{password}@{host}:{port}"
+) as client:
+    response = await client.get("https://api.ipify.org?format=json")
+    print(response.json())  # Should show proxy IP
 ```
-
-**Solution**: Check email provider API limits, verify email domain not blocked, increase polling timeout
 
 ### Database Locked Errors
 
-**Issue**: SQLite database locked during concurrent writes
+**Problem**: SQLite database locked during concurrent operations
 
+**Solution**:
 ```env
-# In .env, use WAL mode for better concurrency
-ACCOUNT_MANAGER_DATABASE_URL=sqlite:///./data/account_manager.db?check_same_thread=False&timeout=20
+# Use PostgreSQL for high concurrency
+ACCOUNT_MANAGER_DATABASE_URL=postgresql://user:pass@localhost/dbname
 ```
 
-Or migrate to PostgreSQL:
-
-```env
-ACCOUNT_MANAGER_DATABASE_URL=postgresql://user:pass@localhost/abai_autoplus
-```
-
-### Proxy Connection Failed
-
-**Issue**: Registration fails with proxy errors
-
+Or reduce concurrency in registration tasks:
 ```python
-# Test proxy connectivity
-import aiohttp
-import asyncio
-
-async def test_proxy(proxy_url: str):
-    try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(
-                "https://chatgpt.com",
-                proxy=proxy_url,
-                timeout=aiohttp.ClientTimeout(total=30)
-            ) as resp:
-                print(f"Proxy works: {resp.status}")
-    except Exception as e:
-        print(f"Proxy failed: {e}")
-
-asyncio.run(test_proxy("http://user:pass@proxy.example.com:8080"))
+# Lower concurrency value
+task_id = await start_registration_task(
+    count=10,
+    concurrency=2,  # Reduce from 5+ to 2-3
+    # ...
+)
 ```
 
-**Solution**: Verify proxy credentials, check proxy provider status, use dynamic proxy rotation
+### Frontend Build Fails
 
-### High Memory Usage
+**Problem**: npm build errors or missing dependencies
 
-**Issue**: Browser instances consuming too much RAM
-
-```python
-# Reduce concurrency
-task_config = {
-    "concurrency": 2,  # Lower value
-    # ... other config
-}
-
-# Enable browser reuse in settings
-# General > Browser Reuse: Enabled
-
-# Or set in .env
-DEFAULT_BROWSER_REUSE=true
-```
-
-### Task Stuck in Running State
-
-**Issue**: Task doesn't complete or update
-
+**Solution**:
 ```bash
-# Check task logs
-curl http://localhost:8000/api/tasks/{task_id}/logs
-
-# Restart worker process (if using background workers)
-# Check for zombie browser processes
-ps aux | grep chromium
-
-# Kill stuck browsers
-pkill -f chromium
+cd frontend
+rm -rf node_modules package-lock.json
+npm install
+npm run build
 ```
+
+### OAuth Flow Interrupted
+
+**Problem**: Google/OAuth login fails or times out
+
+**Solution**:
+1. Ensure browser is running in non-headless mode for debugging:
+```python
+registration = ChatGPTRegistration(
+    headless=False  # See browser window
+)
+```
+2. Check OAuth provider configuration in **Settings → Registration Strategy**
+3. Verify identity data quality (valid names, DOB, etc.)
+4. Check for captcha challenges that require manual solving
 
 ## Testing
 
-Run automated tests:
-
 ```bash
-# Backend tests
+# Run test suite
 pytest
 
-# Frontend sidebar navigation tests
+# Test specific module
 pytest tests/test_frontend_sidebar_nav.py
 
-# Run specific test
-pytest tests/test_registration_task.py -v
+# Run with coverage
+pytest --cov=application --cov=core --cov=platforms
 ```
 
 ## Security Best Practices
 
-- **Never commit** real credentials, API keys, or account data
-- Use environment variables for all sensitive configuration
-- Set `APP_PASSWORD` for production deployments
-- Regularly rotate API keys and proxy credentials
-- Review exported files before sharing
-- Use `.gitignore` to exclude `data/`, `.env`, and `*.csv` files
+**Never commit to repository:**
+- Real account credentials (email, password, tokens)
+- API keys (captcha services, proxy providers, SMS services)
+- Database files (`*.db`)
+- Browser profiles and cookies
+- `.env` file with secrets
+
+**Use environment variables:**
+```env
+EMAIL_USERNAME=${EMAIL_USERNAME}
+EMAIL_PASSWORD=${EMAIL_PASSWORD}
+PROXY_API_KEY=${PROXY_API_KEY}
+CAPTCHA_API_KEY=${CAPTCHA_API_KEY}
+APP_PASSWORD=${APP_PASSWORD}
+```
+
+**Secure production deployments:**
+```env
+# Always set password for public deployments
+APP_PASSWORD=strong-random-password-here
+
+# Use HTTPS reverse proxy (nginx, Caddy)
+# Restrict firewall access to port 8000
+```
+
+## Additional Resources
+
+- QQ Group: https://qm.qq.com/q/JigtiO2Hyc
+- License: AGPL-3.0
+- Original Framework: lxf746/any-auto-register
