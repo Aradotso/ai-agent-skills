@@ -121,6 +121,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [agentenv-distributed-agent-environments](skills/agentenv-distributed-agent-environments/) | [install](https://skills.sh/aradotso/ai-agent-skills/agentenv-distributed-agent-environments) | [kvcache-ai/AgentENV](https://github.com/kvcache-ai/AgentENV) | 2026-07-30 |
 | [abai-autoplus-chatgpt-registration](skills/abai-autoplus-chatgpt-registration/) | [install](https://skills.sh/aradotso/ai-agent-skills/abai-autoplus-chatgpt-registration) | [asz798838958/freeAgentIdentity](https://github.com/asz798838958/freeAgentIdentity) | 2026-07-30 |
 | [abai-autoplus-chatgpt-account-manager](skills/abai-autoplus-chatgpt-account-manager/) | [install](https://skills.sh/aradotso/ai-agent-skills/abai-autoplus-chatgpt-account-manager) | [asz798838958/freeAgentIdentity](https://github.com/asz798838958/freeAgentIdentity) | 2026-07-30 |
+| [freeagentidentity-chatgpt-auto-register](skills/freeagentidentity-chatgpt-auto-register/) | [install](https://skills.sh/aradotso/ai-agent-skills/freeagentidentity-chatgpt-auto-register) | [asz798838958/freeAgentIdentity](https://github.com/asz798838958/freeAgentIdentity) | 2026-07-30 |
 <!-- SKILL_INDEX -->
 
 ---
