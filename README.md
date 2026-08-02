@@ -125,6 +125,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [awesome-long-horizon-agents-survey](skills/awesome-long-horizon-agents-survey/) | [install](https://skills.sh/aradotso/ai-agent-skills/awesome-long-horizon-agents-survey) | [RUC-NLPIR/Awesome-Long-Horizon-Agents](https://github.com/RUC-NLPIR/Awesome-Long-Horizon-Agents) | 2026-07-30 |
 | [axisagentic-long-horizon-agents](skills/axisagentic-long-horizon-agents/) | [install](https://skills.sh/aradotso/ai-agent-skills/axisagentic-long-horizon-agents) | [XYZ-AI-Lab/AxisAgentic](https://github.com/XYZ-AI-Lab/AxisAgentic) | 2026-07-30 |
 | [qwen-audio-agent-voice-runtime](skills/qwen-audio-agent-voice-runtime/) | [install](https://skills.sh/aradotso/ai-agent-skills/qwen-audio-agent-voice-runtime) | [QwenAudio/qwen-audio-agent](https://github.com/QwenAudio/qwen-audio-agent) | 2026-08-01 |
+| [waku-agent-assistant](skills/waku-agent-assistant/) | [install](https://skills.sh/aradotso/ai-agent-skills/waku-agent-assistant) | [ShenSeanChen/waku-agent](https://github.com/ShenSeanChen/waku-agent) | 2026-08-02 |
 <!-- SKILL_INDEX -->
 
 ---
