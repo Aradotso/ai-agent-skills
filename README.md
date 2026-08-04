@@ -126,6 +126,7 @@ npx skills add Aradotso/ai-agent-skills --skill <skill-name>
 | [axisagentic-long-horizon-agents](skills/axisagentic-long-horizon-agents/) | [install](https://skills.sh/aradotso/ai-agent-skills/axisagentic-long-horizon-agents) | [XYZ-AI-Lab/AxisAgentic](https://github.com/XYZ-AI-Lab/AxisAgentic) | 2026-07-30 |
 | [qwen-audio-agent-voice-runtime](skills/qwen-audio-agent-voice-runtime/) | [install](https://skills.sh/aradotso/ai-agent-skills/qwen-audio-agent-voice-runtime) | [QwenAudio/qwen-audio-agent](https://github.com/QwenAudio/qwen-audio-agent) | 2026-08-01 |
 | [waku-agent-assistant](skills/waku-agent-assistant/) | [install](https://skills.sh/aradotso/ai-agent-skills/waku-agent-assistant) | [ShenSeanChen/waku-agent](https://github.com/ShenSeanChen/waku-agent) | 2026-08-02 |
+| [nvidia-oo-agents](skills/nvidia-oo-agents/) | [install](https://skills.sh/aradotso/ai-agent-skills/nvidia-oo-agents) | [NVIDIA-NeMo/labs-OO-Agents](https://github.com/NVIDIA-NeMo/labs-OO-Agents) | 2026-08-04 |
 <!-- SKILL_INDEX -->
 
 ---
